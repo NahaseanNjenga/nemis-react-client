@@ -1,0 +1,9 @@
+SYSTEM ADMIN DASHBOARD
+
+CRUD OPERATIONS
+
+1.Teachers
+2.Students
+3.Schools
+4.School Admins
+5.Knec

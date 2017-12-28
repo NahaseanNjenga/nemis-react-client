@@ -12,13 +12,13 @@ export default function (ComposedComponent) {
                 //     type: 'error',
                 //     text: 'You do not have permission to access this page. Please login first'
                 // })
-                this.context.router.history.push('/signin')
+                this.context.router.history.push('/admin/login')
             }
         }
 
         componentWillUpdate(nextProps) {
             if(!nextProps.isAuthenticated){
-                this.context.router.history.push('/')
+                this.context.router.history.push('/admin')
             }
         }
 

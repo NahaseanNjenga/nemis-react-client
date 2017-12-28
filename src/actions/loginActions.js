@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import {SET_CURRENT_USER} from "./types"
 export function login(userData) {
     return dispatch=>{
-        return axios.post('/login',userData).then(res=>{
+        return axios.post('/admin_login',userData).then(res=>{
             const token=res.data.token
             localStorage.setItem('jwtToken',token)
             setAuthorizationToken(token)

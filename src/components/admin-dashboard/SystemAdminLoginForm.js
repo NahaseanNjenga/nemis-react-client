@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import validator from 'validator'
 import {isEmpty} from 'lodash'
 import {connect} from 'react-redux'
-import {login} from '../actions/loginActions'
-import TextFieldGroup from "../shared/TextFieldsGroup"
+import {login} from '../../actions/loginActions'
+import TextFieldGroup from "../../shared/TextFieldsGroup"
 
 
 class SystemAdminLoginForm extends React.Component {
