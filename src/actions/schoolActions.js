@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_SCHOOL} from "./types"
+import {ADD_SCHOOL, UPDATE_SCHOOL} from "./types"
 
 export function isSchoolExists(name) {
     return dispatch => {
@@ -13,9 +13,21 @@ export function registerSchool(school) {
     }
 }
 
+export function updateSchool(school) {
+    return dispatch => {
+        return axios.post('/update_school_info', school)
+    }
+}
+
 export function addSchool(school) {
     return {
         type: ADD_SCHOOL,
+        payload:school
+    }
+}
+export function updateSchoolList(school) {
+    return {
+        type: UPDATE_SCHOOL,
         payload:school
     }
 }

@@ -104,7 +104,7 @@ class NewSchoolForm extends React.Component {
                                 label="Name"
                                 type="name"
                                 name="name"
-                                value={name} autoFocus={true}
+                                value={name} autoFocus="true"
                                 onChange={this.onChange}
                                 error={errors.name}
                                 checkUserExists={this.checkSchoolExists}

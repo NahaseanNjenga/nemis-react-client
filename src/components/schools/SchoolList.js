@@ -76,7 +76,6 @@ class SchoolList extends React.Component{
                 </thead>
                 <tbody>
                 {schools.map((school, i) => {
-                    console.log(school)
                     return <School count={count++} school={school} key={i}/>
                 })}
                 </tbody>
@@ -85,6 +84,7 @@ class SchoolList extends React.Component{
                 </div>
                 <NewSchoolForm show={showNewSchoolModal} onClose={this.onCloseNewSchoolModal}
                                addSchool={this.props.addSchool}/>
+
 
             </div>)
     }
