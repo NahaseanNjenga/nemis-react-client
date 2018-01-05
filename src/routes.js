@@ -10,11 +10,11 @@ import Schools from "./components/schools/School"
 import Students from "./components/students/Students"
 import Teachers from "./components/teachers/Teachers"
 import SchoolList from "./components/schools/SchoolList"
+import TeachersList from "./components/teachers/TeachersList"
 
 
 export default () => {
     return (<BrowserRouter>
-            <div>
                 <App>
                     <Switch>
                         <Route exact path="/" component={HomePage}/>
@@ -22,10 +22,9 @@ export default () => {
                         <Route path='/admin/login' component={SystemAdminLoginForm}/>
                         <Route path='/admin/schools' component={SchoolList}/>
                         <Route path='/admin/students' component={Students}/>
-                        <Route path='/admin/teachers' component={Teachers}/>
+                        <Route path='/admin/teachers' component={TeachersList}/>
                     </Switch>
                 </App>
-            </div>
         </BrowserRouter>
     )
 }

@@ -96,7 +96,7 @@ class NewSchoolForm extends React.Component {
         const {errors, name, category,isLoading, invalid} = this.state
         if (show) {
             return (
-                <Modal isOpen={show} toggle={onClose} size="sm">
+                <Modal isOpen={show} toggle={onClose} size="lg">
                     <ModalHeader toggle={onClose}>Register a new school</ModalHeader>
                     <ModalBody>
                         <form onSubmit={this.onSubmit}>

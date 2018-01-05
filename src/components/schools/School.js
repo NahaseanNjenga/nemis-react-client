@@ -30,16 +30,15 @@ class School extends React.Component {
         const {showViewSchoolModal, showUpdateSchoolModal} = this.state
         return (
             <tr>
-                    <th scope="row">{count}</th>
-                    <td>{school.upi}</td>
-                    <td><a href="" onClick={this.onViewSchool}>{school.name}</a></td>
-                    <td>{school.category}</td>
-                    <td>{school.county ? school.county : 'N/A'}</td>
+                <th scope="row">{count}</th>
+                <td>{school.upi}</td>
+                <td><a href="" onClick={this.onViewSchool}>{school.name}</a></td>
+                <td>{school.category}</td>
+                <td>{school.county ? school.county : 'N/A'}</td>
 
-                    <ViewSchool show={showViewSchoolModal} onClose={this.onCloseViewSchool}
-                                onUpdate={this.onUpdateSchool}
-                                school={this.props.school}/>
-                </tr>
+                <ViewSchool show={showViewSchoolModal} onClose={this.onCloseViewSchool}
+                            school={this.props.school}/>
+            </tr>
 
         )
     }

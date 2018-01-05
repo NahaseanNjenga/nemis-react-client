@@ -98,23 +98,6 @@ class UpdateSchoolDetails extends React.Component {
         const {show, onClose} = this.props
         const {errors, invalid, isLoading} = this.state
 
-        // const _id = this.props.school._id,
-        //     name = this.state.name,
-        //     upi = this.props.school.upi,
-        //     county = this.state.county,
-        //     category = this.props.school.category,
-        //     email = this.props.school.contact.email,
-        //     phone1 = this.props.school.contact.phone1,
-        //     phone2 = this.props.school.contact.phone2,
-        //     address = this.props.school.contact.address,
-        //     science_labs = this.props.school.learning_materials.science_labs,
-        //     book_ratio = this.props.school.learning_materials.book_ratio,
-        //     buses = this.props.school.assets.buses,
-        //     farming_land = this.props.school.assets.farming_land,
-        //     classes = this.props.school.infrastructure.classes,
-        //     playing_fields = this.props.school.infrastructure.playing_fields,
-        //     halls = this.props.school.infrastructure.halls,
-        //     dormitories = this.props.school.infrastructure.dormitories
         const {name, upi, assets, county, category, infrastructure, email, phone1, phone2, address, science_labs, book_ratio, buses, farming_land, classes, playing_fields, halls, dormitories} = this.state
         if (show) {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
