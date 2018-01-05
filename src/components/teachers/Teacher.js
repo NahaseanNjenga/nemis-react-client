@@ -13,8 +13,6 @@ class Teacher extends React.Component {
 
     }
 
-
-
     onViewTeacher(e) {
         e.preventDefault()
         this.setState({showViewTeacherModal: true})
