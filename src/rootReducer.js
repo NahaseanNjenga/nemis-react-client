@@ -1,11 +1,10 @@
 import {combineReducers} from 'redux'
-// import flashMessages from './reducers/flashMessages'
 import loginReducers from './reducers/loginReducers'
 import schoolReducers from "./reducers/schoolReducers"
 import teacherReducers from "./reducers/teacherReducers"
 import studentReducers from "./reducers/studentReducers"
-// import postsReducers from "./reducers/postsReducers"
-// import commentsReducers from "./reducers/commentsReducers"
+import schoolAdminReducers from "./reducers/schoolAdminReducers"
+
 
 export default combineReducers({
     // flashMessages,
@@ -13,4 +12,5 @@ export default combineReducers({
     schoolReducers,
     teacherReducers,
     studentReducers,
+    schoolAdminReducers,
 })

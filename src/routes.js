@@ -9,6 +9,7 @@ import SystemAdminLoginForm from "./components/admin-dashboard/SystemAdminLoginF
 import SchoolList from "./components/schools/SchoolList"
 import TeachersList from "./components/teachers/TeachersList"
 import StudentsList from "./components/students/StudentsList"
+import SchoolAdminList from "./components/schoolAdmins/SchoolAdminList"
 
 
 export default () => {
@@ -21,6 +22,7 @@ export default () => {
                         <Route path='/admin/schools' component={SchoolList}/>
                         <Route path='/admin/students' component={StudentsList}/>
                         <Route path='/admin/teachers' component={TeachersList}/>
+                        <Route path='/admin/school_admins' component={SchoolAdminList}/>
                     </Switch>
                 </App>
         </BrowserRouter>
