@@ -52,7 +52,7 @@ class TeachersList extends React.Component{
                             <div className="col-sm-6">
                                 <form>
                                     <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Search Teacher UPI"
+                                        <input type="text" className="form-control" placeholder="Search Teacher TSC Number"
                                                aria-label="Search Teacher UPI" aria-describedby="basic-addon1"/>
                                         <span className="input-group-addon" id="basic-addon1"><i
                                             className="fa fa-search"></i></span>

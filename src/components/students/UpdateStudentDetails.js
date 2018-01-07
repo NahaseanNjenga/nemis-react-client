@@ -128,7 +128,7 @@ class UpdateStudentDetails extends React.Component {
                             <TextFieldGroup
                                 label="Date of birth"
                                 type="date"
-                                name="dob"
+                                name="birthdate"
                                 onChange={this.onChange}
                                 error={errors.dob}
 
