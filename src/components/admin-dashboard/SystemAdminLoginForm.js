@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import validator from 'validator'
 import {isEmpty} from 'lodash'
 import {connect} from 'react-redux'
-import {login} from '../../actions/loginActions'
+import {systemAdminlogin} from '../../actions/loginActions'
 import TextFieldGroup from "../../shared/TextFieldsGroup"
 
 
@@ -50,7 +50,7 @@ class SystemAdminLoginForm extends React.Component {
         e.preventDefault()
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
-            this.props.login(this.state).then(
+            this.props.systemAdminlogin(this.state).then(
                 (res) => {
                     // this.props.addFlashMessage({type: 'success', text: 'You have signed up successfully'})
                     this.context.router.history.push('/admin')
@@ -105,10 +105,10 @@ class SystemAdminLoginForm extends React.Component {
 }
 
 SystemAdminLoginForm.propTypes = {
-    login: PropTypes.func.isRequired
+    systemAdminlogin: PropTypes.func.isRequired
 }
 SystemAdminLoginForm.contextTypes = {
     router: PropTypes.object.isRequired
 }
 
-export default connect(null, {login})(SystemAdminLoginForm)
+export default connect(null, {systemAdminlogin})(SystemAdminLoginForm)

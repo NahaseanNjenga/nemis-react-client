@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 import HomePage from "./components/HomePage"
 import App from "./components/App"
-import requireAuth from "./utils/requireAuth"
+import requireAuth from "./utils/requireSystemAdminAuth"
 import SystemAdminDashboard from "./components/admin-dashboard/SystemAdminDashboard"
 import SystemAdminLoginForm from "./components/admin-dashboard/SystemAdminLoginForm"
 import SchoolList from "./components/schools/SchoolList"
