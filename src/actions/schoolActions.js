@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_SCHOOL, UPDATE_SCHOOL} from "./types"
+import {ADD_SCHOOL, CLEAR_SCHOOLS, UPDATE_SCHOOL} from "./types"
 
 export function isSchoolExists(name) {
     return dispatch => {
@@ -25,6 +25,13 @@ export function addSchool(school) {
         payload:school
     }
 }
+export function clearSchools() {
+    return {
+        type: CLEAR_SCHOOLS,
+        payload:{}
+    }
+}
+
 export function updateSchoolList(school) {
     return {
         type: UPDATE_SCHOOL,

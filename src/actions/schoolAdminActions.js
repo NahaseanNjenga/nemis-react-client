@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_SCHOOL_ADMIN, UPDATE_SCHOOL_ADMIN} from "./types"
+import {ADD_SCHOOL_ADMIN, CLEAR_SCHOOL_ADMINS, UPDATE_SCHOOL_ADMIN} from "./types"
 
 
 export function registerSchoolAdmin(schoolAdmin) {
@@ -18,6 +18,12 @@ export function addSchoolAdmin(schoolAdmin) {
     return {
         type: ADD_SCHOOL_ADMIN,
         payload:schoolAdmin
+    }
+}
+export function clearSchoolAdmins() {
+    return {
+        type:CLEAR_SCHOOL_ADMINS,
+        payload:{}
     }
 }
 export function updateSchoolAdminList(schoolAdmin) {

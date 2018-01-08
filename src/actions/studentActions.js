@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_STUDENT, UPDATE_STUDENT} from "./types"
+import {ADD_STUDENT, CLEAR_STUDENTS, UPDATE_STUDENT} from "./types"
 
 export function isStudenetExists(name) {
     return dispatch => {
@@ -23,6 +23,12 @@ export function addStudent(student) {
     return {
         type: ADD_STUDENT,
         payload:student
+    }
+}
+export function clearStudents() {
+    return {
+        type: CLEAR_STUDENTS,
+        payload:[]
     }
 }
 export function updateStudentList(student) {

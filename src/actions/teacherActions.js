@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_TEACHER, UPDATE_TEACHER} from "./types"
+import {ADD_TEACHER, CLEAR_TEACHERS, UPDATE_TEACHER} from "./types"
 
 export function isTeacherExists(name) {
     return dispatch => {
@@ -23,6 +23,12 @@ export function addTeacher(teacher) {
     return {
         type: ADD_TEACHER,
         payload:teacher
+    }
+}
+export function clearTeachers() {
+    return {
+        type: CLEAR_TEACHERS,
+        payload:{}
     }
 }
 export function updateTeacherList(teacher) {

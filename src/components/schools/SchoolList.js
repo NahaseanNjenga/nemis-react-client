@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import School from "./School"
-import {addSchool, getSchools} from "../../actions/schoolActions"
+import {addSchool, clearSchools, getSchools} from "../../actions/schoolActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewSchoolForm from "./NewSchoolForm"
@@ -16,6 +16,7 @@ class SchoolList extends React.Component{
         this.onCloseNewSchoolModal = this.onCloseNewSchoolModal.bind(this)
     }
     componentDidMount() {
+        this.props.clearSchools()
         this.props.getSchools().then(schools => {
             if (schools) {
                 schools.data.map(school => {
@@ -93,10 +94,11 @@ class SchoolList extends React.Component{
 SchoolList.propTypes={
     addSchool: PropTypes.func.isRequired,
     getSchools: PropTypes.func.isRequired,
-    schools: PropTypes.array.isRequired
+    schools: PropTypes.array.isRequired,
+    clearSchools: PropTypes.array.isRequired
 }
 function mapStateToProps(state) {
     return {schools: state.schoolReducers}
 }
 
-export default connect(mapStateToProps, {addSchool, getSchools})(SchoolList)
+export default connect(mapStateToProps, {addSchool, getSchools,clearSchools})(SchoolList)

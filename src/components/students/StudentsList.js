@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Student from "./Student"
-import {addStudent, getStudents} from "../../actions/studentActions"
+import {addStudent, clearStudents, getStudents} from "../../actions/studentActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewStudentForm from "./NewStudentForm"
@@ -16,6 +16,7 @@ class StudentsList extends React.Component{
         this.onCloseNewStudentModal = this.onCloseNewStudentModal.bind(this)
     }
     componentDidMount() {
+        this.props.clearStudents()
         this.props.getStudents().then(students => {
             if (students) {
                 students.data.map(student => {
@@ -93,11 +94,12 @@ class StudentsList extends React.Component{
 StudentsList.propTypes={
     addStudent: PropTypes.func.isRequired,
     getStudents: PropTypes.func.isRequired,
+    clearStudents: PropTypes.func.isRequired,
     students: PropTypes.array.isRequired
 }
 function mapStateToProps(state) {
     return {students: state.studentReducers}
 }
 
-export default connect(mapStateToProps, {addStudent, getStudents})(StudentsList)
+export default connect(mapStateToProps, {addStudent, getStudents,clearStudents})(StudentsList)
 
