@@ -7,6 +7,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {addTeacher, registerTeacher} from "../../actions/teacherActions"
 import {connect} from 'react-redux'
 import {addFlashMessage} from "../../actions/flashMessages"
+import jwt from 'jsonwebtoken'
 
 
 class NewTeacherForm extends React.Component {
@@ -26,10 +27,18 @@ class NewTeacherForm extends React.Component {
             errors: {},
             isLoading: false,
             invalid: false
+
         }
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.checkTeacherExists = this.checkTeacherExists.bind(this)
+    }
+
+    componentDidMount() {
+        if (window.location.pathname === '/school_admin/teachers') {
+            const token = jwt.decode(localStorage.schoolAdminJwtToken)
+            this.setState({school_upi: token.school_upi})
+        }
     }
 
     checkTeacherExists(e) {
@@ -106,7 +115,8 @@ class NewTeacherForm extends React.Component {
                     // })
                     this.props.onClose()
                     this.props.addTeacher(teacher.data)
-                    this.setState({ tsc: '',
+                    this.setState({
+                        tsc: '',
                         surname: '',
                         first_name: '',
                         last_name: '',
@@ -118,7 +128,8 @@ class NewTeacherForm extends React.Component {
                         nationalID: '',
                         errors: {},
                         isLoading: false,
-                        invalid: false})
+                        invalid: false
+                    })
                 },
                 err => this.setState({errors: err.response.data, isLoading: false})
             )
@@ -262,5 +273,5 @@ NewTeacherForm.contextTypes = {
 }
 
 
-export default connect(null, { addTeacher,registerTeacher, addFlashMessage})(NewTeacherForm)
+export default connect(null, {addTeacher, registerTeacher, addFlashMessage})(NewTeacherForm)
 

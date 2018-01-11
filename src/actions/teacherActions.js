@@ -42,3 +42,8 @@ export function getTeachers() {
         return axios.get('/admin/teachers')
     }
 }
+export function getSchoolTeachers(upi) {
+    return dispatch=>{
+        return axios.post('/schools/teachers',{upi:upi})
+    }
+}

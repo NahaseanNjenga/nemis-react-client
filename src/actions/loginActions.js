@@ -12,6 +12,16 @@ export function systemAdminlogin(userData) {
         })
     }
 }
+export function schoolAdminlogin(userData) {
+    return dispatch=>{
+        return axios.post('/school_admin_login',userData).then(res=>{
+            const token=res.data.token
+            localStorage.setItem('schoolAdminJwtToken',token)
+            setSchoolAdminAuthorizationToken(token)
+            dispatch(setCurrentUser(jwt.decode(token)))
+        })
+    }
+}
 
 export function setCurrentUser(user) {
     return{
@@ -20,10 +30,18 @@ export function setCurrentUser(user) {
     }
 }
 
-export function logout() {
+export function systemAdminLogout() {
     return dispatch=>{
         localStorage.removeItem('systemAdminJwtToken')
         setSystemAdminAuthorizationToken(false)
+        dispatch(setCurrentUser({}))
+    }
+}
+
+export function schoolAdminLogout() {
+    return dispatch=>{
+        localStorage.removeItem('schoolAdminJwtToken')
+        setSchoolAdminAuthorizationToken(false)
         dispatch(setCurrentUser({}))
     }
 }

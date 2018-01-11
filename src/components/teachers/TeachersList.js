@@ -1,17 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
-import {addTeacher, clearTeachers, getTeachers} from "../../actions/teacherActions"
+import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewTeacherForm from "./NewTeacherForm"
 import ViewTeacher from "./ViewTeacher"
+import jwt from 'jsonwebtoken'
+import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
 
 class TeachersList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             showNewTeacherModal: false,
+            role:''
         }
         this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
         this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
@@ -19,15 +22,34 @@ class TeachersList extends React.Component {
 
     componentDidMount() {
         this.props.clearTeachers()
-        this.props.getTeachers().then(teachers => {
-            if (teachers) {
-                teachers.data.map(teacher => {
-                    this.props.addTeacher(teacher)
-                })
-            } else {
-                //No schools message
-            }
-        })
+        if (window.location.pathname === '/admin/teachers') {
+            this.props.getTeachers().then(teachers => {
+                if (teachers) {
+                    teachers.data.map(teacher => {
+                        this.props.addTeacher(teacher)
+                    })
+                    this.setState({role:'system'})
+                } else {
+                    //No schools message
+                }
+            })
+        }
+        else if (window.location.pathname === '/school_admin/teachers') {
+            const token = jwt.decode(localStorage.schoolAdminJwtToken)
+            const upi = token.school_upi
+            console.log(token,upi)
+            this.props.getSchoolTeachers(upi).then(teachers=>{
+                if (teachers) {
+                    teachers.data.map(teacher => {
+                        this.props.addTeacher(teacher)
+                    })
+                    this.setState({role:'school'})
+                } else {
+                    //No schools message
+                }
+            })
+
+        }
     }
 
     onShowNewTeacherModal() {
@@ -41,13 +63,13 @@ class TeachersList extends React.Component {
 
     render() {
         const {teachers} = this.props
-        const {showNewTeacherModal} = this.state
+        const {showNewTeacherModal,role} = this.state
         let count = 1
         return (
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-2">
-                        <Menu/>
+                        {role?role==='system'?<Menu/>:<SchoolAdminMenu/>:''}
                     </div>
                     <div className="col-md-9">
                         <br/>
@@ -63,7 +85,6 @@ class TeachersList extends React.Component {
                                             className="fa fa-search"></i></span>
                                     </div>
                                 </form>
-                                0
                             </div>
                             <div className="col-sm-2 offset-sm-1">
                                 <button className="btn btn-sm btn-info" onClick={this.onShowNewTeacherModal}>Register
@@ -102,12 +123,14 @@ TeachersList.propTypes = {
     addTeacher: PropTypes.func.isRequired,
     getTeachers: PropTypes.func.isRequired,
     clearTeachers: PropTypes.func.isRequired,
-    teachers: PropTypes.array.isRequired
+    teachers: PropTypes.array.isRequired,
+    getSchoolTeachers: PropTypes.func.isRequired,
+
 }
 
 function mapStateToProps(state) {
     return {teachers: state.teacherReducers}
 }
 
-export default connect(mapStateToProps, {addTeacher, clearTeachers, getTeachers})(TeachersList)
+export default connect(mapStateToProps, {addTeacher, clearTeachers, getTeachers, getSchoolTeachers})(TeachersList)
 

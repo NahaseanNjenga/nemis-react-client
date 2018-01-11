@@ -8,6 +8,7 @@ export  function setSystemAdminAuthorizationToken(token) {
         window.location.reload()
     }
 }
+
 export  function setSchoolAdminAuthorizationToken(token) {
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -16,3 +17,4 @@ export  function setSchoolAdminAuthorizationToken(token) {
         window.location.reload()
     }
 }
+

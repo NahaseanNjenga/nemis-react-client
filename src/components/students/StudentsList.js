@@ -5,12 +5,14 @@ import {addStudent, clearStudents, getStudents} from "../../actions/studentActio
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewStudentForm from "./NewStudentForm"
+import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
 
 class StudentsList extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
             showNewStudentModal: false,
+            role:''
         }
         this.onShowNewStudentModal = this.onShowNewStudentModal.bind(this)
         this.onCloseNewStudentModal = this.onCloseNewStudentModal.bind(this)
@@ -22,6 +24,7 @@ class StudentsList extends React.Component{
                 students.data.map(student => {
                     this.props.addStudent(student)
                 })
+                this.setState({role:'system'})
             } else {
                 //No schools message
             }
@@ -38,13 +41,13 @@ class StudentsList extends React.Component{
     }
     render(){
         const {students}=this.props
-        const {showNewStudentModal} = this.state
+        const {showNewStudentModal,role} = this.state
         let count=1
         return (
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-2">
-                        <Menu/>
+                        {role?role==='system'?<Menu/>:<SchoolAdminMenu/>:''}
                     </div>
                     <div className="col-md-9">
                         <br/>
