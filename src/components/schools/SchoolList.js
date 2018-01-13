@@ -11,9 +11,11 @@ class SchoolList extends React.Component{
         super(props)
         this.state = {
             showNewSchoolModal: false,
+            schools:''
         }
         this.onShowNewSchoolModal = this.onShowNewSchoolModal.bind(this)
         this.onCloseNewSchoolModal = this.onCloseNewSchoolModal.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
     componentDidMount() {
         this.props.clearSchools()
@@ -22,12 +24,24 @@ class SchoolList extends React.Component{
                 schools.data.map(school => {
                     this.props.addSchool(school)
                 })
+                this.setState({schools:schools.data})
             } else {
                 //No schools message
             }
         })
     }
-
+    onChange(e) {
+        const {schools}= this.state
+        let arr_results = []
+        this.props.clearSchools()
+        for (let i = 0; i <schools.length; i++) {
+            let exp = new RegExp(e.target.value, 'i')
+            if (schools[i].upi.match(exp)) {
+                arr_results.push(schools[i])
+                this.props.addSchool(schools[i])
+            }
+        }
+    }
     onShowNewSchoolModal() {
         this.setState({showNewSchoolModal: true})
 
@@ -54,7 +68,7 @@ class SchoolList extends React.Component{
                                 <form>
                                     <div className="input-group">
                                         <input type="text" className="form-control" placeholder="Search School UPI"
-                                               aria-label="Search School UPI" aria-describedby="basic-addon1"/>
+                                               aria-label="Search School UPI" aria-describedby="basic-addon1" onChange={this.onChange}/>
                                         <span className="input-group-addon" id="basic-addon1"><i
                                             className="fa fa-search"></i></span>
                                     </div>
@@ -65,7 +79,7 @@ class SchoolList extends React.Component{
                             </div>
                         </div>
                         <br/>
-            <table className="table">
+                        {schools.length>0?   <table className="table">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -80,7 +94,7 @@ class SchoolList extends React.Component{
                     return <School count={count++} school={school} key={i}/>
                 })}
                 </tbody>
-            </table>
+            </table>:'No school found'}
                     </div>
                 </div>
                 <NewSchoolForm show={showNewSchoolModal} onClose={this.onCloseNewSchoolModal}
@@ -95,7 +109,7 @@ SchoolList.propTypes={
     addSchool: PropTypes.func.isRequired,
     getSchools: PropTypes.func.isRequired,
     schools: PropTypes.array.isRequired,
-    clearSchools: PropTypes.array.isRequired
+    clearSchools: PropTypes.func.isRequired
 }
 function mapStateToProps(state) {
     return {schools: state.schoolReducers}

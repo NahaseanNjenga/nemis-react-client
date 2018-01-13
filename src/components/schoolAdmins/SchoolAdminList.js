@@ -12,9 +12,11 @@ class SchoolAdminList extends React.Component {
         super(props)
         this.state = {
             showNewSchoolAdminModal: false,
+            schoolAdmins:''
         }
         this.onShowNewSchoolAdminModal = this.onShowNewSchoolAdminModal.bind(this)
         this.onCloseNewSchoolAdminModal = this.onCloseNewSchoolAdminModal.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
 
     componentDidMount() {
@@ -24,10 +26,24 @@ class SchoolAdminList extends React.Component {
                 schoolAdmins.data.map(schoolAdmin => {
                     this.props.addSchoolAdmin(schoolAdmin)
                 })
+                this.setState({schoolAdmins:schoolAdmins.data})
             } else {
                 //No schoolAdmins message
             }
         })
+    }
+    onChange(e) {
+        const {schoolAdmins}= this.state
+        let arr_results = []
+        console.log(schoolAdmins.length)
+        this.props.clearSchoolAdmins()
+        for (let i = 0; i <schoolAdmins.length; i++) {
+            let exp = new RegExp(e.target.value, 'i')
+            if (schoolAdmins[i].school_upi.match(exp)) {
+                arr_results.push(schoolAdmins[i])
+                this.props.addSchoolAdmin(schoolAdmins[i])
+            }
+        }
     }
 
     onShowNewSchoolAdminModal() {
@@ -56,9 +72,9 @@ class SchoolAdminList extends React.Component {
                             <div className="col-sm-6">
                                 <form>
                                     <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Search SchoolAdmin UPI"
-                                               aria-label="Search SchoolAdmin Username"
-                                               aria-describedby="basic-addon1"/>
+                                        <input type="text" className="form-control" placeholder="Search School UPI"
+                                               aria-label="Search School"
+                                               aria-describedby="basic-addon1" onChange={this.onChange}/>
                                         <span className="input-group-addon" id="basic-addon1"><i
                                             className="fa fa-search"></i></span>
                                     </div>
@@ -71,7 +87,7 @@ class SchoolAdminList extends React.Component {
                             </div>
                         </div>
                         <br/>
-                        <table className="table">
+                        {schoolAdmins.length>0?   <table className="table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -84,7 +100,7 @@ class SchoolAdminList extends React.Component {
                                 return <SchoolAdmin count={count++} schoolAdmin={schoolAdmin} key={i}/>
                             })}
                             </tbody>
-                        </table>
+                        </table>:'No school admins found'}
                     </div>
                 </div>
                 <NewSchoolAdminForm show={showNewSchoolAdminModal} onClose={this.onCloseNewSchoolAdminModal}

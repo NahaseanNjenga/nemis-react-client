@@ -42,3 +42,13 @@ export function getStudents() {
         return axios.get('/admin/students')
     }
 }
+export function getSchoolStudents(upi) {
+    return dispatch => {
+        return axios.post('/schools/students', {upi: upi})
+    }
+}
+export function searchStudent(upi) {
+    return dispatch => {
+        return axios.post('/search', {upi: upi})
+    }
+}

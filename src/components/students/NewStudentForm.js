@@ -7,6 +7,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {addStudent, registerStudent} from "../../actions/studentActions"
 import {connect} from 'react-redux'
 import {addFlashMessage} from "../../actions/flashMessages"
+import jwt from "jsonwebtoken"
 
 class NewStudentForm extends React.Component {
     constructor(props) {
@@ -110,7 +111,12 @@ class NewStudentForm extends React.Component {
             )
         }
     }
-
+    componentDidMount() {
+        if (window.location.pathname === '/school_admin/students') {
+            const token = jwt.decode(localStorage.schoolAdminJwtToken)
+            this.setState({school_upi: token.school_upi})
+        }
+    }
     onChange(e) {
         this.setState({[e.target.name]: e.target.value})
     }

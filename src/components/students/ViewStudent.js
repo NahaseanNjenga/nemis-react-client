@@ -66,7 +66,7 @@ class ViewStudent extends React.Component {
 
                         <tr>
                             <th scope="row">Current school:</th>
-                            <td>{student.transfers.current_school}</td>
+                            <td>{student.transfers?student.transfers.current_school:''}</td>
                         </tr>
                         </tbody>
                     </table>

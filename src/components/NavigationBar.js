@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {systemAdminLogout} from '../actions/loginActions'
+import {schoolAdminLogout, systemAdminLogout} from '../actions/loginActions'
 import jwt from "jsonwebtoken"
 import SelectLoginModal from "../modals/SelectLoginModal"
 import SchoolAdminLogin from "./school-admin-dashboard/SchoolAdminLoginForm"
@@ -30,6 +30,7 @@ class NavigationBar extends React.Component {
     logout(e) {
         e.preventDefault()
         this.props.systemAdminLogout()
+        this.props.schoolAdminLogout()
         this.context.router.history.push('/')
     }
 
@@ -47,6 +48,7 @@ class NavigationBar extends React.Component {
         e.preventDefault()
         this.setState({selectLoginModal: false})
         this.setState({schoolAdminLoginModal: true})
+        this.context.router.history.push('/school_admin/login')
     }
 
     onCloseSchoolAdmin() {
@@ -68,14 +70,12 @@ class NavigationBar extends React.Component {
         const {selectLoginModal, schoolAdminLoginModal, knecAdminLoginModal} = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
         const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
-        console.log(isAuthenticated,isSchoolAdminAuthenticated)
-        const token = jwt.decode(localStorage.systemAdminJwtToken)
+        console.log(isAuthenticated, isSchoolAdminAuthenticated)
+        const token = jwt.decode(localStorage.schoolAdminJwtToken)
         const userLinks = (<ul className="nav navbar-nav navbar-right">
             <li><a href="/logout" onClick={this.logout}>Logout</a></li>
-            {token && <Link to="/profile">School name</Link>}
+            <li>{isSchoolAdminAuthenticated? <Link to="/school_admin">&nbsp; {token.username}</Link>:''}</li>
         </ul>)
-        // console.log(window.location.p)
-
         const guestLinks = (
             <ul className="nav navbar-nav navbar-right">
                 <li><a href="" onClick={this.onSignin}>Sign in</a></li>
@@ -87,10 +87,11 @@ class NavigationBar extends React.Component {
                         <Link to="/" className="navbar-brand">Nemis</Link>
                     </div>
                     <div className="collapse navbar-collapse my-2 my-lg-0">
-                        {isAuthenticated || isSchoolAdminAuthenticated ? userLinks :window.location.pathname==='/admin'||window.location.pathname==='/admin/login'?'': guestLinks}
+                        {isAuthenticated || isSchoolAdminAuthenticated ? userLinks : window.location.pathname === '/admin' || window.location.pathname === '/admin/login' ? '' : guestLinks}
                     </div>
                 </div>
-                <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin} onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
+                <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin}
+                                  onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
                 {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
 
             </nav>
@@ -101,7 +102,8 @@ class NavigationBar extends React.Component {
 NavigationBar.propTypes = {
     systemAdminLoginReducers: PropTypes.object.isRequired,
     schoolAdminLoginReducers: PropTypes.object.isRequired,
-    // logout: PropTypes.func.isRequired
+    schoolAdminLogout: PropTypes.func.isRequired,
+    systemAdminLogout: PropTypes.func.isRequired
 }
 NavigationBar.contextTypes = {
     router: PropTypes.object.isRequired
@@ -114,4 +116,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {systemAdminLogout})(NavigationBar)
+export default connect(mapStateToProps, {systemAdminLogout, schoolAdminLogout})(NavigationBar)

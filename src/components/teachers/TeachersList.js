@@ -14,12 +14,26 @@ class TeachersList extends React.Component {
         super(props)
         this.state = {
             showNewTeacherModal: false,
-            role:''
+            role:'',
+            teachers:''
         }
         this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
         this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
-
+    onChange(e) {
+        const {teachers}= this.state
+        let arr_results = []
+        console.log(teachers.length)
+        this.props.clearTeachers()
+        for (let i = 0; i <teachers.length; i++) {
+            let exp = new RegExp(e.target.value, 'i')
+            if (teachers[i].tsc.match(exp)) {
+                arr_results.push(teachers[i])
+                this.props.addTeacher(teachers[i])
+            }
+        }
+    }
     componentDidMount() {
         this.props.clearTeachers()
         if (window.location.pathname === '/admin/teachers') {
@@ -28,7 +42,7 @@ class TeachersList extends React.Component {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
-                    this.setState({role:'system'})
+                    this.setState({role:'system',teachers:teachers.data})
                 } else {
                     //No schools message
                 }
@@ -43,7 +57,7 @@ class TeachersList extends React.Component {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
-                    this.setState({role:'school'})
+                    this.setState({role:'school',teachers:teachers.data})
                 } else {
                     //No schools message
                 }
@@ -80,7 +94,7 @@ class TeachersList extends React.Component {
                                     <div className="input-group">
                                         <input type="text" className="form-control"
                                                placeholder="Search Teacher TSC Number"
-                                               aria-label="Search Teacher UPI" aria-describedby="basic-addon1"/>
+                                               aria-label="Search Teacher UPI" aria-describedby="basic-addon1" onChange={this.onChange}/>
                                         <span className="input-group-addon" id="basic-addon1"><i
                                             className="fa fa-search"></i></span>
                                     </div>
@@ -93,7 +107,7 @@ class TeachersList extends React.Component {
                             </div>
                         </div>
                         <br/>
-                        <table className="table">
+                        {teachers.length>0?    <table className="table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -108,7 +122,7 @@ class TeachersList extends React.Component {
                                 return <Teacher count={count++} teacher={teacher} key={i}/>
                             })}
                             </tbody>
-                        </table>
+                        </table>:'No teachers found'}
                     </div>
                 </div>
                 <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}

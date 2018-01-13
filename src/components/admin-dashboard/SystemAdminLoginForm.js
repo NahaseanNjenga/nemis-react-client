@@ -75,9 +75,8 @@ class SystemAdminLoginForm extends React.Component {
                             {errors.form && <div className="alert alert-danger">{errors.form}</div>}
                             <TextFieldGroup
                                 label="Username"
-                                type="username"
+                                type="text"
                                 name="username"
-                                value={username}
                                 onChange={this.onChange}
                                 error={errors.username}
                                 autofocus={true}
@@ -87,7 +86,6 @@ class SystemAdminLoginForm extends React.Component {
                                 label="Password"
                                 type="password"
                                 name="password"
-                                value={password}
                                 onChange={this.onChange}
                                 error={errors.password}
                             />

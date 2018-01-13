@@ -43,3 +43,8 @@ export function getSchools() {
         return axios.get('/admin/schools')
     }
 }
+export function getSchoolDetails(upi) {
+    return dispatch=>{
+        return axios.post('/school_info',{upi:upi})
+    }
+}

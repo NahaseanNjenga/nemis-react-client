@@ -103,6 +103,7 @@ class SchoolAdminLoginForm extends React.Component {
         return (<div className="container">
                 <div className="row">
                     <div className="col-sm-6 offset-sm-3">
+                        <h2>School Admin Login </h2>
                         <form onSubmit={this.onSubmit}>
                             {errors.form && <div className="alert alert-danger">{errors.form}</div>}
                             <TextFieldGroup
