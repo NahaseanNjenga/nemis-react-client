@@ -53,7 +53,7 @@ class ViewSchool extends React.Component {
                         </tr>
                         <tr>
                             <th scope="row">County:</th>
-                            <td>{school.county ? school.county : 'N/A'}</td>
+                            <td>{school.county}</td>
                         </tr>
                         <tr>
                             <th scope="row">Classes:</th>

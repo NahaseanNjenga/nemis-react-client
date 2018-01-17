@@ -5,6 +5,8 @@ import teacherReducers from "./reducers/teacherReducers"
 import studentReducers from "./reducers/studentReducers"
 import schoolAdminReducers from "./reducers/schoolAdminReducers"
 import schoolAdminLoginReducers from "./reducers/schoolAdminLoginReducers"
+import responsibilityReducers from "./reducers/responsibilityReducers"
+import schoolDetailsReducers from "./reducers/schoolDetailsReducers"
 
 
 export default combineReducers({
@@ -14,5 +16,7 @@ export default combineReducers({
     schoolReducers,
     teacherReducers,
     studentReducers,
+    responsibilityReducers,
     schoolAdminReducers,
+    schoolDetailsReducers,
 })

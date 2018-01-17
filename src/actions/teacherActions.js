@@ -31,6 +31,12 @@ export function clearTeachers() {
         payload:{}
     }
 }
+export function updateTeacherOnList(teacher) {
+    return {
+        type: UPDATE_TEACHER,
+        payload:teacher
+    }
+}
 export function updateTeacherList(teacher) {
     return {
         type: UPDATE_TEACHER,
@@ -45,5 +51,10 @@ export function getTeachers() {
 export function getSchoolTeachers(upi) {
     return dispatch=>{
         return axios.post('/schools/teachers',{upi:upi})
+    }
+}
+export function addResponsibility(responbsibility) {
+    return dispatch=>{
+        return axios.post('/update_teacher_info/responsibilities/add',responbsibility)
     }
 }

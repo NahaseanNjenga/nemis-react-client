@@ -3,26 +3,67 @@ import SchoolAdminMenu from "./SchoolAdminMenu"
 import PropTypes from 'prop-types'
 import UpdateSchoolDetails from "../schools/UpdateSchoolDetails"
 import {connect} from 'react-redux'
-import {getSchoolDetails} from "../../actions/schoolActions"
+import {displaySchoolInfo, getSchoolDetails} from "../../actions/schoolActions"
 import jwt from 'jsonwebtoken'
+import UpdateBasicInfo from "./modals/school-details/UpdateBasicInfo"
+import UpdateInfrastructureInfo from "./modals/school-details/UpdateInfrastructureInfo"
+import UpdateAssetsInfo from "./modals/school-details/UpdateAssetsInfo"
+import UpdateContactInfo from "./modals/school-details/UpdateContactInfo"
 
 class SchoolDetails extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            showUpdateSchoolModal: false,
+            showUpdateBasicInfoModal: false,
+            showUpdateInfrastructureInfoModal: false,
+            showUpdateAssetsInfoModal: false,
+            showUpdateContactInfoModal: false,
             school: ''
         }
         this.onUpdateSchool = this.onUpdateSchool.bind(this)
         this.onCloseUpdateSchool = this.onCloseUpdateSchool.bind(this)
+        this.showUpdateBasicInfoModal = this.showUpdateBasicInfoModal.bind(this)
+        this.closeUpdateBasicInfoModal = this.closeUpdateBasicInfoModal.bind(this)
+        this.showUpdateInfrastructureInfoModal = this.showUpdateInfrastructureInfoModal.bind(this)
+        this.showUpdateInfrastructureInfoModal = this.showUpdateInfrastructureInfoModal.bind(this)
+        this.closeUpdateInfrastructureInfoModal = this.closeUpdateInfrastructureInfoModal.bind(this)
+        this.showUpdateAssetsInfoModal = this.showUpdateAssetsInfoModal.bind(this)
+        this.showUpdateContactInfoModal = this.showUpdateContactInfoModal.bind(this)
+        this.closeUpdateContactInfoModal = this.closeUpdateContactInfoModal.bind(this)
+    }
+    showUpdateBasicInfoModal(e) {
+        e.preventDefault()
+        this.setState({showUpdateBasicInfoModal: true})
+    }
+    closeUpdateBasicInfoModal(e) {
+        this.setState({showUpdateBasicInfoModal: false})
+    }
+    showUpdateContactInfoModal(e) {
+        e.preventDefault()
+        this.setState({showUpdateContactInfoModal: true})
+    }
+    closeUpdateContactInfoModal(e) {
+        this.setState({showUpdateContactInfoModal: false})
+    }
+    showUpdateInfrastructureInfoModal(e) {
+        e.preventDefault()
+        this.setState({showUpdateInfrastructureInfoModal: true})
+    }
+    closeUpdateInfrastructureInfoModal(e) {
+        this.setState({showUpdateInfrastructureInfoModal: false})
+    }
+    showUpdateAssetsInfoModal(e) {
+        e.preventDefault()
+        this.setState({showUpdateAssetsInfoModal: true})
+    }
+    closeUpdateAssetsInfoModal(e) {
+        this.setState({showUpdateAssetsInfoModal: false})
     }
 
     componentDidMount() {
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
-        console.log(token)
         this.props.getSchoolDetails(token.school_upi).then(school => {
-            console.log(school)
-            this.setState({school:school.data})
+            this.props.displaySchoolInfo({school: school.data})
         })
     }
 
@@ -36,8 +77,10 @@ class SchoolDetails extends React.Component {
     }
 
     render() {
-        const {showUpdateSchoolModal} = this.state
-        const {school} = this.state
+        const {showUpdateBasicInfoModal,showUpdateInfrastructureInfoModal,showUpdateAssetsInfoModal,showUpdateContactInfoModal} = this.state
+        let {school} = this.props
+
+        school=school.school
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -45,88 +88,229 @@ class SchoolDetails extends React.Component {
                         <SchoolAdminMenu/>
                     </div>
                     <div className="col-md-9">
-                        <button className="btn btn-sm btn-info" onClick={this.onUpdateSchool}>Edit</button>
-                        <table className="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Category</th>
-                                <th scope="col">Value</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">UPI:</th>
-                                <td>{school.upi}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Name:</th>
-                                <td>{school.name}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Category:</th>
-                                <td>{school.category}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">County:</th>
-                                <td>{school.county ? school.county : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Classes:</th>
-                                <td>{school.infrastructure ? school.infrastructure.classes : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Playing Fields:</th>
-                                <td>{school.infrastructure ? school.infrastructure.playing_fields : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Halls:</th>
-                                <td>{school.infrastructure? school.infrastructure.halls : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Dormitories:</th>
-                                <td>{school.infrastructure ? school.infrastructure.dormitories : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Buses:</th>
-                                <td>{school.assets ? school.assets.buses : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Farming Land (acres):</th>
-                                <td>{school.assets? school.assets.farming_land : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Science Labs</th>
-                                <td>{school.learning_materials? school.learning_materials.science_labs : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Book ratio (books:students)</th>
-                                <td>{school.learning_materials ? school.learning_materials.book_ratio : 'N/A'}</td>
-                            </tr>
+                        <br/>
+                        <ul className="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+                            <li className="nav-item">
+                                <a className="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home"
+                                   role="tab" aria-controls="pills-home" aria-selected="true">Basic Info</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="pills-students-tab" data-toggle="pill"
+                                   href="#pills-students" role="tab" aria-controls="pills-students"
+                                   aria-selected="false">Students</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="pills-employees-tab" data-toggle="pill"
+                                   href="#pills-employees" role="tab" aria-controls="pills-employees"
+                                   aria-selected="false">Employees</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="pills-performance-tab" data-toggle="pill"
+                                   href="#pills-performance" role="tab" aria-controls="pills-performance"
+                                   aria-selected="false">Performance and Academics </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="pills-gallery-tab" data-toggle="pill" href="#pills-gallery"
+                                   role="tab" aria-controls="pills-gallery" aria-selected="false">Gallery </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="pills-history-tab" data-toggle="pill" href="#pills-history"
+                                   role="tab" aria-controls="pills-history" aria-selected="false">School History </a>
+                            </li>
 
-                            <tr>
-                                <th scope="row">School Email</th>
-                                <td>{school.contact ? school.contact.email : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Telephone 1</th>
-                                <td>{school.contact? school.contact.phone1 : 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Telephone 2</th>
-                                <td>{school.contact ? school.contact.phone2 : 'N/A'}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        {school?<UpdateSchoolDetails show={showUpdateSchoolModal} onClose={this.onCloseUpdateSchool}
-                                             school={school}/>:''}
+                        </ul>
+                        <br/>
+                        <div className="tab-content" id="pills-tabContent">
+                            <div className="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                 aria-labelledby="pills-home-tab">
+                                <nav className="nav flex-column">
+                                    <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                                           href="#nav-home" role="tab" aria-controls="nav-home"
+                                           aria-selected="true">Home</a>
+                                        <a className="nav-item nav-link" id="nav-infrastructure-tab" data-toggle="tab"
+                                           href="#nav-infrastructure" role="tab" aria-controls="nav-infrastructure"
+                                           aria-selected="false">Infrastructure</a>
+                                        <a className="nav-item nav-link" id="nav-learning-materials-tab"
+                                           data-toggle="tab" href="#nav-learning-materials" role="tab"
+                                           aria-controls="nav-learning-materials" aria-selected="false">Learning
+                                            Materials</a>
+                                        <a className="nav-item nav-link" id="nav-assets-tab" data-toggle="tab"
+                                           href="#nav-assets" role="tab" aria-controls="nav-assets"
+                                           aria-selected="false">Assets</a>
+                                        <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
+                                           href="#nav-contact" role="tab" aria-controls="nav-contact"
+                                           aria-selected="false">Contact Info</a>
+                                    </div>
+                                </nav>
+                                <div className="tab-content" id="nav-tabContent">
+                                    <div className="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                         aria-labelledby="nav-home-tab">
+                                        <table className="table">
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">UPI:</th>
+                                                <td>{school?school.upi:''}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Name:</th>
+                                                <td>{school?school.name:''}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Category:</th>
+                                                <td>{school?school.category:''}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">County:</th>
+                                                <td>{school ? school.county : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>
+                                                    <button className="btn btn-sm btn-info"
+                                                            onClick={this.showUpdateBasicInfoModal}>Edit
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="tab-pane fade" id="nav-infrastructure" role="tabpanel"
+                                         aria-labelledby="nav-infrastructure-tab">
+                                        <table className="table">
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">Classes:</th>
+                                                <td>{school ? school.infrastructure.classes : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Playing Fields:</th>
+                                                <td>{school? school.infrastructure.playing_fields : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Halls:</th>
+                                                <td>{school ? school.infrastructure.halls : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Dormitories:</th>
+                                                <td>{school? school.infrastructure.dormitories : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>
+                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateInfrastructureInfoModal}>Edit</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="tab-pane fade" id="nav-learning-materials" role="tabpanel"
+                                         aria-labelledby="nav-learning-materials-tab">
+                                        <table className="table">
+
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">Science Labs</th>
+                                                <td>{school? school.learning_materials.science_labs : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Book ratio (books:students)</th>
+                                                <td>{school? school.learning_materials.book_ratio : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>
+                                                    <button className="btn btn-sm btn-info">Edit</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="tab-pane fade" id="nav-assets" role="tabpanel"
+                                         aria-labelledby="nav-assets-tab">
+                                        <table className="table">
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">Buses:</th>
+                                                <td>{school? school.assets.buses : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Farming Land (acres):</th>
+                                                <td>{school? school.assets.farming_land : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>
+                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateAssetsInfoModal}>Edit</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div className="tab-pane fade" id="nav-contact" role="tabpanel"
+                                         aria-labelledby="nav-contact-tab">
+                                        <table className="table">
+
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">School Email</th>
+                                                <td>{school? school.contact.email : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Telephone 1</th>
+                                                <td>{school? school.contact.phone1 : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Telephone 2</th>
+                                                <td>{school? school.contact.phone2 : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>
+                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateContactInfoModal}>Edit</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="tab-pane fade" id="pills-students" role="tabpanel"
+                                 aria-labelledby="pills-students-tab">...
+                            </div>
+                            <div className="tab-pane fade" id="pills-employees" role="tabpanel"
+                                 aria-labelledby="pills-employees-tab">...
+                            </div>
+                            <div className="tab-pane fade" id="pills-performance" role="tabpanel"
+                                 aria-labelledby="pills-performance-tab">...
+                            </div>
+                            <div className="tab-pane fade" id="pills-gallery" role="tabpanel"
+                                 aria-labelledby="pills-gallery-tab">...
+                            </div>
+                            <div className="tab-pane fade" id="pills-history" role="tabpanel"
+                                 aria-labelledby="pills-history-tab">...
+                            </div>
+                        </div>
+                        {showUpdateBasicInfoModal?<UpdateBasicInfo show={showUpdateBasicInfoModal} school={school} onClose={this.closeUpdateBasicInfoModal}/>:''}
+                        {showUpdateInfrastructureInfoModal?<UpdateInfrastructureInfo show={showUpdateInfrastructureInfoModal} school={school} onClose={this.closeUpdateInfrastructureInfoModal}/>:''}
+                        {showUpdateAssetsInfoModal?<UpdateAssetsInfo show={showUpdateAssetsInfoModal} school={school} onClose={this.closeUpdateAssetsInfoModal}/>:''}
+                        {showUpdateContactInfoModal?<UpdateContactInfo show={showUpdateContactInfoModal} school={school} onClose={this.closeUpdateContactInfoModal}/>:''}
 
                     </div>
+
                 </div>
             </div>)
     }
 }
 
 SchoolDetails.propTypes = {
-    getSchoolDetails: PropTypes.func.isRequired
+    getSchoolDetails: PropTypes.func.isRequired,
+    displaySchoolInfo:PropTypes.func.isRequired
 }
-export default connect(null, {getSchoolDetails})(SchoolDetails)
+function mapStateToProps(state) {
+    return {
+        school:state.schoolDetailsReducers
+    }
+}
+export default connect(mapStateToProps, {getSchoolDetails,displaySchoolInfo})(SchoolDetails)

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_SCHOOL, CLEAR_SCHOOLS, UPDATE_SCHOOL} from "./types"
+import {ADD_SCHOOL, CLEAR_SCHOOLS, DISPLAY_SCHOOL_DETAILS, UPDATE_SCHOOL, UPDATE_SCHOOL_DETAILS} from "./types"
 
 export function isSchoolExists(name) {
     return dispatch => {
@@ -19,6 +19,27 @@ export function updateSchool(school) {
     }
 }
 
+export function updateSchoolBasicInfo(school) {
+    return dispatch => {
+        return axios.post('/update_school_info/basic', school)
+    }
+}
+export function updateSchoolInfrastructureInfo(school) {
+    return dispatch => {
+        return axios.post('/update_school_info/infrastructure', school)
+    }
+}
+export function updateSchoolAssetsInfo(school) {
+    return dispatch => {
+        return axios.post('/update_school_info/assets', school)
+    }
+}
+export function updateSchoolContactInfo(school) {
+    return dispatch => {
+        return axios.post('/update_school_info/contact', school)
+    }
+}
+
 export function addSchool(school) {
     return {
         type: ADD_SCHOOL,
@@ -35,6 +56,18 @@ export function clearSchools() {
 export function updateSchoolList(school) {
     return {
         type: UPDATE_SCHOOL,
+        payload:school
+    }
+}
+export function updateSchoolInfo(school) {
+    return {
+        type: UPDATE_SCHOOL_DETAILS,
+        payload:school
+    }
+}
+export function displaySchoolInfo(school) {
+    return {
+        type: DISPLAY_SCHOOL_DETAILS,
         payload:school
     }
 }

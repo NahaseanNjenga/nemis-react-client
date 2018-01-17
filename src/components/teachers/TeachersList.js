@@ -20,11 +20,11 @@ class TeachersList extends React.Component {
         this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
         this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
         this.onChange = this.onChange.bind(this)
+        this.addToTeachers=this.addToTeachers.bind(this)
     }
     onChange(e) {
         const {teachers}= this.state
         let arr_results = []
-        console.log(teachers.length)
         this.props.clearTeachers()
         for (let i = 0; i <teachers.length; i++) {
             let exp = new RegExp(e.target.value, 'i')
@@ -51,7 +51,6 @@ class TeachersList extends React.Component {
         else if (window.location.pathname === '/school_admin/teachers') {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
             const upi = token.school_upi
-            console.log(token,upi)
             this.props.getSchoolTeachers(upi).then(teachers=>{
                 if (teachers) {
                     teachers.data.map(teacher => {
@@ -74,6 +73,10 @@ class TeachersList extends React.Component {
     onCloseNewTeacherModal() {
         this.setState({showNewTeacherModal: false})
     }
+    addToTeachers(teacher){
+        this.setState({teachers:teacher,...this.state.teachers})
+
+    }
 
     render() {
         const {teachers} = this.props
@@ -95,8 +98,7 @@ class TeachersList extends React.Component {
                                         <input type="text" className="form-control"
                                                placeholder="Search Teacher TSC Number"
                                                aria-label="Search Teacher UPI" aria-describedby="basic-addon1" onChange={this.onChange}/>
-                                        <span className="input-group-addon" id="basic-addon1"><i
-                                            className="fa fa-search"></i></span>
+                                        <span className="input-group-addon" id="basic-addon1"><i className="fa fa-search"></i></span>
                                     </div>
                                 </form>
                             </div>
@@ -126,7 +128,7 @@ class TeachersList extends React.Component {
                     </div>
                 </div>
                 <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher}/>
+                                addTeacher={this.props.addTeacher} addToTeachers={this.addToTeachers}/>
 
             </div>)
     }
