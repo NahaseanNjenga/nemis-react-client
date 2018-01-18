@@ -42,8 +42,7 @@ class UpdateContactInfo extends React.Component {
                     this.props.onClose()
                    window.location.reload()
                     this.setState({isLoading: false})
-                },
-                err => this.setState({errors: err.response.data, isLoading: false})
+                }, err => this.setState({errors: err.response.data, isLoading: false})
             )
         }
     }

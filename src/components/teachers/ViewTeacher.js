@@ -6,22 +6,52 @@ import UpdateTeacherDetails from "./UpdateTeacherDetails"
 import validator from "validator"
 import {isEmpty} from "lodash"
 import {connect} from "react-redux"
-import { updateTeacherOnList} from "../../actions/teacherActions"
+import {updateTeacherContact, updateTeacherOnList} from "../../actions/teacherActions"
 import ResponsibilitiesList from "../school-admin-dashboard/modals/teachers/ResponsibilitiesList"
+import TextFieldGroup from "../../shared/TextFieldsGroup"
+import ClearTeacher from "../school-admin-dashboard/modals/teachers/ClearTeacher"
 
 class ViewTeacher extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             showUpdateTeacherModal: false,
+            showUpdateContactForm: false,
+            telephone: this.props.teacher.contact.phone1,
+            _id: this.props.teacher._id,
+            email: this.props.teacher.contact.email,
+            successMessage: '',
+            errors: {},
+            isLoading: false,
+            invalid: false, showClearTeacherModal: false
         }
         this.onUpdateTeacher = this.onUpdateTeacher.bind(this)
         this.onCloseUpdateTeacher = this.onCloseUpdateTeacher.bind(this)
         this.onCloseUpdateTeacher = this.onCloseUpdateTeacher.bind(this)
+        this.showUpdateContactForm = this.showUpdateContactForm.bind(this)
+        this.closeUpdateContactForm = this.closeUpdateContactForm.bind(this)
+        this.onChange = this.onChange.bind(this)
+        this.onSubmitContact = this.onSubmitContact.bind(this)
+        this.onClearTeacher = this.onClearTeacher.bind(this)
+        this.onCloseClearTeacherModal = this.onCloseClearTeacherModal.bind(this)
     }
+
     onUpdateTeacher(e) {
         e.preventDefault()
         this.setState({showUpdateTeacherModal: true})
+    }
+
+    showUpdateContactForm(e) {
+        e.preventDefault()
+        this.setState({showUpdateContactForm: true})
+    }
+
+    closeUpdateContactForm() {
+        this.setState({showUpdateContactForm: false})
+    }
+
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value})
     }
 
     onCloseUpdateTeacher(e) {
@@ -29,13 +59,101 @@ class ViewTeacher extends React.Component {
         this.setState({showUpdateTeacherModal: false})
     }
 
+    onClearTeacher(e) {
+        e.preventDefault()
+        this.setState({showClearTeacherModal: true})
+    }
+
+    onCloseClearTeacherModal() {
+        this.setState({showClearTeacherModal: false})
+        this.props.onClose()
+    }
+
+    validateInput(data) {
+        let errors = {}
+        if (validator.isEmpty(data.email)) {
+            errors.email = 'This field is required'
+        }
+        if (!data.telephone) {
+            errors.telephone = 'This field is required'
+        }
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        }
+    }
+
+    isValid() {
+        const {errors, isValid} = this.validateInput(this.state)
+        if (!isValid) {
+            this.setState({errors})
+        }
+        return isValid
+    }
+
+    onSubmitContact(e) {
+        e.preventDefault()
+        if (this.isValid()) {
+            this.setState({errors: {}, isLoading: true})
+            this.props.updateTeacherContact(this.state).then(
+                (teacher) => {
+                    // this.props.addFlashMessage({
+                    //     type: 'success',
+                    //     text: 'You have signed up successfully. Please use the login in form below to access your account'
+                    // })
+
+                    this.setState({
+                        email: '',
+                        telephone: '',
+                        errors: {},
+                        isLoading: false,
+                        showUpdateContactForm: false,
+                        invalid: false, successMessage: <div className="alert alert-success" role="alert">
+                            Successfully updated contact information. You may need to refresh your browser to view the
+                            updates.
+                        </div>
+                    })
+                },
+                err => this.setState({errors: err.response.data, isLoading: false})
+            )
+        }
+
+    }
+
     onRetire(e) {
         e.preventDefault()
     }
 
     render() {
-        const {showUpdateTeacherModal} = this.state
+        const {showUpdateTeacherModal, showUpdateContactForm, telephone, email, successMessage, errors, isLoading, invalid, showClearTeacherModal} = this.state
         const {show, onClose, teacher} = this.props
+        const updateContactForm = <form onSubmit={this.onSubmitContact}>
+            <TextFieldGroup
+                label="New Email"
+                type="email"
+                name="email"
+                value={email}
+                onChange={this.onChange}
+                error={errors.email}
+            />
+            <TextFieldGroup
+                label="New Phone number"
+                type="number"
+                name="telephone"
+                value={telephone}
+                onChange={this.onChange}
+                error={errors.telephone}
+            />
+            <div className="form-group">
+                <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
+                        type="submit" onClick={this.onSubmitContact}>Save
+                </button>
+                &nbsp;
+                <button disabled={isLoading || invalid} className="btn btn-secondary btn-sm"
+                        onClick={this.closeUpdateContactForm}>Cancel
+                </button>
+            </div>
+        </form>
         if (show) {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Teacher info</ModalHeader>
@@ -112,14 +230,6 @@ class ViewTeacher extends React.Component {
                                     <th scope="row">Working status:</th>
                                     <td>{teacher.life}</td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">Current school:</th>
-                                    <td>{teacher.posting_history.current_school ? teacher.posting_history.current_school : 'N/A'}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Posting history</th>
-                                    <td>{teacher.posting_history.previous_school.length > 0 ? teacher.posting_history.previous_school : 'N/A'}</td>
-                                </tr>
 
 
                                 </tbody>
@@ -127,8 +237,22 @@ class ViewTeacher extends React.Component {
                         </div>
                         <div className="tab-pane fade" id="nav-transfer" role="tabpanel"
                              aria-labelledby="nav-transfer-tab">
-                            <button className="btn btn-sm btn-info">Clear teacher from school</button>
-                            current school is
+                            <button className="btn btn-sm btn-info" onClick={this.onClearTeacher}>Clear teacher from
+                                school
+                            </button>
+                            <table className="table">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Current school:</th>
+                                    <td>{teacher.posting_history.current_school ? teacher.posting_history.current_school : 'N/A'}</td>
+                                </tr>
+                                {teacher.posting_history.previous_school.length > 0 ?
+                                    <tr>
+                                        <th scope="row">Posting history</th>
+                                        <td>{teacher.posting_history.previous_school}</td>
+                                    </tr> : ''}
+                                </tbody>
+                            </table>
                         </div>
                         <div className="tab-pane fade" id="nav-responsibilities" role="tabpanel"
                              aria-labelledby="nav-responsibilities-tab">
@@ -139,6 +263,8 @@ class ViewTeacher extends React.Component {
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel"
                              aria-labelledby="nav-contact-tab">
+                            {showUpdateContactForm ? updateContactForm : ''}
+                            {successMessage ? successMessage : ''}
                             <table className="table">
                                 <thead>
                                 <tr>
@@ -155,14 +281,23 @@ class ViewTeacher extends React.Component {
                                     <th scope="row">Telephone</th>
                                     <td>{teacher.contact.phone1 ? teacher.contact.phone1 : 'N/A'}</td>
                                 </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>
+                                        <button className="btn btn-sm btn-info"
+                                                onClick={this.showUpdateContactForm}>Edit
+                                        </button>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                     <UpdateTeacherDetails show={showUpdateTeacherModal} onClose={this.onCloseUpdateTeacher}
-
                                           teacher={this.props.teacher}/>
+                    <ClearTeacher show={showClearTeacherModal} onClose={this.onCloseClearTeacherModal}
+                                  teacher_id={this.props.teacher._id}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={onClose}>Cancel</Button>{' '}
@@ -178,6 +313,7 @@ ViewTeacher.propTypes = {
     teacher: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     updateTeacherOnList: PropTypes.func.isRequired,
+    updateTeacherContact: PropTypes.func.isRequired,
 
 }
-export default connect(null, { updateTeacherOnList})(ViewTeacher)
+export default connect(null, {updateTeacherOnList, updateTeacherContact})(ViewTeacher)

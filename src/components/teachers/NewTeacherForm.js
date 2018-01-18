@@ -24,6 +24,7 @@ class NewTeacherForm extends React.Component {
             gender: '',
             telephone: '',
             nationalID: '',
+            admission_date:'',
             errors: {},
             isLoading: false,
             invalid: false
@@ -88,6 +89,9 @@ class NewTeacherForm extends React.Component {
         if (validator.isEmpty(data.nationalID)) {
             errors.nationalID = 'This field is required'
         }
+        if (validator.isEmpty(data.admission_date)) {
+            errors.admission_date = 'This field is required'
+        }
 
         return {
             errors,
@@ -126,6 +130,7 @@ class NewTeacherForm extends React.Component {
                         gender: '',
                         telephone: '',
                         nationalID: '',
+                        admission_date:'',
                         errors: {},
                         isLoading: false,
                         invalid: false
@@ -143,7 +148,7 @@ class NewTeacherForm extends React.Component {
     render() {
         const {show, onClose} = this.props
 
-        const {errors, isLoading, invalid, tsc, surname, first_name, last_name, email, dob, school_upi, gender, telephone, nationalID} = this.state
+        const {errors, isLoading, invalid, tsc, surname, first_name, last_name, email, dob, school_upi, telephone, nationalID,admission_date} = this.state
         if (show) {
             return (
                 <Modal isOpen={show} toggle={onClose} size="lg">
@@ -220,6 +225,14 @@ class NewTeacherForm extends React.Component {
                                 value={nationalID}
                                 onChange={this.onChange}
                                 error={errors.nationalID}
+                            />
+                            <TextFieldGroup
+                                label="Date of Employment"
+                                type="date"
+                                name="admission_date"
+                                value={admission_date}
+                                onChange={this.onChange}
+                                error={errors.admission_date}
                             />
                             <div className="form-group">
                                 <label htmlFor="gender">Gender</label>

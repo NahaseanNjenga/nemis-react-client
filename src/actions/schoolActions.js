@@ -39,6 +39,11 @@ export function updateSchoolContactInfo(school) {
         return axios.post('/update_school_info/contact', school)
     }
 }
+export function updateSchoolLearningMaterialsInfo(school) {
+    return dispatch => {
+        return axios.post('/update_school_info/learning_materials', school)
+    }
+}
 
 export function addSchool(school) {
     return {

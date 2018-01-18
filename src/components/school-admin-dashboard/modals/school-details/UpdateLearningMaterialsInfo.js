@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import validator from "validator"
 import {isEmpty} from "lodash"
 import {connect} from 'react-redux'
-import {updateSchool, updateSchoolList} from "../../../../actions/schoolActions"
+import {updateSchoolLearningMaterialsInfo, updateSchoolLearningMaterialsInfoList} from "../../../../actions/schoolActions"
 import TextFieldGroup from "../../../../shared/TextFieldsGroup"
 
 class UpdateLearningMetarials extends React.Component {
@@ -32,14 +32,14 @@ class UpdateLearningMetarials extends React.Component {
         e.preventDefault()
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
-            this.props.updateSchool(this.state).then(
+            this.props.updateSchoolLearningMaterialsInfo(this.state).then(
                 (school) => {
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
                     this.props.onClose()
-                    if (this.props.updateSchoolList)  this.props.updateSchoolList(school.data)
+window.location.reload()
                     this.setState({isLoading: false})
                 },
                 err => this.setState({errors: err.response.data, isLoading: false})
@@ -62,7 +62,7 @@ class UpdateLearningMetarials extends React.Component {
 
     validateInput(data) {
         let errors = {}
-        if (validator.isEmpty(data.science_labs)) {
+        if (!data.science_labs) {
             errors.science_labs = 'This field is required'
         }
         if (validator.isEmpty(data.book_ratio)) {
@@ -129,10 +129,9 @@ UpdateLearningMetarials.propTypes = {
     show: PropTypes.bool.isRequired,
     school: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    updateSchool: PropTypes.func.isRequired,
-    updateSchoolList: PropTypes.func.isRequired,
+    updateSchoolLearningMaterialsInfo: PropTypes.func.isRequired,
 
 }
 
 
-export default connect(null, {updateSchool, updateSchoolList})(UpdateLearningMetarials)
+export default connect(null, {updateSchoolLearningMaterialsInfo, })(UpdateLearningMetarials)

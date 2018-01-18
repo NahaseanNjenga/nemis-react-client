@@ -213,7 +213,6 @@ UpdateTeacherDetails.propTypes = {
     onClose: PropTypes.func.isRequired,
     updateTeacher: PropTypes.func.isRequired,
     updateTeacherList: PropTypes.func.isRequired,
-
 }
 
 

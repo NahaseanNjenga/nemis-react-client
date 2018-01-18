@@ -9,6 +9,7 @@ import UpdateBasicInfo from "./modals/school-details/UpdateBasicInfo"
 import UpdateInfrastructureInfo from "./modals/school-details/UpdateInfrastructureInfo"
 import UpdateAssetsInfo from "./modals/school-details/UpdateAssetsInfo"
 import UpdateContactInfo from "./modals/school-details/UpdateContactInfo"
+import UpdateLearningMaterialsInfo from "./modals/school-details/UpdateLearningMaterialsInfo"
 
 class SchoolDetails extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class SchoolDetails extends React.Component {
             showUpdateInfrastructureInfoModal: false,
             showUpdateAssetsInfoModal: false,
             showUpdateContactInfoModal: false,
+            showUpdateLearningMaterialsInfoModal: false,
             school: ''
         }
         this.onUpdateSchool = this.onUpdateSchool.bind(this)
@@ -30,32 +32,51 @@ class SchoolDetails extends React.Component {
         this.showUpdateAssetsInfoModal = this.showUpdateAssetsInfoModal.bind(this)
         this.showUpdateContactInfoModal = this.showUpdateContactInfoModal.bind(this)
         this.closeUpdateContactInfoModal = this.closeUpdateContactInfoModal.bind(this)
+        this.showUpdateLearningMaterialsInfoModal = this.showUpdateLearningMaterialsInfoModal.bind(this)
+        this.closeUpdateLearningMaterialsInfoModal = this.closeUpdateLearningMaterialsInfoModal.bind(this)
     }
+
     showUpdateBasicInfoModal(e) {
         e.preventDefault()
         this.setState({showUpdateBasicInfoModal: true})
     }
+
     closeUpdateBasicInfoModal(e) {
         this.setState({showUpdateBasicInfoModal: false})
     }
+
+    showUpdateLearningMaterialsInfoModal(e) {
+        e.preventDefault()
+        this.setState({showUpdateLearningMaterialsInfoModal: true})
+    }
+
+    closeUpdateLearningMaterialsInfoModal(e) {
+        this.setState({showUpdateLearningMaterialsInfoModal: false})
+    }
+
     showUpdateContactInfoModal(e) {
         e.preventDefault()
         this.setState({showUpdateContactInfoModal: true})
     }
+
     closeUpdateContactInfoModal(e) {
         this.setState({showUpdateContactInfoModal: false})
     }
+
     showUpdateInfrastructureInfoModal(e) {
         e.preventDefault()
         this.setState({showUpdateInfrastructureInfoModal: true})
     }
+
     closeUpdateInfrastructureInfoModal(e) {
         this.setState({showUpdateInfrastructureInfoModal: false})
     }
+
     showUpdateAssetsInfoModal(e) {
         e.preventDefault()
         this.setState({showUpdateAssetsInfoModal: true})
     }
+
     closeUpdateAssetsInfoModal(e) {
         this.setState({showUpdateAssetsInfoModal: false})
     }
@@ -77,10 +98,10 @@ class SchoolDetails extends React.Component {
     }
 
     render() {
-        const {showUpdateBasicInfoModal,showUpdateInfrastructureInfoModal,showUpdateAssetsInfoModal,showUpdateContactInfoModal} = this.state
+        const {showUpdateBasicInfoModal, showUpdateInfrastructureInfoModal, showUpdateAssetsInfoModal, showUpdateContactInfoModal, showUpdateLearningMaterialsInfoModal} = this.state
         let {school} = this.props
 
-        school=school.school
+        school = school.school
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -150,15 +171,15 @@ class SchoolDetails extends React.Component {
                                             <tbody>
                                             <tr>
                                                 <th scope="row">UPI:</th>
-                                                <td>{school?school.upi:''}</td>
+                                                <td>{school ? school.upi : ''}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Name:</th>
-                                                <td>{school?school.name:''}</td>
+                                                <td>{school ? school.name : ''}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Category:</th>
-                                                <td>{school?school.category:''}</td>
+                                                <td>{school ? school.category : ''}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">County:</th>
@@ -185,7 +206,7 @@ class SchoolDetails extends React.Component {
                                             </tr>
                                             <tr>
                                                 <th scope="row">Playing Fields:</th>
-                                                <td>{school? school.infrastructure.playing_fields : 'N/A'}</td>
+                                                <td>{school ? school.infrastructure.playing_fields : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Halls:</th>
@@ -193,12 +214,14 @@ class SchoolDetails extends React.Component {
                                             </tr>
                                             <tr>
                                                 <th scope="row">Dormitories:</th>
-                                                <td>{school? school.infrastructure.dormitories : 'N/A'}</td>
+                                                <td>{school ? school.infrastructure.dormitories : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"></th>
                                                 <td>
-                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateInfrastructureInfoModal}>Edit</button>
+                                                    <button className="btn btn-sm btn-info"
+                                                            onClick={this.showUpdateInfrastructureInfoModal}>Edit
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -211,16 +234,18 @@ class SchoolDetails extends React.Component {
                                             <tbody>
                                             <tr>
                                                 <th scope="row">Science Labs</th>
-                                                <td>{school? school.learning_materials.science_labs : 'N/A'}</td>
+                                                <td>{school ? school.learning_materials.science_labs : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Book ratio (books:students)</th>
-                                                <td>{school? school.learning_materials.book_ratio : 'N/A'}</td>
+                                                <td>{school ? school.learning_materials.book_ratio : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"></th>
                                                 <td>
-                                                    <button className="btn btn-sm btn-info">Edit</button>
+                                                    <button className="btn btn-sm btn-info"
+                                                            onClick={this.showUpdateLearningMaterialsInfoModal}>Edit
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -232,16 +257,18 @@ class SchoolDetails extends React.Component {
                                             <tbody>
                                             <tr>
                                                 <th scope="row">Buses:</th>
-                                                <td>{school? school.assets.buses : 'N/A'}</td>
+                                                <td>{school ? school.assets.buses : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Farming Land (acres):</th>
-                                                <td>{school? school.assets.farming_land : 'N/A'}</td>
+                                                <td>{school ? school.assets.farming_land : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"></th>
                                                 <td>
-                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateAssetsInfoModal}>Edit</button>
+                                                    <button className="btn btn-sm btn-info"
+                                                            onClick={this.showUpdateAssetsInfoModal}>Edit
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -255,20 +282,22 @@ class SchoolDetails extends React.Component {
                                             <tbody>
                                             <tr>
                                                 <th scope="row">School Email</th>
-                                                <td>{school? school.contact.email : 'N/A'}</td>
+                                                <td>{school ? school.contact.email : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Telephone 1</th>
-                                                <td>{school? school.contact.phone1 : 'N/A'}</td>
+                                                <td>{school ? school.contact.phone1 : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Telephone 2</th>
-                                                <td>{school? school.contact.phone2 : 'N/A'}</td>
+                                                <td>{school ? school.contact.phone2 : 'N/A'}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row"></th>
                                                 <td>
-                                                    <button className="btn btn-sm btn-info" onClick={this.showUpdateContactInfoModal}>Edit</button>
+                                                    <button className="btn btn-sm btn-info"
+                                                            onClick={this.showUpdateContactInfoModal}>Edit
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -292,10 +321,19 @@ class SchoolDetails extends React.Component {
                                  aria-labelledby="pills-history-tab">...
                             </div>
                         </div>
-                        {showUpdateBasicInfoModal?<UpdateBasicInfo show={showUpdateBasicInfoModal} school={school} onClose={this.closeUpdateBasicInfoModal}/>:''}
-                        {showUpdateInfrastructureInfoModal?<UpdateInfrastructureInfo show={showUpdateInfrastructureInfoModal} school={school} onClose={this.closeUpdateInfrastructureInfoModal}/>:''}
-                        {showUpdateAssetsInfoModal?<UpdateAssetsInfo show={showUpdateAssetsInfoModal} school={school} onClose={this.closeUpdateAssetsInfoModal}/>:''}
-                        {showUpdateContactInfoModal?<UpdateContactInfo show={showUpdateContactInfoModal} school={school} onClose={this.closeUpdateContactInfoModal}/>:''}
+                        {showUpdateBasicInfoModal ? <UpdateBasicInfo show={showUpdateBasicInfoModal} school={school}
+                                                                     onClose={this.closeUpdateBasicInfoModal}/> : ''}
+                        {showUpdateInfrastructureInfoModal ?
+                            <UpdateInfrastructureInfo show={showUpdateInfrastructureInfoModal} school={school}
+                                                      onClose={this.closeUpdateInfrastructureInfoModal}/> : ''}
+                        {showUpdateAssetsInfoModal ? <UpdateAssetsInfo show={showUpdateAssetsInfoModal} school={school}
+                                                                       onClose={this.closeUpdateAssetsInfoModal}/> : ''}
+                        {showUpdateContactInfoModal ?
+                            <UpdateContactInfo show={showUpdateContactInfoModal} school={school}
+                                               onClose={this.closeUpdateContactInfoModal}/> : ''}
+                        {showUpdateLearningMaterialsInfoModal ?
+                            <UpdateLearningMaterialsInfo show={showUpdateLearningMaterialsInfoModal} school={school}
+                                               onClose={this.closeUpdateLearningMaterialsInfoModal}/> : ''}
 
                     </div>
 
@@ -306,11 +344,13 @@ class SchoolDetails extends React.Component {
 
 SchoolDetails.propTypes = {
     getSchoolDetails: PropTypes.func.isRequired,
-    displaySchoolInfo:PropTypes.func.isRequired
+    displaySchoolInfo: PropTypes.func.isRequired
 }
+
 function mapStateToProps(state) {
     return {
-        school:state.schoolDetailsReducers
+        school: state.schoolDetailsReducers
     }
 }
-export default connect(mapStateToProps, {getSchoolDetails,displaySchoolInfo})(SchoolDetails)
+
+export default connect(mapStateToProps, {getSchoolDetails, displaySchoolInfo})(SchoolDetails)

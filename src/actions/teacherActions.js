@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_TEACHER, CLEAR_TEACHERS, UPDATE_TEACHER} from "./types"
+import {ADD_TEACHER, CLEAR_TEACHERS, UPDATE_TEACHER,REMOVE_TEACHER} from "./types"
 
 export function isTeacherExists(name) {
     return dispatch => {
@@ -16,6 +16,16 @@ export function registerTeacher(teacher) {
 export function updateTeacher(teacher) {
     return dispatch => {
         return axios.post('/update_teacher_info', teacher)
+    }
+}
+export function updateTeacherContact(teacher) {
+    return dispatch => {
+        return axios.post('/update_teacher_info/contact', teacher)
+    }
+}
+export function clearTeacher(teacher) {
+    return dispatch => {
+        return axios.post('/update_teacher_info/clear', {teacher:teacher})
     }
 }
 
@@ -40,6 +50,12 @@ export function updateTeacherOnList(teacher) {
 export function updateTeacherList(teacher) {
     return {
         type: UPDATE_TEACHER,
+        payload:teacher
+    }
+}
+export function removeTeacher(teacher) {
+    return {
+        type: REMOVE_TEACHER,
         payload:teacher
     }
 }
