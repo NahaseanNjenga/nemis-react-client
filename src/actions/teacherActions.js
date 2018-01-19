@@ -15,7 +15,7 @@ export function registerTeacher(teacher) {
 
 export function updateTeacher(teacher) {
     return dispatch => {
-        return axios.post('/update_teacher_info', teacher)
+        return axios.post('/update_teacher_info/basic', teacher)
     }
 }
 export function updateTeacherContact(teacher) {

@@ -31,7 +31,6 @@ class ClearTeacher extends React.Component {
             date_cleared: date_cleared
         }
         this.props.clearTeacher(teacher).then(teacher => {
-            console.log(teacher)
             this.props.removeTeacher(teacher.data)
             this.props.onClose()
         })

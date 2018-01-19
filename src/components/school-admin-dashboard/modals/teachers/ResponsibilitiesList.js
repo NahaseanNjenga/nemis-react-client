@@ -280,8 +280,7 @@ class ResponsibilitiesList extends React.Component {
                 </button>
                 {showResponsibilityForm ? responsibilityForm : ''}
                 {showUpdateResponsibilityForm ? updateResponsibilityForm : ''}
-
-                <table className="table">
+                {responsibilities.length > 0 ? <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -292,11 +291,10 @@ class ResponsibilitiesList extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {responsibilities.length > 0 ? responsibilities.map((responsibility, i) => (
-                            <Responsibility responsibility={responsibility} count={count++} key={i} onEdit={this.onEdit} onRelieve={this.onRelieve} relieved={relieved}/>))
-                        : 'No responsibilities found'}
+                    {responsibilities.map((responsibility, i) => (
+                            <Responsibility responsibility={responsibility} count={count++} key={i} onEdit={this.onEdit} onRelieve={this.onRelieve} relieved={relieved}/>))}
                     </tbody>
-                </table>
+                </table> :<h6>No responsibilities found</h6>}
             </div>
         )
     }

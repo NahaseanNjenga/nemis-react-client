@@ -127,7 +127,8 @@ class ViewTeacher extends React.Component {
     render() {
         const {showUpdateTeacherModal, showUpdateContactForm, telephone, email, successMessage, errors, isLoading, invalid, showClearTeacherModal} = this.state
         const {show, onClose, teacher} = this.props
-        const updateContactForm = <form onSubmit={this.onSubmitContact}>
+        const updateContactForm =
+            <form onSubmit={this.onSubmitContact}>
             <TextFieldGroup
                 label="New Email"
                 type="email"
@@ -155,11 +156,11 @@ class ViewTeacher extends React.Component {
             </div>
         </form>
         if (show) {
+            let count=1
+            console.log(this.props.teacher)
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Teacher info</ModalHeader>
                 <ModalBody>
-                    <button className="btn btn-sm btn-info" onClick={this.onUpdateTeacher}>Edit</button>
-                    &nbsp;
                     <span className="dropdown">
                         <button className="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -230,6 +231,10 @@ class ViewTeacher extends React.Component {
                                     <th scope="row">Working status:</th>
                                     <td>{teacher.life}</td>
                                 </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td> <button className="btn btn-sm btn-info" onClick={this.onUpdateTeacher}>Edit</button></td>
+                                </tr>
 
 
                                 </tbody>
@@ -241,25 +246,40 @@ class ViewTeacher extends React.Component {
                                 school
                             </button>
                             <table className="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">School</th>
+                                    <th scope="col">Date Employed</th>
+                                    <th scope="col">Date Cleared</th>
+                                    {/*<th scope="col">Actions</th>*/}
+                                </tr>
+                                </thead>
                                 <tbody>
                                 <tr>
-                                    <th scope="row">Current school:</th>
-                                    <td>{teacher.posting_history.current_school ? teacher.posting_history.current_school : 'N/A'}</td>
+                                    <th scope="row">{count++}</th>
+                                    {/*<td>{teacher.posting_history.current_school ? teacher.posting_history.current_school : 'N/A'}</td>*/}
+                                    <td>{teacher.posting_history.current_school}</td>
+                                    <td>{new Date(teacher.posting_history.reporting_date).toDateString()}</td>
+                                    <td><p>Still Working</p></td>
                                 </tr>
                                 {teacher.posting_history.previous_school.length > 0 ?
-                                    <tr>
-                                        <th scope="row">Posting history</th>
-                                        <td>{teacher.posting_history.previous_school}</td>
-                                    </tr> : ''}
+                                    teacher.posting_history.previous_school.map(
+                                        posting=>{
+                                        return (<tr>
+                                            <th scope="row">{count++}</th>
+                                            <td>{posting.school_upi}</td>
+                                            <td>{new Date(posting.reporting_date).toDateString()}</td>
+                                            <td>{new Date(posting.clearance_date).toDateString()}</td>
+                                        </tr> )
+                                        }): ''}
                                 </tbody>
                             </table>
                         </div>
                         <div className="tab-pane fade" id="nav-responsibilities" role="tabpanel"
                              aria-labelledby="nav-responsibilities-tab">
 
-
-                            {teacher.responsibilities.length > 0 ?
-                                <ResponsibilitiesList teacher_id={teacher._id}/> : ''}
+                                <ResponsibilitiesList teacher_id={teacher._id}/>
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel"
                              aria-labelledby="nav-contact-tab">
