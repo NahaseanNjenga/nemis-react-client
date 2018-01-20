@@ -1,15 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
-import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../actions/teacherActions"
+import {
+    addTeacher, clearTeachers, getSchoolTeachers, getRetiredTeachers,
+    getRetiredSchoolTeachers
+} from "../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewTeacherForm from "./NewTeacherForm"
 import ViewTeacher from "./ViewTeacher"
 import jwt from 'jsonwebtoken'
 import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
+import RetiredTeacher from "./RetiredTeacher"
 
-class TeachersList extends React.Component {
+class RetiredTeachersList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -17,11 +21,10 @@ class TeachersList extends React.Component {
             role: '',
             teachers: ''
         }
-        this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
-        this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
+        this.props.clearTeachers()
         this.onChange = this.onChange.bind(this)
         this.addToTeachers = this.addToTeachers.bind(this)
-        this.filter = this.filter.bind(this)
+
     }
 
     onChange(e) {
@@ -40,7 +43,7 @@ class TeachersList extends React.Component {
     componentDidMount() {
         this.props.clearTeachers()
         if (window.location.pathname === '/admin/teachers') {
-            this.props.getTeachers().then(teachers => {
+            this.props.getRetiredTeachers().then(teachers => {
                 if (teachers) {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
@@ -54,13 +57,17 @@ class TeachersList extends React.Component {
         else if (window.location.pathname === '/school_admin/teachers') {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
             const upi = token.school_upi
-            this.props.getSchoolTeachers(upi).then(teachers => {
+
+            this.props.getRetiredSchoolTeachers(upi).then(teachers => {
                 if (teachers) {
+                    this.props.clearTeachers()
+                    console.log(teachers.data)
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
                     this.setState({role: 'school', teachers: teachers.data})
                 } else {
+
                     //No schools message
                 }
             })
@@ -68,60 +75,59 @@ class TeachersList extends React.Component {
         }
     }
 
-    onShowNewTeacherModal() {
-        this.setState({showNewTeacherModal: true})
-
-    }
-
-    onCloseNewTeacherModal() {
-        this.setState({showNewTeacherModal: false})
-    }
-
+    // onShowNewTeacherModal() {
+    //     this.setState({showNewTeacherModal: true})
+    //
+    // }
+    //
+    // onCloseNewTeacherModal() {
+    //     this.setState({showNewTeacherModal: false})
+    // }
     addToTeachers(teacher) {
         this.setState({teachers: teacher, ...this.state.teachers})
 
     }
 
-    filter(e) {
-        e.preventDefault()
-    }
 
     render() {
         const {teachers} = this.props
-        const {showNewTeacherModal, role} = this.state
+        const {showNewTeacherModal} = this.state
+        console.log(teachers)
         let count = 1
         return (
             <div>
-                {teachers.length > 0 ? <table className="table">
+                {teachers.length > 0? <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">TSC Id</th>
                         <th scope="col">Surname</th>
                         <th scope="col">First name</th>
-                        <th scope="col">Date of Employment</th>
+                        <th scope="col">Date of Retirement</th>
                     </tr>
                     </thead>
                     <tbody>
                     {teachers.map((teacher, i) => {
-                        return <Teacher count={count++} teacher={teacher} key={i}/>
+                        // console.log(teacher)
+                        return teacher.teacher_id?<RetiredTeacher count={count++} teacher={teacher} key={i}/>:''
                     })}
                     </tbody>
                 </table> : 'No teachers found'}
-                <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher} addToTeachers={this.addToTeachers}/>
+
 
             </div>)
     }
 
 }
 
-TeachersList.propTypes = {
+RetiredTeachersList.propTypes = {
     addTeacher: PropTypes.func.isRequired,
-    getTeachers: PropTypes.func.isRequired,
+    getRetiredTeachers: PropTypes.func.isRequired,
     clearTeachers: PropTypes.func.isRequired,
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
+    getRetiredSchoolTeachers: PropTypes.func.isRequired,
+
 
 }
 
@@ -129,5 +135,11 @@ function mapStateToProps(state) {
     return {teachers: state.teacherReducers}
 }
 
-export default connect(mapStateToProps, {addTeacher, clearTeachers, getTeachers, getSchoolTeachers})(TeachersList)
+export default connect(mapStateToProps, {
+    addTeacher,
+    clearTeachers,
+    getRetiredTeachers,
+    getSchoolTeachers,
+    getRetiredSchoolTeachers
+})(RetiredTeachersList)
 

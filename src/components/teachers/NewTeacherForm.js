@@ -107,18 +107,18 @@ class NewTeacherForm extends React.Component {
         return isValid
     }
 
-    onSubmit(e) {
+     onSubmit(e) {
         e.preventDefault()
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
             this.props.registerTeacher(this.state).then(
-                (teacher) => {
+                 (teacher) => {
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
+                   this.props.addTeacher(teacher.data)
                     this.props.onClose()
-                    this.props.addTeacher(teacher.data)
                     this.setState({
                         tsc: '',
                         surname: '',
@@ -126,7 +126,6 @@ class NewTeacherForm extends React.Component {
                         last_name: '',
                         email: '',
                         dob: '',
-                        school_upi: '',
                         gender: '',
                         telephone: '',
                         nationalID: '',
@@ -156,7 +155,7 @@ class NewTeacherForm extends React.Component {
                     <ModalBody>
                         <form onSubmit={this.onSubmit}>
                             <TextFieldGroup
-                                label="TSC Number"
+                                label="TSC Id"
                                 type="text"
                                 name="tsc"
                                 value={tsc} autofocus={true}

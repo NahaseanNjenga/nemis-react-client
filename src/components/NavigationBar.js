@@ -70,7 +70,7 @@ class NavigationBar extends React.Component {
         const {selectLoginModal, schoolAdminLoginModal, knecAdminLoginModal} = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
         const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
-        console.log(isAuthenticated, isSchoolAdminAuthenticated)
+        // console.log(isAuthenticated, isSchoolAdminAuthenticated)
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
         const userLinks = (<ul className="nav navbar-nav navbar-right">
             <li><a href="/logout" onClick={this.logout}>Logout</a></li>

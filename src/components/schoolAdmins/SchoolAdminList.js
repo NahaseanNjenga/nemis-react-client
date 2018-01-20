@@ -35,7 +35,7 @@ class SchoolAdminList extends React.Component {
     onChange(e) {
         const {schoolAdmins}= this.state
         let arr_results = []
-        console.log(schoolAdmins.length)
+        // console.log(schoolAdmins.length)
         this.props.clearSchoolAdmins()
         for (let i = 0; i <schoolAdmins.length; i++) {
             let exp = new RegExp(e.target.value, 'i')

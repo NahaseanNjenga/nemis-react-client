@@ -35,7 +35,7 @@ class UpdateSchoolAdminDetails extends React.Component {
                 (schoolAdmin) => {
                     if(schoolAdmin){
 
-                    console.log(schoolAdmin)
+                    // console.log(schoolAdmin)
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'

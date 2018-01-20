@@ -23,6 +23,16 @@ export function updateTeacherContact(teacher) {
         return axios.post('/update_teacher_info/contact', teacher)
     }
 }
+export function retireTeacher(teacher) {
+    return dispatch => {
+        return axios.post('/update_teacher_info/retire', teacher)
+    }
+}
+export function deceaseTeacher(teacher) {
+    return dispatch => {
+        return axios.post('/update_teacher_info/deceased', teacher)
+    }
+}
 export function clearTeacher(teacher) {
     return dispatch => {
         return axios.post('/update_teacher_info/clear', {teacher:teacher})
@@ -53,6 +63,7 @@ export function updateTeacherList(teacher) {
         payload:teacher
     }
 }
+
 export function removeTeacher(teacher) {
     return {
         type: REMOVE_TEACHER,
@@ -64,11 +75,32 @@ export function getTeachers() {
         return axios.get('/admin/teachers')
     }
 }
+export function getRetiredTeachers() {
+    return dispatch=>{
+        return axios.get('/admin/teachers/retired')
+    }
+}
+export function getDeceasedTeachers() {
+    return dispatch=>{
+        return axios.get('/admin/teachers/deceased')
+    }
+}
 export function getSchoolTeachers(upi) {
     return dispatch=>{
         return axios.post('/schools/teachers',{upi:upi})
     }
 }
+export function getRetiredSchoolTeachers(upi) {
+    return dispatch=>{
+        return axios.post('/schools/teachers/retired',{upi:upi})
+    }
+}
+export function getDeceasedSchoolTeachers(upi) {
+    return dispatch=>{
+        return axios.post('/schools/teachers/deceased',{upi:upi})
+    }
+}
+
 export function addResponsibility(responbsibility) {
     return dispatch=>{
         return axios.post('/update_teacher_info/responsibilities/add',responbsibility)

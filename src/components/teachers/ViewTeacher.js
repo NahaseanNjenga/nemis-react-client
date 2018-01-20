@@ -10,6 +10,9 @@ import {updateTeacherContact, updateTeacherOnList} from "../../actions/teacherAc
 import ResponsibilitiesList from "../school-admin-dashboard/modals/teachers/ResponsibilitiesList"
 import TextFieldGroup from "../../shared/TextFieldsGroup"
 import ClearTeacher from "../school-admin-dashboard/modals/teachers/ClearTeacher"
+import UpdateContact from "../school-admin-dashboard/modals/teachers/UpdateContact"
+import Retire from "../school-admin-dashboard/modals/teachers/Retire"
+import Deceased from "../school-admin-dashboard/modals/teachers/Deceased"
 
 class ViewTeacher extends React.Component {
     constructor(props) {
@@ -17,9 +20,8 @@ class ViewTeacher extends React.Component {
         this.state = {
             showUpdateTeacherModal: false,
             showUpdateContactForm: false,
-            telephone: this.props.teacher.contact.phone1,
-            _id: this.props.teacher._id,
-            email: this.props.teacher.contact.email,
+            retireModal:false,
+            deceasedModal:false,
             successMessage: '',
             errors: {},
             isLoading: false,
@@ -31,9 +33,14 @@ class ViewTeacher extends React.Component {
         this.showUpdateContactForm = this.showUpdateContactForm.bind(this)
         this.closeUpdateContactForm = this.closeUpdateContactForm.bind(this)
         this.onChange = this.onChange.bind(this)
-        this.onSubmitContact = this.onSubmitContact.bind(this)
+        this.onSuccess = this.onSuccess.bind(this)
         this.onClearTeacher = this.onClearTeacher.bind(this)
         this.onCloseClearTeacherModal = this.onCloseClearTeacherModal.bind(this)
+        this.showRetireModal = this.showRetireModal.bind(this)
+        this.closeRetireModal = this.closeRetireModal.bind(this)
+        this.showDeceasedModal = this.showDeceasedModal.bind(this)
+        this.closeDeceasedModal = this.closeDeceasedModal.bind(this)
+
     }
 
     onUpdateTeacher(e) {
@@ -68,96 +75,42 @@ class ViewTeacher extends React.Component {
         this.setState({showClearTeacherModal: false})
         this.props.onClose()
     }
-
-    validateInput(data) {
-        let errors = {}
-        if (validator.isEmpty(data.email)) {
-            errors.email = 'This field is required'
-        }
-        if (!data.telephone) {
-            errors.telephone = 'This field is required'
-        }
-        return {
-            errors,
-            isValid: isEmpty(errors)
-        }
-    }
-
-    isValid() {
-        const {errors, isValid} = this.validateInput(this.state)
-        if (!isValid) {
-            this.setState({errors})
-        }
-        return isValid
-    }
-
-    onSubmitContact(e) {
-        e.preventDefault()
-        if (this.isValid()) {
-            this.setState({errors: {}, isLoading: true})
-            this.props.updateTeacherContact(this.state).then(
-                (teacher) => {
-                    // this.props.addFlashMessage({
-                    //     type: 'success',
-                    //     text: 'You have signed up successfully. Please use the login in form below to access your account'
-                    // })
-
-                    this.setState({
-                        email: '',
-                        telephone: '',
-                        errors: {},
-                        isLoading: false,
-                        showUpdateContactForm: false,
-                        invalid: false, successMessage: <div className="alert alert-success" role="alert">
-                            Successfully updated contact information. You may need to refresh your browser to view the
-                            updates.
-                        </div>
-                    })
-                },
-                err => this.setState({errors: err.response.data, isLoading: false})
-            )
-        }
-
-    }
-
     onRetire(e) {
         e.preventDefault()
     }
+    showRetireModal(e){
+        e.preventDefault()
+        this.setState({retireModal:true})
+    }
+    closeRetireModal(e){
+        this.setState({retireModal:false})
+        this.props.onClose()
+    }
+    showDeceasedModal(e){
+        e.preventDefault()
+        this.setState({deceasedModal:true})
+    }
+    closeDeceasedModal(e){
+        this.setState({deceasedModal:false})
+
+    }
+onSuccess(){
+        this.closeUpdateContactForm()
+        this.setState({successMessage: <div className="alert alert-success" role="alert">
+                Successfully updated contact information. You may need to refresh your browser to view the
+                updates.
+            </div>})
+}
+
+    componentWillMount(){
+        this.setState({phone1:this.props.teacher.contact.phone1,email:this.props.teacher.contact.email})
+    }
 
     render() {
-        const {showUpdateTeacherModal, showUpdateContactForm, telephone, email, successMessage, errors, isLoading, invalid, showClearTeacherModal} = this.state
+        const {showUpdateTeacherModal, showUpdateContactForm, email,phone1,successMessage,retireModal, showClearTeacherModal,deceasedModal} = this.state
         const {show, onClose, teacher} = this.props
-        const updateContactForm =
-            <form onSubmit={this.onSubmitContact}>
-            <TextFieldGroup
-                label="New Email"
-                type="email"
-                name="email"
-                value={email}
-                onChange={this.onChange}
-                error={errors.email}
-            />
-            <TextFieldGroup
-                label="New Phone number"
-                type="number"
-                name="telephone"
-                value={telephone}
-                onChange={this.onChange}
-                error={errors.telephone}
-            />
-            <div className="form-group">
-                <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
-                        type="submit" onClick={this.onSubmitContact}>Save
-                </button>
-                &nbsp;
-                <button disabled={isLoading || invalid} className="btn btn-secondary btn-sm"
-                        onClick={this.closeUpdateContactForm}>Cancel
-                </button>
-            </div>
-        </form>
         if (show) {
             let count=1
-            console.log(this.props.teacher)
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Teacher info</ModalHeader>
                 <ModalBody>
@@ -168,8 +121,8 @@ class ViewTeacher extends React.Component {
                             Mark teacher as
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="">Deceased</a>
-                            <a className="dropdown-item" href="">Retired</a>
+                            <a className="dropdown-item" href="" onClick={this.showDeceasedModal}>Deceased</a>
+                            <a className="dropdown-item" href="" onClick={this.showRetireModal}>Retired</a>
                         </div>
                     </span>
                     <br/>
@@ -283,7 +236,7 @@ class ViewTeacher extends React.Component {
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel"
                              aria-labelledby="nav-contact-tab">
-                            {showUpdateContactForm ? updateContactForm : ''}
+                            {/*{showUpdateContactForm ? updateContactForm : ''}*/}
                             {successMessage ? successMessage : ''}
                             <table className="table">
                                 <thead>
@@ -318,6 +271,13 @@ class ViewTeacher extends React.Component {
                                           teacher={this.props.teacher}/>
                     <ClearTeacher show={showClearTeacherModal} onClose={this.onCloseClearTeacherModal}
                                   teacher_id={this.props.teacher._id}/>
+                  <UpdateContact show={showUpdateContactForm} onClose={this.closeUpdateContactForm} teacher={teacher} onSuccesss={this.onSuccess}/>
+                    <Retire teacher={teacher}
+                            show={retireModal}
+                            onClose={this.closeRetireModal}/>
+                    <Deceased teacher={teacher}
+                            show={deceasedModal}
+                            onClose={this.closeDeceasedModal}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={onClose}>Cancel</Button>{' '}

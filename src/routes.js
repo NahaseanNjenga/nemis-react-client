@@ -7,7 +7,7 @@ import requireSystemAdminAuth from "./utils/requireSystemAdminAuth"
 import SystemAdminDashboard from "./components/admin-dashboard/SystemAdminDashboard"
 import SystemAdminLoginForm from "./components/admin-dashboard/SystemAdminLoginForm"
 import SchoolList from "./components/schools/SchoolList"
-import TeachersList from "./components/teachers/TeachersList"
+import TeachersPage from "./components/teachers/TeachersPage"
 import StudentsList from "./components/students/StudentsList"
 import SchoolAdminList from "./components/schoolAdmins/SchoolAdminList"
 import SchoolAdminDashboard from "./components/school-admin-dashboard/SchoolAdminDashboard"
@@ -27,11 +27,11 @@ export default () => {
                     <Route path='/admin/login' component={SystemAdminLoginForm}/>
                     <Route path='/admin/schools' component={requireSystemAdminAuth(SchoolList)}/>
                     <Route path='/admin/students' component={requireSystemAdminAuth(StudentsList)}/>
-                    <Route path='/admin/teachers' component={requireSystemAdminAuth(TeachersList)}/>
+                    <Route path='/admin/teachers' component={requireSystemAdminAuth(TeachersPage)}/>
                     <Route path='/admin/school_admins' component={requireSystemAdminAuth(SchoolAdminList)}/>
                     <Route path='/school_admin/login' component={SchoolAdminLoginForm}/>
                     <Route path="/school_admin/students" component={requireSchoolAdminAuth(StudentsList)}/>
-                    <Route path="/school_admin/teachers" component={requireSchoolAdminAuth(TeachersList)}/>
+                    <Route path="/school_admin/teachers" component={requireSchoolAdminAuth(TeachersPage)}/>
                     <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>
                 </Switch>
             </App>
