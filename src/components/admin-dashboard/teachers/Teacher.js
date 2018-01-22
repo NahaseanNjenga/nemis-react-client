@@ -31,9 +31,9 @@ class Teacher extends React.Component {
                 <td>{teacher.tsc}</td>
                 <td><a href="" onClick={this.onViewTeacher}>{teacher.surname}</a></td>
                 <td>{teacher.first_name}</td>
-                <td>{teacher.posting_history.reporting_date? new Date(teacher.posting_history.reporting_date).toDateString() : 'N/A'}</td>
+                <td>{teacher.posting_history? new Date(teacher.posting_history.reporting_date).toDateString() : 'N/A'}</td>
 
-                <ViewTeacher show={showViewTeacherModal} onClose={this.onCloseViewTeacher} teacher={this.props.teacher}/>
+                <ViewTeacher show={showViewTeacherModal} onClose={this.onCloseViewTeacher} teacher={this.props.teacher} deceased={false}/>
             </tr>
 
         )

@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Student from "./Student"
-import {addStudent, clearStudents, getStudents, getSchoolStudents} from "../../actions/studentActions"
+import {addStudent, clearStudents, getStudents, getSchoolStudents} from "../../../actions/studentActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewStudentForm from "./NewStudentForm"
-import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
+import SchoolAdminMenu from "../../school-admin-dashboard/SchoolAdminMenu"
 import jwt from "jsonwebtoken"
 
 

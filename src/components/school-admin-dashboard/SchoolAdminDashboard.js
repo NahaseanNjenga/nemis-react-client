@@ -1,5 +1,5 @@
 import React from 'react'
-import Menu from "../Menu"
+import Menu from "../admin-dashboard/Menu"
 import SchoolAdminMenu from "./SchoolAdminMenu"
 import jwt from "jsonwebtoken"
 

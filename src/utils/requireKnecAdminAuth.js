@@ -5,20 +5,20 @@ import {connect} from 'react-redux'
 
 
 export default function (ComposedComponent) {
-    class AuthenticateSchoolAdmin extends React.Component {
+    class AuthenticateKnecAdmin extends React.Component {
         componentWillMount() {
-            if (!this.props.isSchoolAdminAuthenticated || this.props.role==='system') {
+            if (!this.props.isKnecAdminAuthenticated || this.props.role === 'system' || this.props.role === 'school') {
                 // this.props.addFlashMessage({
                 //     type: 'error',
                 //     text: 'You do not have permission to access this page. Please login first'
                 // })
-                this.context.router.history.push('/school_admin/login')
+                this.context.router.history.push('/knec_admin/login')
             }
         }
 
         componentWillUpdate(nextProps) {
-            if(!nextProps.isSchoolAdminAuthenticated){
-                this.context.router.history.push('/school_admin')
+            if (!nextProps.isKnecAdminAuthenticated) {
+                this.context.router.history.push('/knec_admin')
             }
         }
 
@@ -30,21 +30,21 @@ export default function (ComposedComponent) {
 
     }
 
-    AuthenticateSchoolAdmin.propTypes = {
-        isSchoolAdminAuthenticated: PropTypes.bool.isRequired,
+    AuthenticateKnecAdmin.propTypes = {
+        isKnecAdminAuthenticated: PropTypes.bool.isRequired,
         role: PropTypes.string,
         // addFlashMessage: PropTypes.func.isRequired
     }
-    AuthenticateSchoolAdmin.contextTypes = {
+    AuthenticateKnecAdmin.contextTypes = {
         router: PropTypes.object.isRequired
     }
 
     function mapStateToProps(state) {
         return {
-            isSchoolAdminAuthenticated: state.schoolAdminLoginReducers.isSchoolAdminAuthenticated,
-            role: state.schoolAdminLoginReducers.user.role
+            isKnecAdminAuthenticated: state.knecAdminLoginReducers.isKnecAdminAuthenticated,
+            role: state.knecAdminLoginReducers.user.role
         }
     }
 
-    return connect(mapStateToProps)(AuthenticateSchoolAdmin)
+    return connect(mapStateToProps)(AuthenticateKnecAdmin)
 }

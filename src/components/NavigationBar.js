@@ -13,15 +13,15 @@ class NavigationBar extends React.Component {
         super(props)
         this.state = {
             selectLoginModal: false,
-            schoolAdminLoginModal: false,
-            knecAdminLoginModal: false
+            // schoolAdminLoginModal: false,
+            // knecAdminLoginModal: false
         }
 
         this.logout = this.logout.bind(this)
         this.onSchoolAdmin = this.onSchoolAdmin.bind(this)
         this.onKnecAdmin = this.onKnecAdmin.bind(this)
-        this.onCloseSchoolAdmin = this.onCloseSchoolAdmin.bind(this)
-        this.onCloseKnecAdmin = this.onCloseKnecAdmin.bind(this)
+        // this.onCloseSchoolAdmin = this.onCloseSchoolAdmin.bind(this)
+        // this.onCloseKnecAdmin = this.onCloseKnecAdmin.bind(this)
         this.onSignin = this.onSignin.bind(this)
         this.onSignin = this.onSignin.bind(this)
         this.onCloseSignin = this.onCloseSignin.bind(this)
@@ -37,23 +37,25 @@ class NavigationBar extends React.Component {
     onKnecAdmin(e) {
         e.preventDefault()
         this.setState({selectLoginModal: false})
-        this.setState({knecAdminLoginModal: true})
+        // this.setState({knecAdminLoginModal: true})
+        this.context.router.history.push('/knec_admin/login')
+
     }
 
-    onCloseKnecAdmin() {
-        this.setState({knecAdminLoginModal: false})
-    }
+    // onCloseKnecAdmin() {
+    //     this.setState({knecAdminLoginModal: false})
+    // }
 
     onSchoolAdmin(e) {
         e.preventDefault()
         this.setState({selectLoginModal: false})
-        this.setState({schoolAdminLoginModal: true})
+        // this.setState({schoolAdminLoginModal: true})
         this.context.router.history.push('/school_admin/login')
     }
 
-    onCloseSchoolAdmin() {
-        this.setState({schoolAdminLoginModal: false})
-    }
+    // onCloseSchoolAdmin() {
+    //     this.setState({schoolAdminLoginModal: false})
+    // }
 
     onSignin(e) {
         e.preventDefault()
@@ -67,7 +69,7 @@ class NavigationBar extends React.Component {
 
 
     render() {
-        const {selectLoginModal, schoolAdminLoginModal, knecAdminLoginModal} = this.state
+        const {selectLoginModal, } = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
         const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
         // console.log(isAuthenticated, isSchoolAdminAuthenticated)

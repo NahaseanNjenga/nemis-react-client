@@ -207,6 +207,7 @@ class ResponsibilitiesList extends React.Component {
         let count = 1
         const {showResponsibilityForm, showUpdateResponsibilityForm, responsibility, date_assigned, errors, isLoading, invalid,relieved} = this.state
         const {responsibilities} = this.props
+        console.log(this.props.deceased)
         const responsibilityForm = <form onSubmit={this.onSubmitResponsibility}>
             <TextFieldGroup
                 label="Responsibility"
@@ -275,9 +276,9 @@ class ResponsibilitiesList extends React.Component {
 
         return (
             <div>
-                <button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
-                        onClick={this.addResponsibility}>Add responsibility
-                </button>
+                {!this.props.deceased?!this.props.retired?<button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
+                    onClick={this.addResponsibility}>Add responsibility
+                    </button>:'':''}
                 {showResponsibilityForm ? responsibilityForm : ''}
                 {showUpdateResponsibilityForm ? updateResponsibilityForm : ''}
                 {responsibilities.length > 0 ? <table className="table">
@@ -308,7 +309,9 @@ ResponsibilitiesList.propTypes = {
     teacher_id: PropTypes.string.isRequired,
     removeResponsibility: PropTypes.func.isRequired,
     updateResponsibility: PropTypes.func.isRequired,
-    relieveResponsibility:PropTypes.func.isRequired
+    relieveResponsibility:PropTypes.func.isRequired,
+    deceased: PropTypes.bool,
+    retired: PropTypes.bool,
 }
 
 function mapStateToProps(state) {

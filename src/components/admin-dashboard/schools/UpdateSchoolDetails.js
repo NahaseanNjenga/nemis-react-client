@@ -1,11 +1,11 @@
 import React from 'react'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import PropTypes from 'prop-types'
-import TextFieldGroup from "../../shared/TextFieldsGroup"
+import TextFieldGroup from "../../../shared/TextFieldsGroup"
 import validator from "validator"
 import {isEmpty} from "lodash"
 import {connect} from 'react-redux'
-import {updateSchool, updateSchoolList} from "../../actions/schoolActions"
+import {updateSchool, updateSchoolList} from "../../../actions/schoolActions"
 
 class UpdateSchoolDetails extends React.Component {
     constructor(props) {

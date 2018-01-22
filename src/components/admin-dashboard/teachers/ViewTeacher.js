@@ -6,13 +6,13 @@ import UpdateTeacherDetails from "./UpdateTeacherDetails"
 import validator from "validator"
 import {isEmpty} from "lodash"
 import {connect} from "react-redux"
-import {updateTeacherContact, updateTeacherOnList} from "../../actions/teacherActions"
-import ResponsibilitiesList from "../school-admin-dashboard/modals/teachers/ResponsibilitiesList"
-import TextFieldGroup from "../../shared/TextFieldsGroup"
-import ClearTeacher from "../school-admin-dashboard/modals/teachers/ClearTeacher"
-import UpdateContact from "../school-admin-dashboard/modals/teachers/UpdateContact"
-import Retire from "../school-admin-dashboard/modals/teachers/Retire"
-import Deceased from "../school-admin-dashboard/modals/teachers/Deceased"
+import {updateTeacherContact, updateTeacherOnList} from "../../../actions/teacherActions"
+import ResponsibilitiesList from "../../school-admin-dashboard/modals/teachers/ResponsibilitiesList"
+import TextFieldGroup from "../../../shared/TextFieldsGroup"
+import ClearTeacher from "../../school-admin-dashboard/modals/teachers/ClearTeacher"
+import UpdateContact from "../../school-admin-dashboard/modals/teachers/UpdateContact"
+import Retire from "../../school-admin-dashboard/modals/teachers/Retire"
+import Deceased from "../../school-admin-dashboard/modals/teachers/Deceased"
 
 class ViewTeacher extends React.Component {
     constructor(props) {
@@ -114,7 +114,7 @@ onSuccess(){
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Teacher info</ModalHeader>
                 <ModalBody>
-                    <span className="dropdown">
+                    {!this.props.deceased?<span className="dropdown">
                         <button className="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -122,11 +122,11 @@ onSuccess(){
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a className="dropdown-item" href="" onClick={this.showDeceasedModal}>Deceased</a>
-                            <a className="dropdown-item" href="" onClick={this.showRetireModal}>Retired</a>
-                        </div>
-                    </span>
+                            {!this.props.retired?<a className="dropdown-item" href="" onClick={this.showRetireModal}>Retired</a>:''}
+                        </div><br/>
                     <br/>
-                    <br/>
+                    </span>:''}
+
                     <nav>
                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                             <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
@@ -195,9 +195,10 @@ onSuccess(){
                         </div>
                         <div className="tab-pane fade" id="nav-transfer" role="tabpanel"
                              aria-labelledby="nav-transfer-tab">
-                            <button className="btn btn-sm btn-info" onClick={this.onClearTeacher}>Clear teacher from
+                            {!this.props.deceased?!this.props.retired?<button className="btn btn-sm btn-info" onClick={this.onClearTeacher}>Clear teacher from
                                 school
-                            </button>
+                            </button>:'':''}
+
                             <table className="table">
                                 <thead>
                                 <tr>
@@ -209,13 +210,13 @@ onSuccess(){
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                {teacher.posting_history.current_school? <tr>
                                     <th scope="row">{count++}</th>
                                     {/*<td>{teacher.posting_history.current_school ? teacher.posting_history.current_school : 'N/A'}</td>*/}
                                     <td>{teacher.posting_history.current_school}</td>
                                     <td>{new Date(teacher.posting_history.reporting_date).toDateString()}</td>
                                     <td><p>Still Working</p></td>
-                                </tr>
+                                </tr>:''}
                                 {teacher.posting_history.previous_school.length > 0 ?
                                     teacher.posting_history.previous_school.map(
                                         posting=>{
@@ -232,7 +233,7 @@ onSuccess(){
                         <div className="tab-pane fade" id="nav-responsibilities" role="tabpanel"
                              aria-labelledby="nav-responsibilities-tab">
 
-                                <ResponsibilitiesList teacher_id={teacher._id}/>
+                                <ResponsibilitiesList teacher_id={teacher._id} deceased={this.props.deceased} retired={this.props.retired}/>
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel"
                              aria-labelledby="nav-contact-tab">
@@ -294,6 +295,9 @@ ViewTeacher.propTypes = {
     onClose: PropTypes.func.isRequired,
     updateTeacherOnList: PropTypes.func.isRequired,
     updateTeacherContact: PropTypes.func.isRequired,
+    deceased: PropTypes.bool.isRequired,
+    retired: PropTypes.bool,
+
 
 }
 export default connect(null, {updateTeacherOnList, updateTeacherContact})(ViewTeacher)

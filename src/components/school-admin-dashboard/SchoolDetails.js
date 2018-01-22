@@ -1,7 +1,7 @@
 import React from 'react'
 import SchoolAdminMenu from "./SchoolAdminMenu"
 import PropTypes from 'prop-types'
-import UpdateSchoolDetails from "../schools/UpdateSchoolDetails"
+import UpdateSchoolDetails from "../admin-dashboard/schools/UpdateSchoolDetails"
 import {connect} from 'react-redux'
 import {displaySchoolInfo, getSchoolDetails} from "../../actions/schoolActions"
 import jwt from 'jsonwebtoken'

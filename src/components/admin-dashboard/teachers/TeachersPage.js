@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
-import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../actions/teacherActions"
+import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewTeacherForm from "./NewTeacherForm"
 import ViewTeacher from "./ViewTeacher"
 import jwt from 'jsonwebtoken'
-import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
+import SchoolAdminMenu from "../../school-admin-dashboard/SchoolAdminMenu"
 import RetiredTeachersList from "./RetiredTeachersList"
 import DeceasedTeachersList from "./DeceasedTeachersList"
 import TeachersList from "./TeachersList"
@@ -60,12 +60,12 @@ class TeachersPage extends React.Component {
 
     filter(e) {
         e.preventDefault()
+        this.props.clearTeachers()
         this.setState({life: e.target.name})
     }
 
     render() {
         const {life, role, showNewTeacherModal} = this.state
-        // console.log(this.state)
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -114,7 +114,7 @@ class TeachersPage extends React.Component {
                     </div>
                 </div>
                 <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher} addToTeachers={this.addToTeachers}/>
+                                addTeacher={this.props.addTeacher} />
             </div>)
     }
 

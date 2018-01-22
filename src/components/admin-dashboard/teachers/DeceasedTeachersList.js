@@ -4,10 +4,11 @@ import Teacher from "./Teacher"
 import {
     addTeacher, clearTeachers, getSchoolTeachers, getDeceasedTeachers,
     getDeceasedSchoolTeachers
-} from "../../actions/teacherActions"
+} from "../../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
 import NewTeacherForm from "./NewTeacherForm"
 import jwt from 'jsonwebtoken'
+import DeceasedTeacher from "./DeceasedTeacher"
 
 class DeceaseedTeachersList extends React.Component {
     constructor(props) {
@@ -17,11 +18,9 @@ class DeceaseedTeachersList extends React.Component {
             role:'',
             teachers:''
         }
-        this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
-        this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
+        this.props.clearTeachers()
         this.onChange = this.onChange.bind(this)
-        this.addToTeachers=this.addToTeachers.bind(this)
-        this.filter=this.filter.bind(this)
+
     }
     onChange(e) {
         const {teachers}= this.state
@@ -65,26 +64,25 @@ class DeceaseedTeachersList extends React.Component {
 
         }
     }
-
-    onShowNewTeacherModal() {
-        this.setState({showNewTeacherModal: true})
-
-    }
-
-    onCloseNewTeacherModal() {
-        this.setState({showNewTeacherModal: false})
-    }
-    addToTeachers(teacher){
-        this.setState({teachers:teacher,...this.state.teachers})
-
-    }
-    filter(e){
-        e.preventDefault()
-    }
+    //
+    // onShowNewTeacherModal() {
+    //     this.setState({showNewTeacherModal: true})
+    //
+    // }
+    //
+    // onCloseNewTeacherModal() {
+    //     this.setState({showNewTeacherModal: false})
+    // }
+    // addToTeachers(teacher){
+    //     this.setState({teachers:teacher,...this.state.teachers})
+    //
+    // }
+    // filter(e){
+    //     e.preventDefault()
+    // }
 
     render() {
         const {teachers} = this.props
-        const {showNewTeacherModal,role} = this.state
         let count = 1
         return (
                      <div>
@@ -95,18 +93,15 @@ class DeceaseedTeachersList extends React.Component {
                                 <th scope="col">TSC Id</th>
                                 <th scope="col">Surname</th>
                                 <th scope="col">First name</th>
-                                <th scope="col">Date of Retirement</th>
+                                <th scope="col">Date of Death</th>
                             </tr>
                             </thead>
                             <tbody>
                             {teachers.map((teacher, i) => {
-                                return <Teacher count={count++} teacher={teacher} key={i}/>
+                                return <DeceasedTeacher count={count++} teacher={teacher} key={i}/>
                             })}
                             </tbody>
-                        </table>:'No teachers found'}
-                <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher} addToTeachers={this.addToTeachers}/>
-
+                        </table>:'No deceased teachers found'}
             </div>)
     }
 

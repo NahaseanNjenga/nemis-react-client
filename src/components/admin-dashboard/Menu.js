@@ -8,5 +8,5 @@ export default () =>
         <li><Link to="/admin/teachers">Teachers</Link></li>
         <li><Link to="/admin/schools">Schools</Link></li>
         <li><Link to="/admin/school_admins">School Admins</Link></li>
-        <li><Link to="/admin/knec_admins">Knec Admin</Link></li>
+        <li><Link to="/admin/knec_admin">Knec Admin</Link></li>
     </ul>)

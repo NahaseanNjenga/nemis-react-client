@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import School from "./School"
-import {addSchool, clearSchools, getSchools} from "../../actions/schoolActions"
+import {addSchool, clearSchools, getSchools} from "../../../actions/schoolActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewSchoolForm from "./NewSchoolForm"

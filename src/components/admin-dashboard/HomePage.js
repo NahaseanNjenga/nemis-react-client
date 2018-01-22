@@ -1,11 +1,11 @@
 import React from 'react'
 import SearchResults from "./search/SearchResults"
-import TextFieldGroup from "../shared/TextFieldsGroup"
+import TextFieldGroup from "../../shared/TextFieldsGroup"
 import {isEmpty} from "lodash"
 import validator from "validator"
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {searchStudent} from "../actions/studentActions"
+import {searchStudent} from "../../actions/studentActions"
 
 
 class HomePage extends React.Component {

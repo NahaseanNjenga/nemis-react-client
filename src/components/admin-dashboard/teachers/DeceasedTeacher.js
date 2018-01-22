@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ViewTeacher from "./ViewTeacher"
 
-class RetiredTeacher extends React.Component {
+class DeceasedTeacher extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,25 +24,25 @@ class RetiredTeacher extends React.Component {
 
     render() {
         const { teacher,count} = this.props
-        const {showViewTeacherModal, showUpdateTeacherModal} = this.state
+        const {showViewTeacherModal} = this.state
         return (
             <tr>
                 <th scope="row">{count}</th>
                 <td>{teacher.teacher_id.tsc}</td>
                 <td><a href="" onClick={this.onViewTeacher}>{teacher.teacher_id.surname}</a></td>
                 <td>{teacher.teacher_id.first_name}</td>
-                <td>{new Date(teacher.date_retired).toDateString()}</td>
+                <td>{new Date(teacher.date_of_death).toDateString()}</td>
 
-                <ViewTeacher show={showViewTeacherModal} onClose={this.onCloseViewTeacher} teacher={this.props.teacher.teacher_id}/>
+                <ViewTeacher show={showViewTeacherModal} onClose={this.onCloseViewTeacher} teacher={this.props.teacher.teacher_id} deceased={true}/>
             </tr>
 
         )
     }
 }
 
-RetiredTeacher.propTypes = {
+DeceasedTeacher.propTypes = {
     teacher: PropTypes.object.isRequired,
     count: PropTypes.number.isRequired,
 }
 
-export default RetiredTeacher
+export default DeceasedTeacher

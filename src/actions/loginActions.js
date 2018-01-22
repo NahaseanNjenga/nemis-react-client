@@ -1,5 +1,8 @@
 import axios from 'axios'
-import {setSystemAdminAuthorizationToken,setSchoolAdminAuthorizationToken} from '../utils/setAuthorizationToken'
+import {
+    setSystemAdminAuthorizationToken, setSchoolAdminAuthorizationToken,
+    setKnecAdminAuthorizationToken
+} from '../utils/setAuthorizationToken'
 import jwt from 'jsonwebtoken'
 import {SET_CURRENT_USER} from "./types"
 export function systemAdminlogin(userData) {
@@ -18,6 +21,16 @@ export function schoolAdminlogin(userData) {
             const token=res.data.token
             localStorage.setItem('schoolAdminJwtToken',token)
             setSchoolAdminAuthorizationToken(token)
+            dispatch(setCurrentUser(jwt.decode(token)))
+        })
+    }
+}
+export function knecAdminlogin(userData) {
+    return dispatch=>{
+        return axios.post('/knec_admin_login',userData).then(res=>{
+            const token=res.data.token
+            localStorage.setItem('knecAdminJwtToken',token)
+            setKnecAdminAuthorizationToken(token)
             dispatch(setCurrentUser(jwt.decode(token)))
         })
     }
