@@ -1,7 +1,21 @@
 import React from 'react'
-class KnecAdminDashboard extends React.Component{
-render(){
-    return (<div>Knec admin</div>)
+import KnecSchoolList from "./KnecSchoolList"
+
+class KnecAdminDashboard extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            students: []
+        }
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        return (<div><KnecSchoolList/></div>)
+    }
 }
-}
+
 export default KnecAdminDashboard

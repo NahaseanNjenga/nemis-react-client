@@ -4,7 +4,7 @@ import validator from 'validator'
 import {isEmpty} from 'lodash'
 import TextFieldGroup from '../../../shared/TextFieldsGroup'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {addKnecAdmin, registerKnecAdmin} from "../../../actions/knecAdminActions"
+import {addKnecAdmin, getKnecAdmin, registerKnecAdmin, updateKnecAdmin} from "../../../actions/knecAdminActions"
 import {connect} from 'react-redux'
 import {addFlashMessage} from "../../../actions/flashMessages"
 
@@ -12,9 +12,10 @@ class NewKnecAdminForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-           email:'',
-           password: '',
-            passwordConfirmation: '',
+            _id: '',
+            email:'',
+            password: '',
+            passwordConfirmation:'',
             errors: {},
             isLoading: false,
             invalid: false
@@ -57,7 +58,7 @@ class NewKnecAdminForm extends React.Component {
         if (validator.isEmpty(data.passwordConfirmation)) {
             errors.gender = 'This field is required'
         }
-        if (!validator.equals(data.password,data.passwordConfirmation)) {
+        if (!validator.equals(data.password, data.passwordConfirmation)) {
             errors.passwordConfirmation = 'The passwords do not match'
         }
 
@@ -65,6 +66,19 @@ class NewKnecAdminForm extends React.Component {
             errors,
             isValid: isEmpty(errors)
         }
+    }
+
+    componentDidMount() {
+        this.props.getKnecAdmin().then(knecAdmin => {
+            if (knecAdmin) {
+                this.setState({
+                    _id: knecAdmin.data._id,
+                    email: knecAdmin.data.email,
+                    password: knecAdmin.data.password,
+                    passwordConfirmation: knecAdmin.data.password,
+                })
+            }
+        })
     }
 
     isValid() {
@@ -79,16 +93,15 @@ class NewKnecAdminForm extends React.Component {
         e.preventDefault()
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
-            this.props.registerKnecAdmin(this.state).then(
+            this.props.updateKnecAdmin(this.state).then(
                 (knecAdmin) => {
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
-                    this.props.addKnecAdmin(knecAdmin.data)
                     this.props.onClose()
                     this.setState({
-                        email:'',
+                        email: '',
                         password: '',
                         passwordConfirmation: '',
                         errors: {},
@@ -100,6 +113,7 @@ class NewKnecAdminForm extends React.Component {
             )
         }
     }
+
     onChange(e) {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -107,11 +121,11 @@ class NewKnecAdminForm extends React.Component {
     render() {
         const {show, onClose} = this.props
 
-        const {errors, isLoading, invalid, email, password,passwordConfirmation,}= this.state
+        const {errors, isLoading, invalid, email, password, passwordConfirmation,} = this.state
         if (show) {
             return (
                 <Modal isOpen={show} toggle={onClose} size="lg">
-                    <ModalHeader toggle={onClose}>Register Knec Admin</ModalHeader>
+                    <ModalHeader toggle={onClose}>Update Knec Admin Details</ModalHeader>
                     <ModalBody>
                         <form onSubmit={this.onSubmit}>
                             <TextFieldGroup
@@ -153,7 +167,6 @@ class NewKnecAdminForm extends React.Component {
         }
         else return null
     }
-
 }
 
 
@@ -162,14 +175,15 @@ NewKnecAdminForm.propTypes = {
     // addFlashMessage: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    knecAdmin: PropTypes.object.isRequired,
     // isKnecAdminExists: PropTypes.func.isRequired,
-    registerKnecAdmin: PropTypes.func.isRequired,
-    addKnecAdmin: PropTypes.func.isRequired,
+    updateKnecAdmin: PropTypes.func.isRequired,
+    getKnecAdmin: PropTypes.func.isRequired,
 }
 NewKnecAdminForm.contextTypes = {
     router: PropTypes.object.isRequired
 }
 
 
-export default connect(null, {addKnecAdmin, registerKnecAdmin})(NewKnecAdminForm)
+export default connect(null, {getKnecAdmin, updateKnecAdmin, registerKnecAdmin})(NewKnecAdminForm)
 

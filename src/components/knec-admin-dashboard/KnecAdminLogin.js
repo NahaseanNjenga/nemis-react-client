@@ -10,7 +10,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
+            email: '',
             password: '',
             errors: {},
             isLoading: false,
@@ -38,9 +38,11 @@ class Login extends React.Component {
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
             this.props.knecAdminlogin(this.state).then(
-                (res) => {
-                    // this.props.addFlashMessage({type: 'success', text: 'You have signed up successfully'})
+                (knecAdmin) => {
+                    // if (knecAdmin) {
                     this.context.router.history.push('/knec_admin')
+                    // }
+                    // this.props.addFlashMessage({type: 'success', text: 'You have signed up successfully'})
                 },
                 err => this.setState({errors: err.response.data.errors, isLoading: false})
             )
@@ -71,8 +73,8 @@ class Login extends React.Component {
     validateInput(data) {
         let errors = {}
 
-        if (validator.isEmpty(data.username)) {
-            errors.username = 'This field is required'
+        if (validator.isEmpty(data.email)) {
+            errors.email = 'This field is required'
         }
         if (validator.isEmpty(data.password)) {
             errors.password = 'This field is required'
@@ -93,7 +95,7 @@ class Login extends React.Component {
 
     render() {
 
-        const {username, password, isLoading, invalid, errors} = this.state
+        const {email, password, isLoading, invalid, errors} = this.state
 
         return (<div className="container">
                 <div className="row">
@@ -104,10 +106,10 @@ class Login extends React.Component {
                             <TextFieldGroup
                                 label="Username"
                                 type="text"
-                                name="username"
-                                value={username}
+                                name="email"
+                                value={email}
                                 onChange={this.onChange}
-                                error={errors.username}
+                                error={errors.email}
                             />
                             <TextFieldGroup
                                 label="Password"
@@ -138,4 +140,4 @@ Login.contextTypes = {
     router: PropTypes.object.isRequired
 }
 
-export default connect(null,{knecAdminlogin})(Login)
+export default connect(null, {knecAdminlogin})(Login)

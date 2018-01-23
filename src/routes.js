@@ -7,8 +7,8 @@ import requireSystemAdminAuth from "./utils/requireSystemAdminAuth"
 import SystemAdminDashboard from "./components/admin-dashboard/SystemAdminDashboard"
 import SystemAdminLoginForm from "./components/admin-dashboard/SystemAdminLoginForm"
 import SchoolList from "./components/admin-dashboard/schools/SchoolList"
-import TeachersPage from "./components/admin-dashboard/teachers/TeachersPage"
-import StudentsList from "./components/admin-dashboard/students/StudentsList"
+import TeachersPage from "./components/teachers/TeachersPage"
+import StudentsList from "./components/students/StudentsList"
 import SchoolAdminList from "./components/admin-dashboard/schoolAdmins/SchoolAdminList"
 import SchoolAdminDashboard from "./components/school-admin-dashboard/SchoolAdminDashboard"
 import requireSchoolAdminAuth from "./utils/requireSchoolAdminAuth"
@@ -17,7 +17,8 @@ import SchoolAdminLoginForm from "./components/school-admin-dashboard/SchoolAdmi
 import SchoolDetails from "./components/school-admin-dashboard/SchoolDetails"
 import requireKnecAdminAuth from "./utils/requireKnecAdminAuth"
 import KnecAdminDashboard from "./components/knec-admin-dashboard/KnecAdminDashboard"
-import Login from "./components/knec-admin-dashboard/Login"
+import Login from "./components/knec-admin-dashboard/KnecAdminLogin"
+import KnecAdmin from "./components/admin-dashboard/knecAdmin/KnecAdmin"
 
 
 export default () => {
@@ -32,14 +33,16 @@ export default () => {
                     <Route path='/admin/students' component={requireSystemAdminAuth(StudentsList)}/>
                     <Route path='/admin/teachers' component={requireSystemAdminAuth(TeachersPage)}/>
                     <Route path='/admin/school_admins' component={requireSystemAdminAuth(SchoolAdminList)}/>
-                    <Route path='/admin/knec_admin' component={requireSystemAdminAuth(SchoolAdminList)}/>
+                    <Route path='/admin/knec_admin' component={requireSystemAdminAuth(KnecAdmin)}/>
                     <Route path='/school_admin/login' component={SchoolAdminLoginForm}/>
                     <Route path="/school_admin/students" component={requireSchoolAdminAuth(StudentsList)}/>
                     <Route path="/school_admin/teachers" component={requireSchoolAdminAuth(TeachersPage)}/>
-                    <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>  
                     <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>
+                    <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>
+                    <Route path="/knec_admin/:upi" component={requireKnecAdminAuth(StudentsList)}/>
                     <Route path="/knec_admin/login" component={Login}/>
                     <Route path="/knec_admin/" component={requireKnecAdminAuth(KnecAdminDashboard)}/>
+
 
                 </Switch>
             </App>

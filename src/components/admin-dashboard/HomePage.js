@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchResults from "./search/SearchResults"
+import SearchResults from "../search/SearchResults"
 import TextFieldGroup from "../../shared/TextFieldsGroup"
 import {isEmpty} from "lodash"
 import validator from "validator"

@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
-import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../../actions/teacherActions"
+import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
-import Menu from "../Menu"
+import Menu from "../admin-dashboard/Menu"
 import NewTeacherForm from "./NewTeacherForm"
 import ViewTeacher from "./ViewTeacher"
 import jwt from 'jsonwebtoken'
-import SchoolAdminMenu from "../../school-admin-dashboard/SchoolAdminMenu"
+import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
 import RetiredTeachersList from "./RetiredTeachersList"
 import DeceasedTeachersList from "./DeceasedTeachersList"
 import TeachersList from "./TeachersList"

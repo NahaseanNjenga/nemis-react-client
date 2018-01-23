@@ -5,7 +5,10 @@ import Router from './routes'
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from './rootReducer'
-import {setSchoolAdminAuthorizationToken, setSystemAdminAuthorizationToken} from './utils/setAuthorizationToken'
+import {
+    setKnecAdminAuthorizationToken, setSchoolAdminAuthorizationToken,
+    setSystemAdminAuthorizationToken
+} from './utils/setAuthorizationToken'
 import {setCurrentUser} from './actions/loginActions'
 import jwt from 'jsonwebtoken'
 
@@ -18,6 +21,10 @@ if(localStorage.systemAdminJwtToken){
 if(localStorage.schoolAdminJwtToken){
     setSchoolAdminAuthorizationToken(localStorage.schoolAdminJwtToken)
     store.dispatch(setCurrentUser(jwt.decode(localStorage.schoolAdminJwtToken)))
+}
+if(localStorage.knecAdminJwtToken){
+    setKnecAdminAuthorizationToken(localStorage.knecAdminJwtToken)
+    store.dispatch(setCurrentUser(jwt.decode(localStorage.knecAdminJwtToken)))
 }
 
 ReactDOM.render(<Provider store={store}>

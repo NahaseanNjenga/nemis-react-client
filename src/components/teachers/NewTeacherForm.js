@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import validator from 'validator'
 import {isEmpty} from 'lodash'
-import TextFieldGroup from '../../../shared/TextFieldsGroup'
+import TextFieldGroup from '../../shared/TextFieldsGroup'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {addTeacher, registerTeacher} from "../../../actions/teacherActions"
+import {addTeacher, registerTeacher} from "../../actions/teacherActions"
 import {connect} from 'react-redux'
-import {addFlashMessage} from "../../../actions/flashMessages"
+import {addFlashMessage} from "../../actions/flashMessages"
 import jwt from 'jsonwebtoken'
 
 

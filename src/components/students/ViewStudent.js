@@ -61,12 +61,16 @@ class ViewStudent extends React.Component {
                         </tr>
                         <tr>
                             <th scope="row">Date of birth</th>
-                            <td>{student.birthdate}</td>
+                            <td>{new Date(student.birthdate).toDateString()}</td>
                         </tr>
 
                         <tr>
                             <th scope="row">Current school:</th>
                             <td>{student.transfers?student.transfers.current_school:''}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Year of Study</th>
+                            <td>{student.year}</td>
                         </tr>
                         </tbody>
                     </table>

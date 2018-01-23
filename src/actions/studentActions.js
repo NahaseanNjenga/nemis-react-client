@@ -52,3 +52,8 @@ export function searchStudent(upi) {
         return axios.post('/search', {upi: upi})
     }
 }
+export function getSchoolCandidates(upi) {
+    return dispatch => {
+        return axios.post('/schools/candidates', {upi: upi})
+    }
+}

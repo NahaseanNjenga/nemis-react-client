@@ -78,11 +78,16 @@ export function displaySchoolInfo(school) {
 }
 export function getSchools() {
     return dispatch=>{
-        return axios.get('/admin/schools')
+        return axios.get('/schools')
     }
 }
 export function getSchoolDetails(upi) {
     return dispatch=>{
         return axios.post('/school_info',{upi:upi})
+    }
+}
+export function getSchoolCategory(upi) {
+    return dispatch=>{
+        return axios.post('/schools/category',{upi:upi})
     }
 }

@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Student from "./Student"
-import {addStudent, clearStudents, getStudents, getSchoolStudents} from "../../../actions/studentActions"
+import {
+    addStudent, clearStudents, getStudents, getSchoolStudents,
+    getSchoolCandidates
+} from "../../actions/studentActions"
 import connect from "react-redux/es/connect/connect"
-import Menu from "../Menu"
+import Menu from "../admin-dashboard/Menu"
 import NewStudentForm from "./NewStudentForm"
-import SchoolAdminMenu from "../../school-admin-dashboard/SchoolAdminMenu"
+import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
 import jwt from "jsonwebtoken"
 
 
@@ -54,6 +57,20 @@ class StudentsList extends React.Component {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
             const upi = token.school_upi
             this.props.getSchoolStudents(upi).then(students => {
+                if (students) {
+                    students.data.map(student => {
+                        this.props.addStudent(student)
+                    })
+                    this.setState({role: 'school',students:students.data})
+                } else {
+                    //No schools message
+                }
+            })
+        }
+        else {
+           const upi=window.location.pathname.split('/')[2]
+            console.log(upi)
+            this.props.getSchoolCandidates(upi).then(students => {
                 if (students) {
                     students.data.map(student => {
                         this.props.addStudent(student)
@@ -127,11 +144,8 @@ class StudentsList extends React.Component {
                 </div>
                 <NewStudentForm show={showNewStudentModal} onClose={this.onCloseNewStudentModal}
                                 addStudent={this.props.addStudent}/>
-
-
             </div>)
     }
-
 }
 
 StudentsList.propTypes = {
@@ -147,5 +161,5 @@ function mapStateToProps(state) {
     return {students: state.studentReducers}
 }
 
-export default connect(mapStateToProps, {addStudent, getStudents, getSchoolStudents, clearStudents})(StudentsList)
+export default connect(mapStateToProps, {addStudent, getStudents, getSchoolStudents, clearStudents,getSchoolCandidates})(StudentsList)
 
