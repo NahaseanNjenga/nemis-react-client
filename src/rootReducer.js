@@ -8,6 +8,7 @@ import schoolAdminLoginReducers from "./reducers/schoolAdminLoginReducers"
 import responsibilityReducers from "./reducers/responsibilityReducers"
 import schoolDetailsReducers from "./reducers/schoolDetailsReducers"
 import knecAdminLoginReducers from "./reducers/knecAdminLoginReducers"
+import certificateReducers from "./reducers/certificateReducers"
 
 
 export default combineReducers({
@@ -20,5 +21,6 @@ export default combineReducers({
     responsibilityReducers,
     schoolAdminReducers,
     schoolDetailsReducers,
-    knecAdminLoginReducers
+    knecAdminLoginReducers,
+    certificateReducers
 })

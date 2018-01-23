@@ -69,7 +69,6 @@ class StudentsList extends React.Component {
         }
         else {
            const upi=window.location.pathname.split('/')[2]
-            console.log(upi)
             this.props.getSchoolCandidates(upi).then(students => {
                 if (students) {
                     students.data.map(student => {

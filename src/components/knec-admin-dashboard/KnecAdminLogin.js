@@ -6,7 +6,7 @@ import {isEmpty} from 'lodash'
 import {knecAdminlogin, schoolAdminlogin} from '../../actions/loginActions'
 import TextFieldGroup from "../../shared/TextFieldsGroup"
 
-class Login extends React.Component {
+class KnecAdminLogin extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -100,12 +100,12 @@ class Login extends React.Component {
         return (<div className="container">
                 <div className="row">
                     <div className="col-sm-6 offset-sm-3">
-                        <h2>Knec Admin Login </h2>
+                        <h2>Knec Admin KnecAdminLogin </h2>
                         <form onSubmit={this.onSubmit}>
                             {errors.form && <div className="alert alert-danger">{errors.form}</div>}
                             <TextFieldGroup
-                                label="Username"
-                                type="text"
+                                label="Email"
+                                type="email"
                                 name="email"
                                 value={email}
                                 onChange={this.onChange}
@@ -132,12 +132,12 @@ class Login extends React.Component {
     }
 }
 
-Login.propTypes = {
+KnecAdminLogin.propTypes = {
     // isSchoolExists: PropTypes.func.isRequired,
     knecAdminlogin: PropTypes.func.isRequired,
 }
-Login.contextTypes = {
+KnecAdminLogin.contextTypes = {
     router: PropTypes.object.isRequired
 }
 
-export default connect(null, {knecAdminlogin})(Login)
+export default connect(null, {knecAdminlogin})(KnecAdminLogin)

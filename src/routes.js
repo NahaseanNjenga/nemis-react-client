@@ -17,8 +17,9 @@ import SchoolAdminLoginForm from "./components/school-admin-dashboard/SchoolAdmi
 import SchoolDetails from "./components/school-admin-dashboard/SchoolDetails"
 import requireKnecAdminAuth from "./utils/requireKnecAdminAuth"
 import KnecAdminDashboard from "./components/knec-admin-dashboard/KnecAdminDashboard"
-import Login from "./components/knec-admin-dashboard/KnecAdminLogin"
+import KnecAdminLogin from "./components/knec-admin-dashboard/KnecAdminLogin"
 import KnecAdmin from "./components/admin-dashboard/knecAdmin/KnecAdmin"
+
 
 
 export default () => {
@@ -39,8 +40,8 @@ export default () => {
                     <Route path="/school_admin/teachers" component={requireSchoolAdminAuth(TeachersPage)}/>
                     <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>
                     <Route path="/school_admin/school" component={requireSchoolAdminAuth(SchoolDetails)}/>
+                    <Route path="/knec_admin/login" component={KnecAdminLogin}/>
                     <Route path="/knec_admin/:upi" component={requireKnecAdminAuth(StudentsList)}/>
-                    <Route path="/knec_admin/login" component={Login}/>
                     <Route path="/knec_admin/" component={requireKnecAdminAuth(KnecAdminDashboard)}/>
 
 

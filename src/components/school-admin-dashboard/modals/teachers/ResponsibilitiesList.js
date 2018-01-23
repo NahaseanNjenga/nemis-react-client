@@ -90,7 +90,6 @@ class ResponsibilitiesList extends React.Component {
                     errors: {},
                     isLoading: false,
                     invalid: false, showUpdateResponsibilityForm: false
-
                 })
             },
             err => this.setState({errors: err.response.data, isLoading: false})

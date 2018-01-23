@@ -17,7 +17,7 @@ export default function (ComposedComponent) {
         }
 
         componentWillUpdate(nextProps) {
-            if (!nextProps.isKnecAdminAuthenticated) {
+            if (nextProps.isKnecAdminAuthenticated) {
                 this.context.router.history.push('/knec_admin')
             }
         }

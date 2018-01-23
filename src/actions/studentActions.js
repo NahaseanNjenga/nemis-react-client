@@ -56,4 +56,10 @@ export function getSchoolCandidates(upi) {
     return dispatch => {
         return axios.post('/schools/candidates', {upi: upi})
     }
+
+}export function uploadCertificate(certificate) {
+    console.log(certificate)
+    return dispatch => {
+        return axios.post('/students/certificates/add', certificate)
+    }
 }
