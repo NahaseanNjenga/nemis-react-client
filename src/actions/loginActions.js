@@ -58,3 +58,10 @@ export function schoolAdminLogout() {
         dispatch(setCurrentUser({}))
     }
 }
+export function knecAdminLogout() {
+    return dispatch=>{
+        localStorage.removeItem('knecAdminJwtToken')
+        setKnecAdminAuthorizationToken(false)
+        dispatch(setCurrentUser({}))
+    }
+}

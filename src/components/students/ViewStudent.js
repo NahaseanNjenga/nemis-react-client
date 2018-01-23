@@ -176,9 +176,7 @@ class ViewStudent extends React.Component {
                         <div className="tab-pane fade" id="nav-academics" role="tabpanel"
                              aria-labelledby="nav-academics-tab">
 
-                            {student.performance.length > 0 ?
                                 <CertificateList student_id={student._id}/>
-                                : 'No performance results found'}
 
 
                         </div>

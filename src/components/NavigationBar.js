@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {schoolAdminLogout, systemAdminLogout} from '../actions/loginActions'
+import {knecAdminLogout, schoolAdminLogout, systemAdminLogout} from '../actions/loginActions'
 import jwt from "jsonwebtoken"
 import SelectLoginModal from "../modals/SelectLoginModal"
 import SchoolAdminLogin from "./school-admin-dashboard/SchoolAdminLoginForm"
@@ -31,6 +31,7 @@ class NavigationBar extends React.Component {
         e.preventDefault()
         this.props.systemAdminLogout()
         this.props.schoolAdminLogout()
+        this.props.knecAdminLogout()
         this.context.router.history.push('/')
     }
 
@@ -69,14 +70,15 @@ class NavigationBar extends React.Component {
 
 
     render() {
-        const {selectLoginModal, } = this.state
+        const {selectLoginModal,} = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
         const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
         // console.log(isAuthenticated, isSchoolAdminAuthenticated)
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
         const userLinks = (<ul className="nav navbar-nav navbar-right">
             <li><a href="/logout" onClick={this.logout}>Logout</a></li>
-            <li>{token && isSchoolAdminAuthenticated? <Link to="/school_admin">&nbsp; {token.username}</Link>:''}</li>
+            <li>{token && isSchoolAdminAuthenticated ?
+                <Link to="/school_admin">&nbsp; {token.username}</Link> : ''}</li>
         </ul>)
         const guestLinks = (
             <ul className="nav navbar-nav navbar-right">
@@ -105,7 +107,8 @@ NavigationBar.propTypes = {
     systemAdminLoginReducers: PropTypes.object.isRequired,
     schoolAdminLoginReducers: PropTypes.object.isRequired,
     schoolAdminLogout: PropTypes.func.isRequired,
-    systemAdminLogout: PropTypes.func.isRequired
+    systemAdminLogout: PropTypes.func.isRequired,
+    knecAdminLogout: PropTypes.func.isRequired
 }
 NavigationBar.contextTypes = {
     router: PropTypes.object.isRequired
@@ -118,4 +121,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {systemAdminLogout, schoolAdminLogout})(NavigationBar)
+export default connect(mapStateToProps, {knecAdminLogout, systemAdminLogout, schoolAdminLogout})(NavigationBar)

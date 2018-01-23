@@ -19,6 +19,9 @@ import requireKnecAdminAuth from "./utils/requireKnecAdminAuth"
 import KnecAdminDashboard from "./components/knec-admin-dashboard/KnecAdminDashboard"
 import KnecAdminLogin from "./components/knec-admin-dashboard/KnecAdminLogin"
 import KnecAdmin from "./components/admin-dashboard/knecAdmin/KnecAdmin"
+import Academics from "./components/school-admin-dashboard/Academics"
+import Gallery from "./components/school-admin-dashboard/Gallery"
+import SchoolHistory from "./components/school-admin-dashboard/SchoolHistory"
 
 
 
@@ -43,6 +46,9 @@ export default () => {
                     <Route path="/knec_admin/login" component={KnecAdminLogin}/>
                     <Route path="/knec_admin/:upi" component={requireKnecAdminAuth(StudentsList)}/>
                     <Route path="/knec_admin/" component={requireKnecAdminAuth(KnecAdminDashboard)}/>
+                    <Route path="/school_admin/academics" component={requireSchoolAdminAuth(Academics)}/>
+                    <Route path="/school_admin/gallery" component={requireSchoolAdminAuth(Gallery)}/>
+                    <Route path="/school_admin/history" component={requireSchoolAdminAuth(SchoolHistory)}/>
 
 
                 </Switch>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {addCertificate, getCertificates} from "../../actions/certificateActions"
+import {addCertificate, clearCertificates, getCertificates} from "../../actions/certificateActions"
 import Certificate from "./Certificate"
 import jwt from "jsonwebtoken"
 import UploadCertificateModal from './UploadCertficateModal'
@@ -28,10 +28,12 @@ class CertificateList extends React.Component {
     }
 
     closeUploadCertificateModal() {
+        this.componentDidMount()
         this.setState({showUploadCertificateModal: false})
     }
 
     componentDidMount() {
+        this.props.clearCertificates()
         this.props.getCertificates(this.props.student_id).then(certificates => {
             if (certificates.data.performance.length > 0) {
                 certificates.data.performance.map(certificate => {
@@ -56,25 +58,27 @@ class CertificateList extends React.Component {
     render() {
         let count = 1
         const {role, showUploadCertificateModal, certificateOptions} = this.state
+        console.log(role,)
         return (
             <div>
-                {role === 'knec' ? <button className="btn btn-primary" onClick={this.showUploadCertificateModal}>Add
+                {role === 'knec' && certificateOptions!=='none'? <button className="btn btn-primary" onClick={this.showUploadCertificateModal}>Add
                     certificate</button> : ''}
                 <br/>
 
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Type</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.props.certificates.map(certificate => {
-                        return <Certificate certificate={certificate} count={count++}/>
-                    })}
-                    </tbody>
-                </table>
+                {this.props.certificates.length > 0 ? <table className="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.certificates.map(certificate => {
+                            return <Certificate certificate={certificate} count={count++}/>
+                        })}
+                        </tbody>
+                    </table>
+                    : 'No certificates found'}
                 <UploadCertificateModal show={showUploadCertificateModal} onClose={this.closeUploadCertificateModal}
                                         certificateOptions={certificateOptions}
                                         student_id={this.props.student_id}/>
@@ -87,6 +91,7 @@ CertificateList
     .propTypes = {
     addCertificate: PropTypes.func.isRequired,
     getCertificates: PropTypes.func.isRequired,
+    clearCertificates:PropTypes.func.isRequired,
     student_id: PropTypes.string.isRequired,
 }
 
@@ -98,7 +103,7 @@ mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getCertificates, addCertificate})
+export default connect(mapStateToProps, {getCertificates, clearCertificates,addCertificate})
 
 (
     CertificateList

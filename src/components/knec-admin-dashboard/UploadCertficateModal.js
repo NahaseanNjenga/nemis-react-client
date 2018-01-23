@@ -80,6 +80,7 @@ class UploadCertficateModal extends React.Component {
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
+
                     this.props.onClose()
                     this.setState({
                         category: '',
@@ -147,22 +148,14 @@ class UploadCertficateModal extends React.Component {
                     <ModalHeader toggle={onClose}>Upload a certificate</ModalHeader>
                     <ModalBody>
                         <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                            <div className="form-group">
-                                <label htmlFor="category">Year of study</label>
-                                <select className="form-control form-control-sm" id="category" name="category"
-                                        required="true" onChange={this.onChange}>
-                                    <option>Select</option>
-                                    <option value="KCPE">KCPE</option>
-                                    <option value="KCSE">KCSE</option>
-                                </select>
-                            </div>
+                            {year_of_study()}
                             <div className="form-group">
                                <div className="custom-file">
                                    <input type="file" className="custom-file-input btn btn-success" id="customFile" accept=".pdf" onChange={this.onSelectCertificate}/>
                                        <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                            </div>
                             </div>
-                            {year_of_study()}
+
                             <div className="form-group">
                                 <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
                                         type="submit" onClick={this.onSubmit}>Upload

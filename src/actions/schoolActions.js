@@ -91,3 +91,22 @@ export function getSchoolCategory(upi) {
         return axios.post('/schools/category',{upi:upi})
     }
 }
+export function getSchoolHistory(upi) {
+    return dispatch=>{
+        return axios.post('/schools/history',{upi:upi})
+    }
+}
+export function addSchoolHistory(history) {
+    return dispatch=>{
+        console.log(history)
+        return axios.post('/schools/history/add',history)
+    }
+}
+
+export function updateSchoolHistory(history) {
+    return dispatch=>{
+        console.log(history)
+        return axios.post('/schools/history/update',history)
+    }
+}
+
