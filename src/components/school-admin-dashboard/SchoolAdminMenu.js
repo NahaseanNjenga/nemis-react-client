@@ -5,12 +5,31 @@ import jwt from 'jsonwebtoken'
 export default () => {
     const token = jwt.decode(localStorage.schoolAdminJwtToken)
     // const role=token.role
-    return token ? <ul className="list-unstyled">
-        <li><Link to="/school_admin/students">Students</Link></li>
-        <li><Link to="/school_admin/teachers">Teachers</Link></li>
-        <li><Link to="/school_admin/school">School Details</Link></li>
-        <li><Link to="/school_admin/academics">Performance and Academics</Link></li>
-        <li><Link to="/school_admin/gallery">Gallery</Link></li>
-        <li><Link to="/school_admin/history">School History</Link></li>
-    </ul> : ''
+    return token ?
+        <nav className="collapse bd-links" id="bd-docs-nav">
+            <div className="bd-toc-item">
+                <div className="bd-toc-item">
+                    <Link to="/school_admin/students" className="bd-toc-link"><h5>Students</h5></Link>
+                </div>
+                <div className="bd-toc-item">
+                    <Link to="/school_admin/teachers" className="bd-toc-link"><h5>Teachers</h5></Link>
+                </div>
+                <div className="bd-toc-item">
+                    <Link to="/school_admin/school" className="bd-toc-link"><h5>School Details</h5></Link>
+                </div>
+                <div className="bd-toc-item">
+                    <Link to="/school_admin/gallery" className="bd-toc-link"><h5>Gallery</h5></Link>
+                </div>
+                <div className="bd-toc-item">
+                    <Link to="/school_admin/history" className="bd-toc-link"><h5>School History</h5></Link>
+                </div>
+                {/*<div className="bd-toc-item">*/}
+
+                {/*<li><Link to="/school_admin/academics" className="bd-toc-link">Performance and Academics</Link></li>*/}
+
+                {/*</div>*/}
+            </div>
+        </nav>
+        :
+        ''
 }

@@ -110,36 +110,7 @@ class SchoolDetails extends React.Component {
                     </div>
                     <div className="col-md-9">
                         <br/>
-                        <ul className="nav nav-pills nav-fill" id="pills-tab" role="tablist">
-                            <li className="nav-item">
-                                <a className="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home"
-                                   role="tab" aria-controls="pills-home" aria-selected="true">Basic Info</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="pills-students-tab" data-toggle="pill"
-                                   href="#pills-students" role="tab" aria-controls="pills-students"
-                                   aria-selected="false">Students</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="pills-employees-tab" data-toggle="pill"
-                                   href="#pills-employees" role="tab" aria-controls="pills-employees"
-                                   aria-selected="false">Employees</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="pills-performance-tab" data-toggle="pill"
-                                   href="#pills-performance" role="tab" aria-controls="pills-performance"
-                                   aria-selected="false">Performance and Academics </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="pills-gallery-tab" data-toggle="pill" href="#pills-gallery"
-                                   role="tab" aria-controls="pills-gallery" aria-selected="false">Gallery </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="pills-history-tab" data-toggle="pill" href="#pills-history"
-                                   role="tab" aria-controls="pills-history" aria-selected="false">School History </a>
-                            </li>
 
-                        </ul>
                         <br/>
                         <div className="tab-content" id="pills-tabContent">
                             <div className="tab-pane fade show active" id="pills-home" role="tabpanel"

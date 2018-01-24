@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
-import {addTeacher, clearTeachers, getSchoolTeachers, getTeachers} from "../../actions/teacherActions"
+import {
+    addTeacher, clearTeachers, getSchoolTeachers, getTeachers,
+    uploadProfilePicture
+} from "../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
 import Menu from "../admin-dashboard/Menu"
 import NewTeacherForm from "./NewTeacherForm"
@@ -38,9 +41,9 @@ class TeachersList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.clearTeachers()
         if (window.location.pathname === '/admin/teachers') {
             this.props.getTeachers().then(teachers => {
+        this.props.clearTeachers()
                 if (teachers) {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
@@ -55,6 +58,7 @@ class TeachersList extends React.Component {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
             const upi = token.school_upi
             this.props.getSchoolTeachers(upi).then(teachers => {
+        this.props.clearTeachers()
                 if (teachers) {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
@@ -92,10 +96,12 @@ class TeachersList extends React.Component {
         let count = 1
         return (
             <div>
+                    <h1>Active teachers</h1>
                 {teachers.length > 0 ? <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Picture</th>
                         <th scope="col">TSC Id</th>
                         <th scope="col">Surname</th>
                         <th scope="col">First name</th>
@@ -123,11 +129,12 @@ TeachersList.propTypes = {
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
 
+
 }
 
 function mapStateToProps(state) {
     return {teachers: state.teacherReducers}
 }
 
-export default connect(mapStateToProps, {addTeacher, clearTeachers, getTeachers, getSchoolTeachers})(TeachersList)
+export default connect(mapStateToProps, {addTeacher, clearTeachers, getTeachers, getSchoolTeachers,})(TeachersList)
 

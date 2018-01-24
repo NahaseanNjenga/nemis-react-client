@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import validator from 'validator'
-import {isEmpty} from 'lodash'
+import {isEmpty, isDate} from 'lodash'
 import TextFieldGroup from '../../shared/TextFieldsGroup'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {addStudent, registerStudent} from "../../actions/studentActions"
@@ -67,7 +67,12 @@ class NewStudentForm extends React.Component {
         if (validator.isEmpty(data.dob)) {
             errors.dob = 'This field is required'
         }
-
+        if (validator.isEmpty(data.dob)) {
+            errors.dob = 'This field is required'
+        }
+        if (Date.parse(data.dob) > Date.parse(new Date())) {
+            errors.dob = "Date of birth cannot be in future"
+        }
         return {
             errors,
             isValid: isEmpty(errors)
@@ -147,44 +152,55 @@ class NewStudentForm extends React.Component {
                 <option value="2">2</option>
             </select>
         </div>
-        const primary = <div className="form-group">
-            <label htmlFor="year">Year of study</label>
-            <select className="form-control form-control-sm" id="year" name="year"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-            </select>
-        </div>
-        const secondary = <div className="form-group">
-            <label htmlFor="year">Year of study</label>
-            <select className="form-control form-control-sm" id="year" name="year"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-        </div>
-        const tertiary = <div className="form-group">
-            <label htmlFor="year">Year of study</label>
-            <select className="form-control form-control-sm" id="year" name="year"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
+        const primary =
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+
+                    </select>
+                </div>
+            </div>
+
+        const secondary =
+
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+
+        const tertiary =
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+
         const year_of_study = () => {
             switch (category) {
                 case 'ECDE':
@@ -247,14 +263,16 @@ class NewStudentForm extends React.Component {
                                 error={errors.dob}
                             />
 
-                            <div className="form-group">
-                                <label htmlFor="gender">Gender</label>
-                                <select className="form-control form-control-sm" id="gender" name="gender"
-                                        required="true" onChange={this.onChange}>
-                                    <option>Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">female</option>
-                                </select>
+                            <div className="form-group row">
+                                <label className="col-sm-3 col-form-label" htmlFor="gender">Gender</label>
+                                <div className="col-sm-9">
+                                    <select className="form-control form-control-sm" id="gender" name="gender"
+                                            required="true" onChange={this.onChange}>
+                                        <option>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">female</option>
+                                    </select>
+                                </div>
                             </div>
                             {year_of_study()}
                             <div className="form-group">

@@ -2,28 +2,28 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Teacher from "./Teacher"
 import {
-    addTeacher, clearTeachers, getSchoolTeachers, getRetiredTeachers,
-    getRetiredSchoolTeachers
+    addTeacher, clearTeachers, getSchoolTeachers, getDeceasedTeachers,
+    getTransferredSchoolTeachers
 } from "../../actions/teacherActions"
 import connect from "react-redux/es/connect/connect"
-import Menu from "../admin-dashboard/Menu"
 import NewTeacherForm from "./NewTeacherForm"
-import ViewTeacher from "./ViewTeacher"
 import jwt from 'jsonwebtoken'
-import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
-import RetiredTeacher from "./RetiredTeacher"
+import DeceasedTeacher from "./DeceasedTeacher"
+import TransferredTeacher from "./TransferredTeacher"
 
-class RetiredTeachersList extends React.Component {
+class TransferredTeachersList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             showNewTeacherModal: false,
             role: '',
-            teachers: ''
+            teachers: '',
+            upi: ''
         }
+        const token = jwt.decode(localStorage.schoolAdminJwtToken)
+        this.state.upi = token.school_upi
         this.props.clearTeachers()
         this.onChange = this.onChange.bind(this)
-        // this.addToTeachers = this.addToTeachers.bind(this)
 
     }
 
@@ -41,32 +41,16 @@ class RetiredTeachersList extends React.Component {
     }
 
     componentDidMount() {
-        if (window.location.pathname === '/admin/teachers') {
-            this.props.getRetiredTeachers().then(teachers => {
-        this.props.clearTeachers()
-                if (teachers) {
-                    teachers.data.map(teacher => {
-                        this.props.addTeacher(teacher)
-                    })
-                    this.setState({role: 'system', teachers: teachers.data})
-                } else {
-                    //No schools message
-                }
-            })
-        }
-        else if (window.location.pathname === '/school_admin/teachers') {
-            const token = jwt.decode(localStorage.schoolAdminJwtToken)
-            const upi = token.school_upi
-            this.props.getRetiredSchoolTeachers(upi).then(teachers => {
-        this.props.clearTeachers()
-                if (teachers) {
+        if (window.location.pathname === '/school_admin/teachers') {
 
+            this.props.getTransferredSchoolTeachers(this.state.upi).then(teachers => {
+        this.props.clearTeachers()
+                if (teachers) {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
                     this.setState({role: 'school', teachers: teachers.data})
                 } else {
-
                     //No schools message
                 }
             })
@@ -74,6 +58,7 @@ class RetiredTeachersList extends React.Component {
         }
     }
 
+    //
     // onShowNewTeacherModal() {
     //     this.setState({showNewTeacherModal: true})
     //
@@ -82,48 +67,49 @@ class RetiredTeachersList extends React.Component {
     // onCloseNewTeacherModal() {
     //     this.setState({showNewTeacherModal: false})
     // }
-    // addToTeachers(teacher) {
-    //     this.setState({teachers: teacher, ...this.state.teachers})
+    // addToTeachers(teacher){
+    //     this.setState({teachers:teacher,...this.state.teachers})
+    //
     // }
-
+    // filter(e){
+    //     e.preventDefault()
+    // }
 
     render() {
         const {teachers} = this.props
-
         let count = 1
         return (
             <div>
-                    <h1>Retired Teachers</h1>
-                {teachers.length > 0? <table className="table">
+                <h1>Transferred Teachers</h1>
+                {teachers.length > 0 ?
+                    <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">TSC Id</th>
                         <th scope="col">Picture</th>
                         <th scope="col">Surname</th>
-                        <th scope="col">First name</th>
-                        <th scope="col">Date of Retirement</th>
+                        <th scope="col">Date of Clearance</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {teachers.map((teacher, i) => {
-                        // console.log(teacher)
-                        return teacher.teacher_id?<RetiredTeacher count={count++} teacher={teacher} key={i}/>:''
-                    })}
+                    {teachers.length > 0 ? teachers.map((teacher, i) => {
+                        return <TransferredTeacher school_upi={this.state.upi} count={count++} teacher={teacher}
+                                                   key={i}/>
+                    }) : ''}
                     </tbody>
-                </table> : 'No retired teachers found'}
+                </table> : 'No transferred teachers found'}
             </div>)
     }
 
 }
 
-RetiredTeachersList.propTypes = {
+TransferredTeachersList.propTypes = {
     addTeacher: PropTypes.func.isRequired,
-    getRetiredTeachers: PropTypes.func.isRequired,
     clearTeachers: PropTypes.func.isRequired,
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
-    getRetiredSchoolTeachers: PropTypes.func.isRequired,
+    getTransferredSchoolTeachers: PropTypes.func.isRequired,
 
 
 }
@@ -135,8 +121,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     addTeacher,
     clearTeachers,
-    getRetiredTeachers,
+    getDeceasedTeachers,
     getSchoolTeachers,
-    getRetiredSchoolTeachers
-})(RetiredTeachersList)
+    getTransferredSchoolTeachers
+})(TransferredTeachersList)
 

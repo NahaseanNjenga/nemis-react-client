@@ -18,18 +18,19 @@ class StudentsList extends React.Component {
         this.state = {
             showNewStudentModal: false,
             role: '',
-            students:''
+            students: ''
         }
+        this.state.role='knec'
         this.onShowNewStudentModal = this.onShowNewStudentModal.bind(this)
         this.onCloseNewStudentModal = this.onCloseNewStudentModal.bind(this)
         this.onChange = this.onChange.bind(this)
     }
 
     onChange(e) {
-        const {students}= this.state
+        const {students} = this.state
         let arr_results = []
         this.props.clearStudents()
-        for (let i = 0; i <students.length; i++) {
+        for (let i = 0; i < students.length; i++) {
             let exp = new RegExp(e.target.value, 'i')
             if (students[i].upi.match(exp)) {
                 arr_results.push(students[i])
@@ -47,7 +48,7 @@ class StudentsList extends React.Component {
                     students.data.map(student => {
                         this.props.addStudent(student)
                     })
-                    this.setState({role: 'system',students:students.data})
+                    this.setState({role: 'system', students: students.data})
                 } else {
                     //No schools message
                 }
@@ -61,20 +62,21 @@ class StudentsList extends React.Component {
                     students.data.map(student => {
                         this.props.addStudent(student)
                     })
-                    this.setState({role: 'school',students:students.data})
+                    this.setState({role: 'school', students: students.data})
                 } else {
                     //No schools message
                 }
             })
         }
         else {
-           const upi=window.location.pathname.split('/')[2]
+            const upi = window.location.pathname.split('/')[2]
+
             this.props.getSchoolCandidates(upi).then(students => {
                 if (students) {
                     students.data.map(student => {
                         this.props.addStudent(student)
                     })
-                    this.setState({role: 'school',students:students.data})
+                    this.setState({ students: students.data})
                 } else {
                     //No schools message
                 }
@@ -105,25 +107,28 @@ class StudentsList extends React.Component {
                     <div className="col-md-9">
                         <br/>
                         <br/>
+                            {role==='knec'?<h1>List of all candidates in a given school</h1>:role==='system'?<h1>List of all students in the country</h1>:''}
                         <div className="row">
+                            <br/>
+                            <br/>
                             <div className="col-sm-6">
+
                                 <form>
                                     <div className="input-group">
                                         <input type="text" className="form-control" placeholder="Search Student UPI"
-                                               aria-label="Search Student UPI" aria-describedby="basic-addon1" onChange={this.onChange}/>
+                                               aria-label="Search Student UPI" aria-describedby="basic-addon1"
+                                               onChange={this.onChange}/>
                                         <span className="input-group-addon" id="basic-addon1"><i
                                             className="fa fa-search"></i></span>
                                     </div>
                                 </form>
                             </div>
-                            <div className="col-sm-2 offset-sm-1">
-                                <button className="btn btn-sm btn-info" onClick={this.onShowNewStudentModal}>Register
-                                    new student
-                                </button>
-                            </div>
+
+                            {role ? role === 'system'||role === 'school' ? <div className="col-sm-2 offset-sm-1">
+                                <button className="btn btn-sm btn-info" onClick={this.onShowNewStudentModal}>Register new student</button></div> : '':''}
                         </div>
                         <br/>
-                        {students.length>0? <table className="table">
+                        {students.length > 0 ? <table className="table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -138,7 +143,7 @@ class StudentsList extends React.Component {
                                 return <Student count={count++} student={student} key={i}/>
                             })}
                             </tbody>
-                        </table>:'No students found'}
+                        </table> : 'No students found'}
                     </div>
                 </div>
                 <NewStudentForm show={showNewStudentModal} onClose={this.onCloseNewStudentModal}
@@ -160,5 +165,11 @@ function mapStateToProps(state) {
     return {students: state.studentReducers}
 }
 
-export default connect(mapStateToProps, {addStudent, getStudents, getSchoolStudents, clearStudents,getSchoolCandidates})(StudentsList)
+export default connect(mapStateToProps, {
+    addStudent,
+    getStudents,
+    getSchoolStudents,
+    clearStudents,
+    getSchoolCandidates
+})(StudentsList)
 

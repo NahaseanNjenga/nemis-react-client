@@ -100,9 +100,19 @@ export function getDeceasedSchoolTeachers(upi) {
         return axios.post('/schools/teachers/deceased',{upi:upi})
     }
 }
+export function getTransferredSchoolTeachers(upi) {
+    return dispatch=>{
+        return axios.post('/schools/teachers/transferred',{upi:upi})
+    }
+}
 
 export function addResponsibility(responbsibility) {
     return dispatch=>{
         return axios.post('/update_teacher_info/responsibilities/add',responbsibility)
+    }
+}
+export function uploadProfilePicture(picture) {
+    return dispatch=>{
+        return axios.post('/update_teacher_info/picture/add',picture)
     }
 }

@@ -48,10 +48,13 @@ class ClearTeacher extends React.Component {
                 <ModalHeader toggle={onClose}>Clear Teacher</ModalHeader>
                 <ModalBody>
                     <form onSubmit={this.onClear}>
+                        <div className="alert alert-primary" role="alert">
+                            Leave blank to automatically take today's date
+                        </div>
                         <TextFieldGroup
-                            label="Select date of clearance. Leave blank to automatically take today's date"
+                            label="Date of clearance."
                             type="date"
-                            name="dob"
+                            name="dob" max={new Date()}
                             value={date_cleared}
                             onChange={this.onChange}
                             error={errors.dob}

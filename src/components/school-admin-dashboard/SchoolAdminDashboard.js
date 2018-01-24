@@ -1,7 +1,5 @@
 import React from 'react'
-import Menu from "../admin-dashboard/Menu"
 import SchoolAdminMenu from "./SchoolAdminMenu"
-import jwt from "jsonwebtoken"
 
 class SchoolAdminDashboard extends React.Component {
 

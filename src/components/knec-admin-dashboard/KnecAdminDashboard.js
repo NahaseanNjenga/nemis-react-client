@@ -14,7 +14,9 @@ class KnecAdminDashboard extends React.Component {
     }
 
     render() {
-        return (<div><KnecSchoolList/></div>)
+        return (<div>
+            <KnecSchoolList/>
+        </div>)
     }
 }
 

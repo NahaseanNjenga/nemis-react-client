@@ -5,6 +5,7 @@ import validator from 'validator'
 import {isEmpty} from 'lodash'
 import{schoolAdminlogin} from '../../actions/loginActions'
 import TextFieldGroup from "../../shared/TextFieldsGroup"
+import {Link} from "react-router-dom"
 
 class SchoolAdminLoginForm extends React.Component {
     constructor(props) {
@@ -132,11 +133,12 @@ class SchoolAdminLoginForm extends React.Component {
                                 error={errors.password}
                             />
                             <div className="form-group">
-                                <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
+                                <button disabled={isLoading || invalid} className="btn btn-primary btn-sm form-control col-sm-4 offset-sm-3"
                                         type="submit">Login
                                 </button>
                             </div>
                         </form>
+                        <Link to="/school_admin/forgot password">Forgot Password</Link>
                     </div>
                 </div>
             </div>

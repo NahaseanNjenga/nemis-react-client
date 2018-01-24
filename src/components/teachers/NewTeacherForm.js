@@ -24,8 +24,8 @@ class NewTeacherForm extends React.Component {
             gender: '',
             telephone: '',
             nationalID: '',
-            admission_date:'',
-            disable_upi:false,
+            admission_date: '',
+            disable_upi: false,
             errors: {},
             isLoading: false,
             invalid: false
@@ -39,8 +39,9 @@ class NewTeacherForm extends React.Component {
     componentDidMount() {
         if (window.location.pathname === '/school_admin/teachers') {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
-            this.setState({school_upi: token.school_upi,disable_upi:true})
+            this.setState({school_upi: token.school_upi, disable_upi: true})
         }
+
     }
 
     checkTeacherExists(e) {
@@ -66,8 +67,11 @@ class NewTeacherForm extends React.Component {
 
     validateInput(data) {
         let errors = {}
-        if (validator.isEmpty(data.tsc)) {
+        if (!data.tsc) {
             errors.tsc = 'This field is required'
+        }
+        if(data.tsc.length<6){
+            errors.tsc="Tsc number must be greator than 6 characters"
         }
         if (validator.isEmpty(data.first_name)) {
             errors.first_name = 'This field is required'
@@ -87,12 +91,22 @@ class NewTeacherForm extends React.Component {
         if (validator.isEmpty(data.dob)) {
             errors.dob = 'This field is required'
         }
-        if (validator.isEmpty(data.nationalID)) {
-            errors.nationalID = 'This field is required'
+        if (Date.parse(data.dob) > Date.parse(new Date('2000'))) {
+            errors.dob = "A teacher must be 18 and above"
         }
         if (validator.isEmpty(data.admission_date)) {
             errors.admission_date = 'This field is required'
         }
+        if (Date.parse(data.dob) > Date.parse(data.admission_date)) {
+            errors.admission_date = 'You cannot be employed before you are born'
+        }
+        if (Date.parse(data.admission_date) < Date.parse(new Date('1976'))) {
+            errors.dob = 'You should be retired by now'
+        }
+        if (Date.parse(data.dob) < Date.parse(new Date('1956'))) {
+            errors.dob = 'You should be retired by now'
+        }
+
 
         return {
             errors,
@@ -108,18 +122,18 @@ class NewTeacherForm extends React.Component {
         return isValid
     }
 
-     onSubmit(e) {
+    onSubmit(e) {
         e.preventDefault()
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
             this.props.registerTeacher(this.state).then(
-                 (teacher) => {
+                (teacher) => {
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
                     this.props.onClose()
-                   this.props.addTeacher(teacher.data)
+                    this.props.addTeacher(teacher.data)
                     this.setState({
                         tsc: '',
                         surname: '',
@@ -130,7 +144,8 @@ class NewTeacherForm extends React.Component {
                         gender: '',
                         telephone: '',
                         nationalID: '',
-                        admission_date:'',
+                        admission_date: '',
+                        subjects: [],
                         errors: {},
                         isLoading: false,
                         invalid: false
@@ -148,7 +163,7 @@ class NewTeacherForm extends React.Component {
     render() {
         const {show, onClose} = this.props
 
-        const {errors, isLoading, invalid, tsc, surname, first_name, last_name, email, dob, school_upi, telephone, nationalID,admission_date,disable_upi} = this.state
+        const {errors, isLoading, invalid, tsc, surname, first_name, last_name, email, dob, school_upi, telephone, nationalID, admission_date, disable_upi} = this.state
         console.log(disable_upi)
         if (show) {
             return (
@@ -158,7 +173,7 @@ class NewTeacherForm extends React.Component {
                         <form onSubmit={this.onSubmit}>
                             <TextFieldGroup
                                 label="TSC Id"
-                                type="text"
+                                type="number"
                                 name="tsc"
                                 value={tsc} autofocus={true}
                                 onChange={this.onChange}
@@ -219,14 +234,7 @@ class NewTeacherForm extends React.Component {
                                 error={errors.telephone}
 
                             />
-                            <TextFieldGroup
-                                label="National ID"
-                                type="number"
-                                name="nationalID"
-                                value={nationalID}
-                                onChange={this.onChange}
-                                error={errors.nationalID}
-                            />
+
                             <TextFieldGroup
                                 label="Date of Employment"
                                 type="date"
@@ -235,16 +243,29 @@ class NewTeacherForm extends React.Component {
                                 onChange={this.onChange}
                                 error={errors.admission_date}
                             />
-                            <div className="form-group">
-                                <label htmlFor="gender">Gender</label>
-                                <select className="form-control form-control-sm" id="gender" name="gender"
-                                        required="true" onChange={this.onChange}>
-                                    <option>Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">female</option>
-                                </select>
+                            <div className="form-group row">
+                                <label className="col-sm-3 col-form-label" htmlFor="gender">Gender</label>
+                                <div className="col-sm-9">
+                                    <select className="form-control form-control-sm" id="gender" name="gender"
+                                            required="true" onChange={this.onChange}>
+                                        <option>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">female</option>
+                                    </select>
+                                </div>
                             </div>
-                            {disable_upi?'':<TextFieldGroup
+                            <div className="form-group row">
+                                <label className="col-sm-3 col-form-label" htmlFor="gender">Teaching subject 1</label>
+                                <div className="col-sm-9">
+                                    <select className="form-control form-control-sm" id="gender" name="gender"
+                                            required="true" onChange={this.onChange}>
+                                        <option>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {disable_upi ? '' : <TextFieldGroup
                                 label="School UPI"
                                 type="text"
                                 name="school_upi"

@@ -74,31 +74,40 @@ class NavigationBar extends React.Component {
         const {isAuthenticated} = this.props.systemAdminLoginReducers
         const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
         // console.log(isAuthenticated, isSchoolAdminAuthenticated)
+
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
-        const userLinks = (<ul className="nav navbar-nav navbar-right">
-            <li><a href="/logout" onClick={this.logout}>Logout</a></li>
+        const userLinks = (<ul className="nav navbar-nav  navbar-right">
             <li>{token && isSchoolAdminAuthenticated ?
-                <Link to="/school_admin">&nbsp; {token.username}</Link> : ''}</li>
+                <Link to="/school_admin" className="h5"> Dashboard &nbsp;</Link> : ''}</li>
+            <li><a href="/logout" type="button"  onClick={this.logout} className="white-link btn btn-dark">Logout</a></li>
         </ul>)
         const guestLinks = (
-            <ul className="nav navbar-nav navbar-right">
-                <li><a href="" onClick={this.onSignin}>Sign in</a></li>
+            <ul className="navbar-nav  ml-md-auto d-none d-md-flex">
+                <li><a href="" type="button" className="white-link btn btn-primary" onClick={this.onSignin}>Sign in</a></li>
             </ul>)
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-info">
-                <div className="">
-                    <div className="navbar-headers">
-                        <Link to="/" className="navbar-brand">Nemis</Link>
-                    </div>
-                    <div className="collapse navbar-collapse my-2 my-lg-0">
-                        {isAuthenticated || isSchoolAdminAuthenticated ? userLinks : window.location.pathname === '/admin' || window.location.pathname === '/admin/login' ? '' : guestLinks}
-                    </div>
-                </div>
-                <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin}
-                                  onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
-                {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
+            <div>
+                <nav className="navbar navbar-expand-lg navbar-info bg-info fixed-top">
 
-            </nav>
+                    <Link to="/" className="h3">Nemis</Link>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+
+                        <div className="navbar-nav mr-auto">
+
+                        </div>
+                        <div className="my-2 my-lg-0">
+                            <div className=" mr-sm-2 my-2 my-sm-0">
+                                {isAuthenticated || isSchoolAdminAuthenticated ? userLinks : window.location.pathname === '/admin' || window.location.pathname === '/admin/login' ? '' : guestLinks}
+                            </div>
+                        </div>
+                        <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin}
+                                          onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
+                        {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
+
+                </nav>
+            </div>
         )
     }
 }

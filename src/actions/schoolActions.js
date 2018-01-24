@@ -98,14 +98,17 @@ export function getSchoolHistory(upi) {
 }
 export function addSchoolHistory(history) {
     return dispatch=>{
-        console.log(history)
         return axios.post('/schools/history/add',history)
     }
 }
 
 export function updateSchoolHistory(history) {
     return dispatch=>{
-        console.log(history)
+        return axios.post('/schools/history/update',history)
+    }
+}
+export function getS(history) {
+    return dispatch=>{
         return axios.post('/schools/history/update',history)
     }
 }

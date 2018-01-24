@@ -45,13 +45,13 @@ class KnecSchoolList extends React.Component {
         const {schools} = this.props
         let count = 1
         return (
-            <div className="container-fluid">
+            <div className="container">
                 <div className="row">
-                    <div className="col-md-2">
-                    </div>
-                    <div className="col-md-9">
+                    <div className="col-sm-12" >
                         <br/>
+                        <h1>Knec admin Dashboard</h1>
                         <br/>
+                        <h4>List of all seconday and primary schools</h4>
                         <div className="row">
                             <div className="col-sm-6">
                                 <form>

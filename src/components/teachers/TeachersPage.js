@@ -11,6 +11,7 @@ import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
 import RetiredTeachersList from "./RetiredTeachersList"
 import DeceasedTeachersList from "./DeceasedTeachersList"
 import TeachersList from "./TeachersList"
+import TransferredTeachersList from "./TransferredTeachersList"
 
 class TeachersPage extends React.Component {
     constructor(props) {
@@ -101,7 +102,8 @@ class TeachersPage extends React.Component {
                            Filter
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="" onClick={this.filter} name="working">Working</a>
+                            <a className="dropdown-item" href="" onClick={this.filter} name="working">Active</a>
+                            <a className="dropdown-item" href="" onClick={this.filter} name="transferred">Transferred</a>
                                    <a className="dropdown-item" href="" onClick={this.filter} name="retired">Retired</a>
                             <a className="dropdown-item" href="" onClick={this.filter} name="deceased">Deceased</a>
                         </div>
@@ -110,11 +112,11 @@ class TeachersPage extends React.Component {
                         </div>
                         <br/>
                         {life === 'working' ? <TeachersList/> : life === 'retired' ?
-                            <RetiredTeachersList/> : life === 'deceased' ? <DeceasedTeachersList/> : ''}
+                            <RetiredTeachersList/> : life === 'deceased' ? <DeceasedTeachersList/> : life==='transferred'?<TransferredTeachersList/>:''}
                     </div>
                 </div>
                 <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher} />
+                                addTeacher={this.props.addTeacher}/>
             </div>)
     }
 
