@@ -47,9 +47,14 @@ export function getSchoolStudents(upi) {
         return axios.post('/schools/students', {upi: upi})
     }
 }
-export function searchStudent(upi) {
+export function searchStudentUpi(upi) {
     return dispatch => {
-        return axios.post('/search', {upi: upi})
+        return axios.post('/search/student/upi', {upi: upi})
+    }
+}
+export function searchStudentName(name) {
+    return dispatch => {
+        return axios.post('/search/student/name', {name: name})
     }
 }
 export function getSchoolCandidates(upi) {
@@ -57,9 +62,14 @@ export function getSchoolCandidates(upi) {
         return axios.post('/schools/candidates', {upi: upi})
     }
 
-}export function uploadCertificate(certificate) {
-    console.log(certificate)
+}
+export function uploadCertificate(certificate) {
     return dispatch => {
         return axios.post('/students/certificates/add', certificate)
+    }
+}
+export function uploadProfilePicture(photo) {
+    return dispatch => {
+        return axios.post('/students/picture/add', photo)
     }
 }

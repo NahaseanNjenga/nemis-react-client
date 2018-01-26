@@ -68,6 +68,14 @@ class StudentsList extends React.Component {
                 }
             })
         }
+        // else if (window.location.pathname === '/') {
+        //     console.log('reacherd here')
+        //     this.props.students.map(student => {
+        //         this.props.addStudent(student)
+        //     })
+        //     this.setState({students: this.props.students})
+        // }
+
         else {
             const upi = window.location.pathname.split('/')[2]
 
@@ -132,6 +140,7 @@ class StudentsList extends React.Component {
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Picture</th>
                                 <th scope="col">UPI</th>
                                 <th scope="col">Surname</th>
                                 <th scope="col">Firstname</th>

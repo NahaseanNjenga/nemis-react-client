@@ -146,9 +146,9 @@ class ViewTeacher extends React.Component {
                 photos => {
                     this.props.onClose()
                     upload.files = undefined
-                    photos.data.gallery.map(photo => {
-                        this.props.addPhoto(photo)
-                    })
+                    // photos.data.gallery.map(photo => {
+                    //     this.props.addPhoto(photo)
+                    // })
                     this.setState({selectedFile: '', showPictureModal: false})
                 }
             )

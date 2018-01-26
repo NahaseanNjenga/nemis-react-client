@@ -111,6 +111,16 @@ export function addResponsibility(responbsibility) {
         return axios.post('/update_teacher_info/responsibilities/add',responbsibility)
     }
 }
+export function searchTeacherTsc(tsc_number) {
+    return dispatch => {
+        return axios.post('/search/teachers/tsc', {tsc_number: tsc_number})
+    }
+}
+export function searchTeacherName(name) {
+    return dispatch => {
+        return axios.post('/search/teachers/name', {name: name})
+    }
+}
 export function uploadProfilePicture(picture) {
     return dispatch=>{
         return axios.post('/update_teacher_info/picture/add',picture)

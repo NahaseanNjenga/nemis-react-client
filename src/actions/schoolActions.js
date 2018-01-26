@@ -113,3 +113,18 @@ export function getS(history) {
     }
 }
 
+export function searchSchoolUpi(upi) {
+    return dispatch => {
+        return axios.post('/search/schools/upi', {upi: upi})
+    }
+}
+export function searchSchoolName(name) {
+    return dispatch => {
+        return axios.post('/search/schools/name', {name: name})
+    }
+}
+export function searchSchoolCounty(county) {
+    return dispatch => {
+        return axios.post('/search/schools/county', {county: county})
+    }
+}

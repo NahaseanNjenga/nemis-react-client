@@ -40,7 +40,7 @@ class Teacher extends React.Component {
         return (
             <tr>
                 <th scope="row">{count}</th>
-                <td>{teacher.picture? <img src={`/uploads/${teacher.picture.path}`} alt="Profile picture" className="rounded-circle photo" onClick={this.onViewPhoto} width="75" height="75"/>: <img src={`/uploads/default.png`} alt="Profile picture" className="rounded-circle" width="75" height="75"/>}</td>
+                <td>{teacher.picture? <img src={`/uploads/${teacher.picture.path}`} alt="Profile picture" className="rounded-circle photo" onClick={this.onViewPhoto} width="45" height="45"/>: <img src={`/uploads/default.png`} alt="Profile picture" className="rounded-circle" width="45" height="45"/>}</td>
                 <td>{teacher.tsc}</td>
                 <td><a href="" onClick={this.onViewTeacher}>{teacher.surname}</a></td>
                 <td>{teacher.first_name}</td>

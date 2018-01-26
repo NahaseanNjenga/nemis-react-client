@@ -26,7 +26,7 @@ class Photo extends React.Component {
         const {viewPictureModal} = this.state
         const src = `/uploads/${photo.path}`
         return (<div className="col-sm-4">
-            <img src={src} alt="photo" width="350" height="200" className="rounded-top photo" onClick={this.onViewPhoto}/>
+            <img src={src} alt="photo" width="350" height="200" className="rounded-top gallery" onClick={this.onViewPhoto}/>
             &nbsp;
             <ViewPhoto photo={photo} show={viewPictureModal} onClose={this.closeViewPicture}/>
         </div>)

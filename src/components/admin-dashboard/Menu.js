@@ -10,7 +10,7 @@ export default () =>
                     <Link to="/admin/students" className="bd-toc-link"><h5>Students</h5></Link>
                 </div>
                 <div className="bd-toc-item">
-                    <Link to="/school_admin/teachers" className="bd-toc-link"><h5>Teachers</h5></Link>
+                    <Link to="/admin/teachers" className="bd-toc-link"><h5>Teachers</h5></Link>
                 </div>
                 <div className="bd-toc-item">
                     <Link to="/admin/schools" className="bd-toc-link"><h5>Schools</h5></Link>
