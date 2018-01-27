@@ -1,9 +1,14 @@
 import axios from 'axios'
 import {ADD_TEACHER, CLEAR_TEACHERS, UPDATE_TEACHER,REMOVE_TEACHER} from "./types"
 
-export function isTeacherExists(name) {
+export function isTeacherExists(tsc) {
     return dispatch => {
-        return axios.post('/teachers', {name: name})
+        return axios.post('/teachers/tsc', {tsc: tsc})
+    }
+}
+export function isTeacherDead(nationalID) {
+    return dispatch => {
+        return axios.post('/teachers/dead', {nationalID: nationalID})
     }
 }
 

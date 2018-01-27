@@ -26,7 +26,6 @@ class DeathRegistration extends React.Component {
 
     validateInput(data) {
         let errors = {}
-
         // if (validator.isEmpty(data.name)) {
         //     errors.name = 'This field is required'
         // }

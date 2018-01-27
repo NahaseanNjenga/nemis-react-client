@@ -39,7 +39,7 @@ class TSC_Registration extends React.Component {
             errors.tsc = 'This field is required'
         }
         if (data.tsc.length < 3) {
-            errors.tsc = "Tsc number must be greator than 6 characters"
+            errors.tsc = "Tsc number must be greator than 3 characters"
         }
         if (validator.isEmpty(data.first_name)) {
             errors.first_name = 'This field is required'
