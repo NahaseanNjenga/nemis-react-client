@@ -43,20 +43,12 @@ class NavigationBar extends React.Component {
 
     }
 
-    // onCloseKnecAdmin() {
-    //     this.setState({knecAdminLoginModal: false})
-    // }
-
     onSchoolAdmin(e) {
         e.preventDefault()
         this.setState({selectLoginModal: false})
         // this.setState({schoolAdminLoginModal: true})
         this.context.router.history.push('/school_admin/login')
     }
-
-    // onCloseSchoolAdmin() {
-    //     this.setState({schoolAdminLoginModal: false})
-    // }
 
     onSignin(e) {
         e.preventDefault()
@@ -70,43 +62,54 @@ class NavigationBar extends React.Component {
 
 
     render() {
+        let user = 'none'
+        if (jwt.decode(localStorage.schoolAdminJwtToken))
+            user = 'school'
+        else if (jwt.decode(localStorage.knecAdminJwtToken))
+            user = 'knec'
+        else if (jwt.decode(localStorage.systemAdminJwtToken))
+            user = 'system'
+
         const {selectLoginModal,} = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
-        const {isSchoolAdminAuthenticated,isSystemAdminAuthenticated} = this.props.schoolAdminLoginReducers
-        // console.log(isAuthenticated, isSchoolAdminAuthenticated)
-
+        const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
+        const systemToken = jwt.decode(localStorage.systemAdminJwtToken)
         const userLinks = (<ul className="nav navbar-nav  navbar-right">
             <li>{token && isSchoolAdminAuthenticated ?
                 <Link to="/school_admin" className="h5"> Dashboard &nbsp;</Link> : ''}</li>
-            <li>{token && isSystemAdminAuthenticated ?
+            <li>{systemToken && isAuthenticated ?
                 <Link to="/admin" className="h5"> Dashboard &nbsp;</Link> : ''}</li>
-            <li><a href="/logout" type="button"  onClick={this.logout} className="white-link btn btn-dark">Logout</a></li>
+            <li><a href="/logout" type="button" onClick={this.logout} className="white-link btn btn-dark">Logout</a>
+            </li>
         </ul>)
         const guestLinks = (
             <ul className="navbar-nav  ml-md-auto d-none d-md-flex">
-                <li><a href="" type="button" className="white-link btn btn-primary" onClick={this.onSignin}>Sign in</a></li>
+                <li><a href="" type="button" className="white-link btn btn-primary" onClick={this.onSignin}>Sign in</a>
+                </li>
             </ul>)
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-info bg-info fixed-top">
 
                     <Link to="/" className="h3">Nemis</Link>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                        <div className="navbar-nav mr-auto">
-
+                    <div className="navbar-nav mr-auto">
+                        {user !=='system'? <Link to="/policies">Policy Documents</Link> : ''}
+                    </div>
+                    <div className="my-2 my-lg-0">
+                        <div className=" mr-sm-2 my-2 my-sm-0">
+                            {isAuthenticated || isSchoolAdminAuthenticated ? userLinks : window.location.pathname === '/admin' || window.location.pathname === '/admin/login' ? '' : guestLinks}
                         </div>
-                        <div className="my-2 my-lg-0">
-                            <div className=" mr-sm-2 my-2 my-sm-0">
-                                {isAuthenticated || isSchoolAdminAuthenticated ? userLinks : window.location.pathname === '/admin' || window.location.pathname === '/admin/login' ? '' : guestLinks}
-                            </div>
-                        </div>
-                        <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin}
-                                          onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
-                        {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
+                    </div>
+                    <SelectLoginModal show={selectLoginModal} onClose={this.onCloseSignin}
+                                      onSchoolAdmin={this.onSchoolAdmin} onKnecAdmin={this.onKnecAdmin}/>
+                    {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
 
                 </nav>
             </div>

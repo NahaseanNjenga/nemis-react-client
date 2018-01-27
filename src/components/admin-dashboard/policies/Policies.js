@@ -57,7 +57,7 @@ class Policies extends React.Component {
                     </div>
                     <div className="col-md-9">
                         <br/>
-                        <button className="btn btn-primary" onClick={this.showUploadPolicyModal}>Add
+                        <button className="btn btn-primary btn-sm" onClick={this.showUploadPolicyModal}>Add
                             policy
                         </button>
                         <br/>
@@ -68,6 +68,7 @@ class Policies extends React.Component {
                                     <th scope="col">#</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Scope</th>
+                                    <th scope="col">Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                                 </thead>

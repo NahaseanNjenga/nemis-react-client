@@ -90,6 +90,7 @@ constructor(props){
                 }
                 }>{policy.title}</a></td>
                 <td>{policy.scope}</td>
+                <td>{new Date(policy.timestamp).toDateString()}</td>
                 <td>{actions}</td>
                 <UpdatePolicyModal show={editPolicy} onClose={this.closeEditModal} policy={policy}/>
                 <PublishModal show={publish} policy={policy} onClose={this.closePublishModal}/>

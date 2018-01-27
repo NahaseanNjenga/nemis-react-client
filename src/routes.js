@@ -23,6 +23,9 @@ import Academics from "./components/school-admin-dashboard/Academics"
 import Gallery from "./components/school-admin-dashboard/Gallery"
 import SchoolHistory from "./components/school-admin-dashboard/SchoolHistory"
 import Policies from "./components/admin-dashboard/policies/Policies"
+import MOE_Policies from "./components/policies/MOE_Policies"
+import TSC_Registration from "./external-services/teachers/TSC_Registration"
+import DeathRegistration from "./external-services/deceased/DeathRegistration"
 
 
 
@@ -31,7 +34,10 @@ export default () => {
             <App>
                 <Switch>
                     <Route exact path="/" component={HomePage}/>
+                    <Route exact path="/policies" component={MOE_Policies}/>
                     <Route exact path="/admin" component={requireSystemAdminAuth(SystemAdminDashboard)}/>
+                    <Route exact path="/tsc" component={TSC_Registration}/>
+                    <Route exact path="/deceased" component={DeathRegistration}/>
                     <Route exact path="/school_admin" component={requireSchoolAdminAuth(SchoolAdminDashboard)}/>
                     <Route path='/admin/login' component={SystemAdminLoginForm}/>
                     <Route path='/admin/schools' component={requireSystemAdminAuth(SchoolList)}/>

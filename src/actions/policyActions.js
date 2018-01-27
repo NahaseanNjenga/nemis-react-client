@@ -1,9 +1,23 @@
-
 import axios from 'axios'
 
 export function getPolicies() {
     return dispatch=>{
         return axios.get('/policies')
+    }
+}
+export function getSchoolPolicies() {
+    return dispatch=>{
+        return axios.get('/policies/schools')
+    }
+}
+export function getPublicPolicies() {
+    return dispatch=>{
+        return axios.get('/policies/public')
+    }
+}
+export function getKnecPolicies() {
+    return dispatch=>{
+        return axios.get('/policies/knec')
     }
 }
 export function uploadPolicy(policy) {
