@@ -21,5 +21,8 @@ export default () =>
                 <div className="bd-toc-item">
                     <Link to="/admin/knec_admin" className="bd-toc-link"><h5>Knec Admin</h5></Link>
                 </div>
+                <div className="bd-toc-item">
+                    <Link to="/admin/policies" className="bd-toc-link"><h5>Policies</h5></Link>
+                </div>
             </div>
         </nav>)

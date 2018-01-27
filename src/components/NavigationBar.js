@@ -72,13 +72,15 @@ class NavigationBar extends React.Component {
     render() {
         const {selectLoginModal,} = this.state
         const {isAuthenticated} = this.props.systemAdminLoginReducers
-        const {isSchoolAdminAuthenticated} = this.props.schoolAdminLoginReducers
+        const {isSchoolAdminAuthenticated,isSystemAdminAuthenticated} = this.props.schoolAdminLoginReducers
         // console.log(isAuthenticated, isSchoolAdminAuthenticated)
 
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
         const userLinks = (<ul className="nav navbar-nav  navbar-right">
             <li>{token && isSchoolAdminAuthenticated ?
                 <Link to="/school_admin" className="h5"> Dashboard &nbsp;</Link> : ''}</li>
+            <li>{token && isSystemAdminAuthenticated ?
+                <Link to="/admin" className="h5"> Dashboard &nbsp;</Link> : ''}</li>
             <li><a href="/logout" type="button"  onClick={this.logout} className="white-link btn btn-dark">Logout</a></li>
         </ul>)
         const guestLinks = (

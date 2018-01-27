@@ -22,6 +22,7 @@ import KnecAdmin from "./components/admin-dashboard/knecAdmin/KnecAdmin"
 import Academics from "./components/school-admin-dashboard/Academics"
 import Gallery from "./components/school-admin-dashboard/Gallery"
 import SchoolHistory from "./components/school-admin-dashboard/SchoolHistory"
+import Policies from "./components/admin-dashboard/policies/Policies"
 
 
 
@@ -38,6 +39,7 @@ export default () => {
                     <Route path='/admin/teachers' component={requireSystemAdminAuth(TeachersPage)}/>
                     <Route path='/admin/school_admins' component={requireSystemAdminAuth(SchoolAdminList)}/>
                     <Route path='/admin/knec_admin' component={requireSystemAdminAuth(KnecAdmin)}/>
+                    <Route path='/admin/policies' component={requireSystemAdminAuth(Policies)}/>
                     <Route path='/school_admin/login' component={SchoolAdminLoginForm}/>
                     <Route path="/school_admin/students" component={requireSchoolAdminAuth(StudentsList)}/>
                     <Route path="/school_admin/teachers" component={requireSchoolAdminAuth(TeachersPage)}/>

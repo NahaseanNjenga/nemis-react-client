@@ -3,31 +3,32 @@ import PropTypes from 'prop-types'
 import validator from 'validator'
 import {isEmpty} from 'lodash'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {uploadCertificate} from "../../actions/studentActions"
 import {connect} from 'react-redux'
+import { uploadPolicy} from "../../../../actions/policyActions"
+import TextFieldGroup from "../../../../shared/TextFieldsGroup"
 
-
-class UploadCertficateModal extends React.Component {
+class UploadPolicyDocumentModal extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            category: '',
-            certificate: '',
+            title: '',
             errors: {},
-            selectedFile:'',
+            selectedFile: '',
             isLoading: false,
             invalid: false
         }
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onSelectDialog = this.onSelectDialog.bind(this)
-        this.onSelectCertificate = this.onSelectCertificate.bind(this)
+        this.onSelectPolicy = this.onSelectPolicy.bind(this)
     }
+
     onSelectDialog(e) {
         e.preventDefault()
         document.getElementById('myFileInput').click()
     }
-    onSelectCertificate(event) {
+
+    onSelectPolicy(event) {
         event.preventDefault()
         if (event.target.files && event.target.files[0]) {
             let reader = new FileReader()
@@ -42,8 +43,8 @@ class UploadCertficateModal extends React.Component {
     validateInput(data) {
         let errors = {}
 
-        if (validator.isEmpty(data.category)) {
-            errors.category = 'This field is required'
+        if (validator.isEmpty(data.title)) {
+            errors.title = 'This field is required'
         }
         if (!data.selectedFile) {
             errors.selectedFile = 'This field is required'
@@ -68,11 +69,10 @@ class UploadCertficateModal extends React.Component {
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
             const data = new FormData()
-            data.append('category', this.state.category)
-            data.append('student_id', this.props.student_id)
+            data.append('title', this.state.title)
             data.append('upload', this.state.selectedFile)
-            this.props.uploadCertificate(data).then(
-                (student) => {
+            this.props.uploadPolicy(data).then(
+                (policy) => {
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
@@ -80,8 +80,7 @@ class UploadCertficateModal extends React.Component {
 
                     this.props.onClose()
                     this.setState({
-                        category: '',
-                        certificate: '',
+                        title: '',
                         errors: {},
                         isLoading: false,
                         invalid: false
@@ -98,46 +97,9 @@ class UploadCertficateModal extends React.Component {
     }
 
     render() {
-        const {show, onClose,certificateOptions} = this.props
+        const {show, onClose} = this.props
 
-        const {errors, isLoading, invalid, surname,selectedFile, category} = this.state
-        const KCPE = <div className="form-group">
-            <label htmlFor="category">Level</label>
-            <select className="form-control form-control-sm" id="category" name="category"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="KCPE">KCPE</option>
-            </select>
-        </div>
-        const KCSE = <div className="form-group">
-            <label htmlFor="category">Level</label>
-            <select className="form-control form-control-sm" id="category" name="category"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="KCSE">KCSE</option>
-            </select>
-        </div>
-        const ALL = <div className="form-group">
-            <label htmlFor="category">Year of study</label>
-            <select className="form-control form-control-sm" id="category" name="category"
-                    required="true" onChange={this.onChange}>
-                <option>Select</option>
-                <option value="KCPE">KCPE</option>
-                <option value="KCSE">KCSE</option>
-            </select>
-        </div>
-        const year_of_study = () => {
-            switch (certificateOptions) {
-                case 'KCPE':
-                    return KCPE
-                case 'KCSE':
-                    return KCSE
-                case 'ALL':
-                    return ALL
-                default :
-                    return ''
-            }
-        }
+        const {errors, isLoading, invalid, title} = this.state
 
         if (show) {
             return (
@@ -145,12 +107,14 @@ class UploadCertficateModal extends React.Component {
                     <ModalHeader toggle={onClose}>Upload a certificate</ModalHeader>
                     <ModalBody>
                         <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                            {year_of_study()}
+                            <TextFieldGroup label="Title" value={title} type="text" name="title" error={errors.title}
+                                            onChange={this.onChange}/>
                             <div className="form-group">
-                               <div className="custom-file">
-                                   <input type="file" className="custom-file-input btn btn-success" id="customFile" accept=".pdf" onChange={this.onSelectCertificate}/>
-                                       <label className="custom-file-label" htmlFor="customFile">Choose file</label>
-                           </div>
+                                <div className="custom-file">
+                                    <input type="file" className="custom-file-input btn btn-success" id="customFile"
+                                           accept=".pdf" onChange={this.onSelectPolicy}/>
+                                    <label className="custom-file-label" htmlFor="customFile">Choose file</label>
+                                </div>
                             </div>
 
                             <div className="form-group">
@@ -172,17 +136,12 @@ class UploadCertficateModal extends React.Component {
 }
 
 
-UploadCertficateModal.propTypes = {
-    uploadCertificate: PropTypes.func.isRequired,
+UploadPolicyDocumentModal.propTypes = {
+    uploadPolicy: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    student_id:PropTypes.string.isRequired,
-    certificateOptions:PropTypes.string.isRequired
-}
-UploadCertficateModal.contextTypes = {
-    router: PropTypes.object.isRequired
-}
 
 
-export default connect(null, {uploadCertificate})(UploadCertficateModal)
+}
+export default connect(null, {uploadPolicy,})(UploadPolicyDocumentModal)
 

@@ -46,7 +46,7 @@ class Student extends React.Component {
                 <td>{student.upi}</td>
                 <td><a href="" onClick={this.onViewStudent}>{student.surname}</a></td>
                 <td>{student.first_name}</td>
-                <td>{student.transfers.current_school}</td>
+                <td>{student.transfers?student.transfers.current_school:'N/A'}</td>
 
                 <ViewStudent show={showViewStudentModal} onClose={this.onCloseViewStudent} student={this.props.student}/>
                 {student.picture? <ViewPhoto photo={student.picture} show={viewPhoto} onClose={this.onCloseViewPhoto}/>:''}

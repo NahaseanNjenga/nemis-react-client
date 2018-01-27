@@ -258,7 +258,7 @@ class ResponsibilitiesList extends React.Component {
                         aria-describedby="emailHelp"
                     />
                     <div className="form-group">
-                    <div class="alert alert-primary" role="alert">
+                    <div className="alert alert-primary" role="alert">
                        If unchanged, Date assigned remains {new Date(date_assigned).toDateString()}
                     </div>
                         <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
