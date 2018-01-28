@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import PropTypes from 'prop-types'
 import UpdateSchoolDetails from "./UpdateSchoolDetails"
+import jwt from "jsonwebtoken"
 
 class ViewSchool extends React.Component {
     constructor(props) {
@@ -9,8 +10,18 @@ class ViewSchool extends React.Component {
         this.state = {
             showUpdateSchoolModal: false
         }
+        this.school_upi = ''
+        this.role=''
+        const token = jwt.decode(localStorage.schoolAdminJwtToken)
+        if (token) {
+            this.school_upi = token.school_upi
+        }
+        else if (jwt.decode(localStorage.systemAdminJwtToken)) {
+            this.role = 'system'
+        }
         this.onUpdateSchool = this.onUpdateSchool.bind(this)
         this.onCloseUpdateSchool = this.onCloseUpdateSchool.bind(this)
+
     }
 
     onUpdateSchool(e) {
@@ -30,7 +41,7 @@ class ViewSchool extends React.Component {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>School info</ModalHeader>
                 <ModalBody>
-                    <button className="btn btn-sm btn-info" onClick={this.onUpdateSchool}>Edit</button>
+                    {this.school_upi ||this.role==='system'? <button className="btn btn-sm btn-info" onClick={this.onUpdateSchool}>Edit</button>:''}
                     <table className="table">
                         <thead>
                         <tr>

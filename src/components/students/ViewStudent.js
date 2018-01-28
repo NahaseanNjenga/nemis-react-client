@@ -6,7 +6,8 @@ import ResponsibilitiesList from "../school-admin-dashboard/modals/teachers/Resp
 import CertificateList from "../knec-admin-dashboard/CertificateList"
 import UploadPictureModal from "../school-admin-dashboard/modals/school-details/UploadPictureModal"
 import {connect} from 'react-redux'
-import {uploadProfilePicture} from "../../actions/studentActions"
+import {updateStudentList, uploadProfilePicture} from "../../actions/studentActions"
+import jwt from "jsonwebtoken"
 let upload = null
 class ViewStudent extends React.Component {
     constructor(props) {
@@ -16,6 +17,14 @@ class ViewStudent extends React.Component {
             showPictureModal: false,
             picture: null,
             selectedFile: '',
+        }
+        this.role=''
+        this.school_upi=''
+        const token=jwt.decode(localStorage.schoolAdminJwtToken)
+        if(token){
+            this.school_upi=token.school_upi
+        } else if(jwt.decode(localStorage.systemAdminJwtToken)){
+            this.role='system'
         }
         this.onUpdateStudent = this.onUpdateStudent.bind(this)
         this.onCloseUpdateStudent = this.onCloseUpdateStudent.bind(this)
@@ -54,7 +63,8 @@ class ViewStudent extends React.Component {
             data.append('upload', selectedFile)
 
             this.props.uploadProfilePicture(data).then(
-                photos => {
+                student => {
+                    this.props.updateStudentList(student.data)
                     this.props.onClose()
                     upload.files = undefined
                     // photos.data.gallery.map(photo => {
@@ -95,7 +105,7 @@ class ViewStudent extends React.Component {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Student info</ModalHeader>
                 <ModalBody>
-                    <span className="dropdown">
+                    {student.transfers.current_school===this.school_upi||this.role==='system'? <span className="dropdown">
                         <button className="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -105,7 +115,7 @@ class ViewStudent extends React.Component {
                             <a className="dropdown-item" href="">Deceased</a>
                         </div><br/>
                     <br/>
-                    </span>
+                    </span>:''}
                     <nav>
                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                             <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
@@ -128,7 +138,7 @@ class ViewStudent extends React.Component {
                     <div className="tab-content" id="nav-tabContent">
                         <div className="tab-pane fade show active" id="nav-home" role="tabpanel"
                              aria-labelledby="nav-home-tab">
-                            <button className="btn btn-sm btn-info" onClick={this.onUpdateStudent}>Edit</button>
+
                             <table className="table">
                                 <thead>
                                 <tr>
@@ -166,6 +176,10 @@ class ViewStudent extends React.Component {
                                     <th scope="row">Year of Study</th>
                                     <td>{student.year}</td>
                                 </tr>
+                                {student.transfers.current_school===this.school_upi||this.role==='system'? <tr>
+                                    <th scope="row"></th>
+                                    <td>  <button className="btn btn-sm btn-info" onClick={this.onUpdateStudent}>Edit</button></td>
+                                </tr>:''}
                                 </tbody>
                             </table>
                         </div>
@@ -225,14 +239,14 @@ class ViewStudent extends React.Component {
                                     <th scope="row">Telephone</th>
                                     <td>{student.contact ? student.contact.phone1 : 'N/A'}</td>
                                 </tr>
-                                <tr>
+                                {student.transfers.current_school===this.school_upi||this.role==='system'? <tr>
                                     <th scope="row"></th>
                                     <td>
                                         <button className="btn btn-sm btn-info"
                                                 onClick={this.showUpdateContactForm}>Edit
                                         </button>
                                     </td>
-                                </tr>
+                                </tr>:''}
                                 </tbody>
                             </table>
                         </div>
@@ -256,9 +270,9 @@ class ViewStudent extends React.Component {
                                                        accept=".jpg,.gif,.png,.jpeg" ref={node => {
                                                     upload = node
                                                 }}/>
-                                                <a href="" className="btn btn-primary" onClick={this.onSelectDialog}>
+                                                {student.transfers.current_school===this.school_upi||this.role==='system'?   <a href="" className="btn btn-primary" onClick={this.onSelectDialog}>
                                                     <i className="fa fa-picture-o"></i>
-                                                </a>
+                                                </a>:''}
                                             </li>
                                         </ul>
                                         {student.picture?<img src={`/uploads/${student.picture.path}`} alt="photo" width="700" height="400"/>:''}
@@ -286,6 +300,7 @@ ViewStudent.propTypes = {
     show: PropTypes.bool.isRequired,
     student: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    uploadProfilePicture:PropTypes.func.isRequired
+    uploadProfilePicture:PropTypes.func.isRequired,
+    updateStudentList:PropTypes.func.isRequired
 }
-export default connect(null,{uploadProfilePicture})(ViewStudent)
+export default connect(null,{uploadProfilePicture,updateStudentList})(ViewStudent)

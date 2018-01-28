@@ -14,6 +14,7 @@ const TextFieldGroup = ({name,value,valueNumber, label, error, type, onChange, c
                        autoFocus={autofocus}
                        onChange={onChange}
                        onBlur={checkUserExists}
+                       disabled={disabled?disabled:false}
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
@@ -30,6 +31,7 @@ TextFieldGroup.propTypes = {
     onChange: PropTypes.func.isRequired,
     checkUserExists: PropTypes.func,
     autofocus: PropTypes.bool,
+    disabled: PropTypes.bool,
 
 
 }

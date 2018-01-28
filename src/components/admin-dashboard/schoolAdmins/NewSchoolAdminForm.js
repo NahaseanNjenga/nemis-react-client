@@ -4,9 +4,10 @@ import validator from 'validator'
 import {isEmpty} from 'lodash'
 import TextFieldGroup from '../../../shared/TextFieldsGroup'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {registerSchoolAdmin} from "../../../actions/schoolAdminActions"
+import {isSchoolAdminExists, registerSchoolAdmin} from "../../../actions/schoolAdminActions"
 import {connect} from 'react-redux'
 import {addFlashMessage} from "../../../actions/flashMessages"
+import {isSchoolUPIExists} from "../../../actions/schoolActions"
 
 
 class NewSchoolAdminForm extends React.Component {
@@ -36,10 +37,22 @@ class NewSchoolAdminForm extends React.Component {
                     let invalid
                     if (res.data) {
                         invalid = true
-                        errors[field] = 'There is School Admin registered with such ' + field
+                        errors[field] = 'There is School Admin registered with such School UPI'
                     } else {
-                        invalid = false
-                        errors[field] = ''
+                        this.props.isSchoolUPIExists(val).then(res => {
+                            if (res) {
+                                let errors = this.state.errors
+                                let invalid
+                                if (!res.data) {
+                                    invalid = true
+                                    errors[field] = 'There is NO School registered with such School UPI'
+                                } else {
+                                    invalid = false
+                                    errors[field] = ''
+                                }
+                                this.setState({errors, invalid})
+                            }
+                        })
                     }
                     this.setState({errors, invalid})
                 }
@@ -54,11 +67,12 @@ class NewSchoolAdminForm extends React.Component {
         }
         if (validator.isEmpty(data.password)) {
             errors.password = 'This field is required'
-        } if (validator.isEmpty(data.passwordConfirmation)) {
+        }
+        if (validator.isEmpty(data.passwordConfirmation)) {
             errors.passwordConfirmation = 'This field is required'
         }
-        if (!validator.equals(data.password,data.passwordConfirmation)) {
-            errors.passwordConfirmation= 'Passwords do not match'
+        if (!validator.equals(data.password, data.passwordConfirmation)) {
+            errors.passwordConfirmation = 'Passwords do not match'
         }
         return {
             errors,
@@ -86,7 +100,7 @@ class NewSchoolAdminForm extends React.Component {
                     })
                     this.props.onClose()
                     this.props.addSchoolAdmin(schoolAdmin.data)
-                    this.setState({name:'',category:'',isLoading: false})
+                    this.setState({name: '', category: '', isLoading: false})
                 },
                 err => this.setState({errors: err.response.data, isLoading: false})
             )
@@ -100,7 +114,7 @@ class NewSchoolAdminForm extends React.Component {
     render() {
         const {show, onClose} = this.props
 
-        const {errors, username, school_upi, password, passwordConfirmation,isLoading, invalid} = this.state
+        const {errors, username, school_upi, password, passwordConfirmation, isLoading, invalid} = this.state
         if (show) {
             return (
                 <Modal isOpen={show} toggle={onClose} size="lg">
@@ -122,6 +136,7 @@ class NewSchoolAdminForm extends React.Component {
                                 value={school_upi}
                                 onChange={this.onChange}
                                 error={errors.school_upi}
+                                checkUserExists={this.checkSchoolAdminExists}
                             />
                             <TextFieldGroup
                                 label="Password"
@@ -164,7 +179,7 @@ NewSchoolAdminForm.propTypes = {
     addFlashMessage: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    // isSchoolAdminExists: PropTypes.func.isRequired,
+    isSchoolUPIExists: PropTypes.func.isRequired,
     registerSchoolAdmin: PropTypes.func.isRequired,
     addSchoolAdmin: PropTypes.func.isRequired,
 }
@@ -173,5 +188,10 @@ NewSchoolAdminForm.contextTypes = {
 }
 
 
-export default connect(null,{registerSchoolAdmin,addFlashMessage})(NewSchoolAdminForm)
+export default connect(null, {
+    registerSchoolAdmin,
+    addFlashMessage,
+    isSchoolAdminExists,
+    isSchoolUPIExists
+})(NewSchoolAdminForm)
 

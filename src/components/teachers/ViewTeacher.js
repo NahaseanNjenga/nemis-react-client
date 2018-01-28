@@ -14,6 +14,7 @@ import UpdateContact from "../school-admin-dashboard/modals/teachers/UpdateConta
 import Retire from "../school-admin-dashboard/modals/teachers/Retire"
 import Deceased from "../school-admin-dashboard/modals/teachers/Deceased"
 import UploadPictureModal from "../school-admin-dashboard/modals/school-details/UploadPictureModal"
+import jwt from 'jsonwebtoken'
 
 let upload = null
 
@@ -33,6 +34,16 @@ class ViewTeacher extends React.Component {
             isLoading: false,
             invalid: false, showClearTeacherModal: false
         }
+        this.school_upi = ''
+        this.role=''
+        const token = jwt.decode(localStorage.schoolAdminJwtToken)
+        if (token) {
+            this.school_upi = token.school_upi
+        }
+        else if (jwt.decode(localStorage.systemAdminJwtToken)) {
+            this.role = 'system'
+        }
+
         this.onUpdateTeacher = this.onUpdateTeacher.bind(this)
         this.onCloseUpdateTeacher = this.onCloseUpdateTeacher.bind(this)
         this.onCloseUpdateTeacher = this.onCloseUpdateTeacher.bind(this)
@@ -108,6 +119,7 @@ class ViewTeacher extends React.Component {
 
     closeDeceasedModal(e) {
         this.setState({deceasedModal: false})
+        this.props.onClose()
     }
 
     onChange(e) {
@@ -135,7 +147,7 @@ class ViewTeacher extends React.Component {
 
     onSubmitPhoto(e) {
         e.preventDefault()
-        const { selectedFile} = this.state
+        const {selectedFile} = this.state
         if (selectedFile !== '') {
             let profile
             const data = new FormData()
@@ -143,7 +155,8 @@ class ViewTeacher extends React.Component {
             data.append('upload', selectedFile)
 
             this.props.uploadProfilePicture(data).then(
-                photos => {
+                teacher => {
+                    this.props.updateTeacherOnList(teacher.data)
                     this.props.onClose()
                     upload.files = undefined
                     // photos.data.gallery.map(photo => {
@@ -195,7 +208,7 @@ class ViewTeacher extends React.Component {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                 <ModalHeader toggle={onClose}>Teacher info</ModalHeader>
                 <ModalBody>
-                    {!this.props.deceased ? <span className="dropdown">
+                    {!this.props.deceased ? teacher.posting_history.current_school === this.school_upi ||this.role==='system'? <span className="dropdown">
                         <button className="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -207,7 +220,7 @@ class ViewTeacher extends React.Component {
                                 <a className="dropdown-item" href="" onClick={this.showRetireModal}>Retired</a> : ''}
                         </div><br/>
                     <br/>
-                    </span> : ''}
+                    </span>:'' : ''}
 
                     <nav>
                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -268,13 +281,13 @@ class ViewTeacher extends React.Component {
                                     <th scope="row">Working status:</th>
                                     <td>{teacher.life}</td>
                                 </tr>
-                                <tr>
+                                {teacher.posting_history.current_school === this.school_upi ||this.role==='system'? <tr>
                                     <th scope="row"></th>
                                     <td>
                                         <button className="btn btn-sm btn-info" onClick={this.onUpdateTeacher}>Edit
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> : ''}
 
 
                                 </tbody>
@@ -283,9 +296,9 @@ class ViewTeacher extends React.Component {
                         <div className="tab-pane fade" id="nav-transfer" role="tabpanel"
                              aria-labelledby="nav-transfer-tab">
                             {!this.props.deceased ? !this.props.retired ?
-                                <button className="btn btn-sm btn-info" onClick={this.onClearTeacher}>Clear teacher from
+                                teacher.posting_history.current_school === this.school_upi ||this.role==='system'?  <button className="btn btn-sm btn-info" onClick={this.onClearTeacher}>Clear teacher from
                                     school
-                                </button> : '' : ''}
+                                </button> :'': '' : ''}
 
                             <table className="table">
                                 <thead>
@@ -344,14 +357,14 @@ class ViewTeacher extends React.Component {
                                     <th scope="row">Telephone</th>
                                     <td>{teacher.contact.phone1 ? teacher.contact.phone1 : 'N/A'}</td>
                                 </tr>
-                                <tr>
+                                {teacher.posting_history.current_school === this.school_upi ||this.role==='system'? <tr>
                                     <th scope="row"></th>
                                     <td>
                                         <button className="btn btn-sm btn-info"
                                                 onClick={this.showUpdateContactForm}>Edit
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> : ''}
                                 </tbody>
                             </table>
                         </div>
@@ -368,16 +381,21 @@ class ViewTeacher extends React.Component {
                                                        accept=".jpg,.gif,.png,.jpeg" ref={node => {
                                                     upload = node
                                                 }}/>
-                                                <a href="" className="btn btn-primary" onClick={this.onSelectDialog}>
-                                                    <i className="fa fa-picture-o"></i>
-                                                </a>
+                                                {teacher.posting_history.current_school === this.school_upi ||this.role==='system'?
+                                                    <a href="" className="btn btn-primary"
+                                                       onClick={this.onSelectDialog}>
+                                                        <i className="fa fa-picture-o"></i>
+                                                    </a> : ''}
                                             </li>
                                         </ul>
-                                        {teacher.picture?<img src={`/uploads/${teacher.picture.path}`} alt="photo" width="700" height="400"/>:''}
+                                        {teacher.picture ?
+                                            <img src={`/uploads/${teacher.picture.path}`} alt="photo" width="700"
+                                                 height="400"/> : ''}
                                     </div>
                                 </div>
                                 {picture !== null &&
-                                <UploadPictureModal show={showPictureModal} onClose={this.closePictureModal} picture={picture} dontShowDescription={true}
+                                <UploadPictureModal show={showPictureModal} onClose={this.closePictureModal}
+                                                    picture={picture} dontShowDescription={true}
                                                     onUpload={this.onSubmitPhoto} onChange={this.onChange}/>}
                             </form>
                         </div>
@@ -417,4 +435,4 @@ ViewTeacher.propTypes = {
 
 
 }
-export default connect(null, {updateTeacherOnList, updateTeacherContact,uploadProfilePicture})(ViewTeacher)
+export default connect(null, {updateTeacherOnList, updateTeacherContact, uploadProfilePicture})(ViewTeacher)

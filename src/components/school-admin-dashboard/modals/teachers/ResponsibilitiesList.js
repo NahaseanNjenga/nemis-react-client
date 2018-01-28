@@ -9,6 +9,7 @@ import {
 import {isEmpty} from "lodash"
 import validator from "validator"
 import TextFieldGroup from "../../../../shared/TextFieldsGroup"
+import jwt from "jsonwebtoken"
 
 class ResponsibilitiesList extends React.Component {
     constructor(props) {
@@ -23,7 +24,15 @@ class ResponsibilitiesList extends React.Component {
             showUpdateResponsibilityForm: false,
             editedResponsibilityId: '',
             date_relieved:'',
-
+        }
+        this.school_upi = ''
+        this.role=''
+        const token = jwt.decode(localStorage.schoolAdminJwtToken)
+        if (token) {
+            this.school_upi = token.school_upi
+        }
+        else if (jwt.decode(localStorage.systemAdminJwtToken)) {
+            this.role = 'system'
         }
         this.onChange = this.onChange.bind(this)
         this.addResponsibility = this.addResponsibility.bind(this)
@@ -275,7 +284,7 @@ class ResponsibilitiesList extends React.Component {
 
         return (
             <div>
-                {!this.props.deceased?!this.props.retired?<button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
+                {!this.props.deceased? this.school_upi ||this.role==='system'?<button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
                     onClick={this.addResponsibility}>Add responsibility
                     </button>:'':''}
                 {showResponsibilityForm ? responsibilityForm : ''}

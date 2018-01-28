@@ -32,8 +32,8 @@ class TeachersList extends React.Component {
         let arr_results = []
         this.props.clearTeachers()
         for (let i = 0; i < teachers.length; i++) {
-            let exp = new RegExp(e.target.value, 'i')
-            if (teachers[i].tsc.match(exp)) {
+            let exp =  new RegExp(e.target.value, 'i')
+            if (String(teachers[i].tsc).match(exp)) {
                 arr_results.push(teachers[i])
                 this.props.addTeacher(teachers[i])
             }
@@ -43,8 +43,9 @@ class TeachersList extends React.Component {
     componentDidMount() {
         if (window.location.pathname === '/admin/teachers') {
             this.props.getTeachers().then(teachers => {
-        this.props.clearTeachers()
+                this.props.clearTeachers()
                 if (teachers) {
+                    this.props.setTeachers(teachers.data)
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
@@ -58,8 +59,10 @@ class TeachersList extends React.Component {
             const token = jwt.decode(localStorage.schoolAdminJwtToken)
             const upi = token.school_upi
             this.props.getSchoolTeachers(upi).then(teachers => {
-        this.props.clearTeachers()
+                this.props.clearTeachers()
                 if (teachers) {
+                    this.props.setTeachers(teachers.data)
+
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
@@ -88,6 +91,8 @@ class TeachersList extends React.Component {
 
     filter(e) {
         e.preventDefault()
+        this.props.clearTeachers()
+            this.setState({life: e.target.name})
     }
 
     render() {
@@ -95,8 +100,8 @@ class TeachersList extends React.Component {
         const {showNewTeacherModal, role} = this.state
         let count = 1
         return (
-            <div>
-                    <h1>Active teachers</h1>
+          <div>
+                <h1>Active teachers</h1>
                 {teachers.length > 0 ? <table className="table">
                     <thead>
                     <tr>
@@ -116,7 +121,6 @@ class TeachersList extends React.Component {
                 </table> : 'No teachers found'}
                 <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
                                 addTeacher={this.props.addTeacher} addToTeachers={this.addToTeachers}/>
-
             </div>)
     }
 
@@ -128,8 +132,7 @@ TeachersList.propTypes = {
     clearTeachers: PropTypes.func.isRequired,
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
-
-
+    setTeachers: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

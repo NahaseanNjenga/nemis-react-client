@@ -46,6 +46,7 @@ class TransferredTeachersList extends React.Component {
             this.props.getTransferredSchoolTeachers(this.state.upi).then(teachers => {
         this.props.clearTeachers()
                 if (teachers) {
+                    this.props.setTeachers(teachers.data)
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
@@ -110,7 +111,7 @@ TransferredTeachersList.propTypes = {
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
     getTransferredSchoolTeachers: PropTypes.func.isRequired,
-
+    setTeachers :PropTypes.func.isRequired,
 
 }
 

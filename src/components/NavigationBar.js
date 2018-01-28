@@ -85,7 +85,7 @@ class NavigationBar extends React.Component {
         </ul>)
         const guestLinks = (
             <ul className="navbar-nav  ml-md-auto d-none d-md-flex">
-                <li><a href="" type="button" className="white-link btn btn-primary" onClick={this.onSignin}>Sign in</a>
+                <li><a href="" type="button" className="white-link btn btn-warning" onClick={this.onSignin}>Sign in</a>
                 </li>
             </ul>)
         return (

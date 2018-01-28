@@ -6,6 +6,11 @@ export function isSchoolExists(name) {
         return axios.post('/schools', {name: name})
     }
 }
+export function isSchoolUPIExists(upi) {
+    return dispatch => {
+        return axios.post('/schools/upi', {upi: upi})
+    }
+}
 
 export function registerSchool(school) {
     return dispatch => {

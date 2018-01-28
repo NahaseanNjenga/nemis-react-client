@@ -6,6 +6,11 @@ export function isTeacherExists(tsc) {
         return axios.post('/teachers/tsc', {tsc: tsc})
     }
 }
+export function isTeacherInNemis(tsc) {
+    return dispatch => {
+        return axios.post('/teachers/nemis', {tsc: tsc})
+    }
+}
 export function isTeacherDead(nationalID) {
     return dispatch => {
         return axios.post('/teachers/dead', {nationalID: nationalID})

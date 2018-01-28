@@ -37,3 +37,8 @@ export function getSchoolAdmins() {
         return axios.get('/admin/school_admins')
     }
 }
+export function isSchoolAdminExists(school_upi) {
+    return dispatch=>{
+        return axios.post('/school_admin/exists',{school_upi:school_upi})
+    }
+}

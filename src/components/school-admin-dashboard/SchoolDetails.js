@@ -43,6 +43,7 @@ class SchoolDetails extends React.Component {
 
     closeUpdateBasicInfoModal(e) {
         this.setState({showUpdateBasicInfoModal: false})
+        this.componentDidMount()
     }
 
     showUpdateLearningMaterialsInfoModal(e) {
@@ -52,6 +53,7 @@ class SchoolDetails extends React.Component {
 
     closeUpdateLearningMaterialsInfoModal(e) {
         this.setState({showUpdateLearningMaterialsInfoModal: false})
+        this.componentDidMount()
     }
 
     showUpdateContactInfoModal(e) {
@@ -61,6 +63,7 @@ class SchoolDetails extends React.Component {
 
     closeUpdateContactInfoModal(e) {
         this.setState({showUpdateContactInfoModal: false})
+        this.componentDidMount()
     }
 
     showUpdateInfrastructureInfoModal(e) {
@@ -70,6 +73,7 @@ class SchoolDetails extends React.Component {
 
     closeUpdateInfrastructureInfoModal(e) {
         this.setState({showUpdateInfrastructureInfoModal: false})
+        this.componentDidMount()
     }
 
     showUpdateAssetsInfoModal(e) {
@@ -79,6 +83,7 @@ class SchoolDetails extends React.Component {
 
     closeUpdateAssetsInfoModal(e) {
         this.setState({showUpdateAssetsInfoModal: false})
+        this.componentDidMount()
     }
 
     componentDidMount() {
@@ -95,6 +100,7 @@ class SchoolDetails extends React.Component {
 
     onCloseUpdateSchool(e) {
         this.setState({showUpdateSchoolModal: false})
+        this.componentDidMount()
     }
 
     render() {

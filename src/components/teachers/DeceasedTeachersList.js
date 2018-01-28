@@ -41,6 +41,7 @@ class DeceasedTeachersList extends React.Component {
             this.props.getDeceasedTeachers().then(teachers => {
         this.props.clearTeachers()
                 if (teachers) {
+                    this.props.setTeachers(teachers.data)
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
@@ -56,6 +57,7 @@ class DeceasedTeachersList extends React.Component {
             this.props.getDeceasedSchoolTeachers(upi).then(teachers => {
         this.props.clearTeachers()
                 if (teachers) {
+                    this.props.setTeachers(teachers.data)
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
@@ -104,6 +106,7 @@ class DeceasedTeachersList extends React.Component {
                     </thead>
                     <tbody>
                     {teachers.map((teacher, i) => {
+                        console.log(teacher)
                         return <DeceasedTeacher count={count++} teacher={teacher} key={i}/>
                     })}
                     </tbody>
@@ -120,7 +123,7 @@ DeceasedTeachersList.propTypes = {
     teachers: PropTypes.array.isRequired,
     getSchoolTeachers: PropTypes.func.isRequired,
     getDeceasedSchoolTeachers: PropTypes.func.isRequired,
-
+    setTeachers: PropTypes.func.isRequired,
 
 }
 

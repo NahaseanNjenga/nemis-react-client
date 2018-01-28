@@ -63,7 +63,7 @@ class UpdateTeacherDetails extends React.Component {
 
     validateInput(data) {
         let errors = {}
-        if (validator.isEmpty(data.tsc)) {
+        if (!data.tsc) {
             errors.tsc = 'This field is required'
         }
         if (validator.isEmpty(data.first_name)) {
