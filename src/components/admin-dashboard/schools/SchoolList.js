@@ -6,12 +6,15 @@ import connect from "react-redux/es/connect/connect"
 import Menu from "../Menu"
 import NewSchoolForm from "./NewSchoolForm"
 import ViewSchool from "./ViewSchool"
+import Loader from 'react-loader-spinner'
+
 class SchoolList extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
             showNewSchoolModal: false,
-            schools:''
+            schools:'',
+            isLoading: true,
         }
         this.onShowNewSchoolModal = this.onShowNewSchoolModal.bind(this)
         this.onCloseNewSchoolModal = this.onCloseNewSchoolModal.bind(this)
@@ -24,7 +27,7 @@ class SchoolList extends React.Component{
                 schools.data.map(school => {
                     this.props.addSchool(school)
                 })
-                this.setState({schools:schools.data})
+                this.setState({schools:schools.data,isLoading:false})
             } else {
                 //No schools message
             }
@@ -52,8 +55,19 @@ class SchoolList extends React.Component{
     }
     render(){
         const {schools}=this.props
-        const {showNewSchoolModal} = this.state
+        const {showNewSchoolModal,isLoading} = this.state
         let count=1
+        if(isLoading){
+            return (
+                <Loader
+                    type="Rings"
+                    color="#00BFFF"
+                    height="100"
+                    width="100"
+                    text-align="center"
+                />
+            )
+        }
         return (
             <div className="container-fluid">
                 <div className="row">

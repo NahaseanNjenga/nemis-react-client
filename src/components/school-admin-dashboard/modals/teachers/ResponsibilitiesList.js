@@ -4,12 +4,15 @@ import PropTypes from 'prop-types'
 import Responsibility from "./Responsibility"
 import {
     addResponsibility, clearResponsibilities, getResponsibilities,
-    registerResponsibility, relieveResponsibility, removeResponsibility, updateResponsibility
+    registerResponsibility, relieveResponsibility, removeResponsibility, updateResponsibility,
+    updateResponsibilityOnList
 } from "../../../../actions/responsibilityActions"
 import {isEmpty} from "lodash"
 import validator from "validator"
 import TextFieldGroup from "../../../../shared/TextFieldsGroup"
 import jwt from "jsonwebtoken"
+import classnames from "classnames"
+import {getSchoolCategory, searchSchoolUpi} from "../../../../actions/schoolActions"
 
 class ResponsibilitiesList extends React.Component {
     constructor(props) {
@@ -17,16 +20,18 @@ class ResponsibilitiesList extends React.Component {
         this.state = {
             showResponsibilityForm: false,
             errors: {},
+            school_category: '',
             isLoading: false,
             invalid: false,
             responsibility: '',
             date_assigned: '',
             showUpdateResponsibilityForm: false,
             editedResponsibilityId: '',
-            date_relieved:'',
+            date_relieved: '',
+            school_upi: '',
         }
         this.school_upi = ''
-        this.role=''
+        this.role = ''
         const token = jwt.decode(localStorage.schoolAdminJwtToken)
         if (token) {
             this.school_upi = token.school_upi
@@ -43,23 +48,24 @@ class ResponsibilitiesList extends React.Component {
         this.onCancelNewResponsibilityForm = this.onCancelNewResponsibilityForm.bind(this)
         this.onRelieve = this.onRelieve.bind(this)
     }
-    onRelieve(e){
+
+    onRelieve(e) {
         e.preventDefault()
         const responsibility = {
-            teacher_id: this.props.teacher_id,
+            // teacher_tsc: this.props.teacher.tsc,
             date_relieved: new Date(),
-            relievedResponsibilityId:e.target.getAttribute('data-id')
+            relievedResponsibilityId: e.target.getAttribute('data-id')
         }
-        this.props.relieveResponsibility(responsibility).then((responsibilities) => {
-                 // this.props.addFlashMessage({
+        this.props.relieveResponsibility(responsibility).then((responsibility) => {
+                // this.props.addFlashMessage({
                 //     type: 'success',
                 //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                 // })
 
-                this.props.clearResponsibilities()
-                responsibilities.data.responsibilities.map(responsibility => {
-                    this.props.addResponsibility(responsibility)
-                })
+                // this.props.clearResponsibilities()
+                // .map(responsibility => {
+                this.props.updateResponsibilityOnList(responsibility.data)
+                // })
                 this.setState({
                     responsibility: '',
                     date_assigned: '',
@@ -72,6 +78,7 @@ class ResponsibilitiesList extends React.Component {
             err => this.setState({errors: err.response.data, isLoading: false})
         )
     }
+
     onChange(e) {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -79,10 +86,10 @@ class ResponsibilitiesList extends React.Component {
     onUpdateResponsibility(e) {
         e.preventDefault()
         const responsibility = {
-            teacher_id: this.props.teacher_id,
+            teacher: this.props.teacher,
             responsibility: this.state.responsibility,
             date_assigned: this.state.date_assigned,
-            editedResponsibilityId:this.state.editedResponsibilityId
+            editedResponsibilityId: this.state.editedResponsibilityId
         }
         this.props.updateResponsibility(responsibility).then((responsibilities) => {
                 // this.props.addFlashMessage({
@@ -152,7 +159,7 @@ class ResponsibilitiesList extends React.Component {
             showResponsibilityForm: false,
             editedResponsibilityId: e.target.getAttribute('data-id'),
             responsibility: e.target.getAttribute('data-name'),
-            date_assigned:e.target.getAttribute('data-date')
+            date_assigned: e.target.getAttribute('data-date')
         })
         this.props.removeResponsibility({_id: e.target.getAttribute('data-id')})
 
@@ -169,12 +176,21 @@ class ResponsibilitiesList extends React.Component {
 
     componentDidMount() {
         this.props.clearResponsibilities()
-        this.props.getResponsibilities(this.props.teacher_id).then(responsibilities => {
-            // if(responsibilities.length>0){
-            responsibilities.data.responsibilities.map(responsibility => {
-                this.props.addResponsibility(responsibility)
-            })
-            // }
+        this.props.getResponsibilities(this.props.teacher.tsc).then(responsibilities => {
+            if (responsibilities.data.length > 0) {
+                // console.log(responsibilities.data)
+                responsibilities.data.map(responsibility => {
+                    this.props.addResponsibility(responsibility)
+                })
+            } else {
+                // console.log("no resp")
+
+            }
+        })
+        this.props.getSchoolCategory({upi: this.props.teacher.posting_history.current_school}).then(school => {
+            if (school) {
+                this.setState({school_category: school.data.category, school_upi: school.data.upi})
+            }
         })
     }
 
@@ -183,20 +199,22 @@ class ResponsibilitiesList extends React.Component {
         if (this.isValid()) {
             this.setState({errors: {}, isLoading: true})
             const responsibility = {
-                teacher_id: this.props.teacher_id,
+                teacher_tsc: this.props.teacher.tsc,
                 responsibility: this.state.responsibility,
-                date_assigned: this.state.date_assigned
+                date_assigned: this.state.date_assigned,
+                school_upi: this.state.school_upi
+
             }
             this.props.registerResponsibility({responsibility: responsibility}).then(
-                (responsibilities) => {
+                (responsibility) => {
+
                     // this.props.addFlashMessage({
                     //     type: 'success',
                     //     text: 'You have signed up successfully. Please use the login in form below to access your account'
                     // })
-                    this.props.clearResponsibilities()
-                    responsibilities.data.responsibilities.map(responsibility => {
-                        this.props.addResponsibility(responsibility)
-                    })
+                    // this.props.clearResponsibilities()
+
+                    this.props.addResponsibility(responsibility.data)
                     this.setState({
                         responsibility: '',
                         date_assigned: '',
@@ -213,19 +231,53 @@ class ResponsibilitiesList extends React.Component {
 
     render() {
         let count = 1
-        const {showResponsibilityForm, showUpdateResponsibilityForm, responsibility, date_assigned, errors, isLoading, invalid,relieved} = this.state
-        const {responsibilities} = this.props
-        console.log(this.props.deceased)
-        const responsibilityForm = <form onSubmit={this.onSubmitResponsibility}>
-            <TextFieldGroup
-                label="Responsibility"
-                type="text"
-                name="responsibility"
-                value={responsibility} autofocus={true}
-                onChange={this.onChange}
-                error={errors.responsibility}
+        const {showResponsibilityForm, showUpdateResponsibilityForm, responsibility, date_assigned, errors, isLoading, invalid, relieved, school_category} = this.state
+        const {responsibilities, teacher} = this.props
 
-            />
+        const primaryResponsibility = <div className="form-group row">
+            <label className="col-sm-3 col-form-label" htmlFor="responsibility">Responsibility</label>
+            <div className="col-sm-9">
+
+                <select className={classnames("form-control form-control-sm", {"is-invalid": errors.responsibility})}
+                        id="responsibility" name="responsibility"
+                        required="true" onChange={this.onChange}>
+                    <option>Select</option>
+                    <option value="head_teacher">Head Teacher</option>
+                    <option value="deputy_head_teacher">Deputy Head Teacher</option>
+                    <option value="senior_teacher">Senior Teacher</option>
+                    <option value="hod">HOD</option>
+                    {teacher.gender === 'male' ? <option value="discipline"> Discipline Master</option> :
+                        <option value="discipline"> Discipline Mistress</option>}
+                    {teacher.gender === 'male' ? <option value="games"> Games Master</option> :
+                        <option value="games"> Games Mistress</option>}
+                </select>
+                {errors.responsibility && <div className="invalid-feedback">{errors.responsibility}</div>}
+            </div>
+        </div>
+        const secondaryResponsibility = <div className="form-group row">
+            <label className="col-sm-3 col-form-label" htmlFor="responsibility">Responsibility</label>
+            <div className="col-sm-9">
+
+                <select className={classnames("form-control form-control-sm", {"is-invalid": errors.responsibility})}
+                        id="responsibility" name="responsibility"
+                        required="true" onChange={this.onChange}>
+                    <option>Select</option>
+                    <option value="principal">Principal</option>
+                    <option value="deputy_principal">Deputy Principal</option>
+                    <option value="senior_teacher">Senior Teacher</option>
+                    <option value="hod">HOD</option>
+                    {teacher.gender === 'male' ? <option value="discipline"> Discipline Master</option> :
+                        <option value="discipline"> Discipline Mistress</option>}
+                    {teacher.gender === 'male' ? <option value="games"> Games Master</option> :
+                        <option value="games"> Games Mistress</option>}
+                </select>
+                {errors.responsibility && <div className="invalid-feedback">{errors.responsibility}</div>}
+            </div>
+        </div>
+        const responsibilityList = school_category === 'primary' ? primaryResponsibility : school_category === 'secondary' ? secondaryResponsibility : ''
+
+        const responsibilityForm = <form onSubmit={this.onSubmitResponsibility}>
+            {responsibilityList}
             <TextFieldGroup
                 label="Date Assigned"
                 type="date"
@@ -248,15 +300,7 @@ class ResponsibilitiesList extends React.Component {
             <div>
 
                 <form onSubmit={this.onUpdateResponsibility}>
-                    <TextFieldGroup
-                        label="Responsibility"
-                        type="text"
-                        name="responsibility"
-                        value={responsibility} autofocus={true}
-                        onChange={this.onChange}
-                        error={errors.responsibility}
-
-                    />
+                    {responsibilityList}
                     <TextFieldGroup
                         label="Date Assigned"
                         type="date"
@@ -267,9 +311,9 @@ class ResponsibilitiesList extends React.Component {
                         aria-describedby="emailHelp"
                     />
                     <div className="form-group">
-                    <div className="alert alert-primary" role="alert">
-                       If unchanged, Date assigned remains {new Date(date_assigned).toDateString()}
-                    </div>
+                        <div className="alert alert-primary" role="alert">
+                            If unchanged, Date assigned remains {new Date(date_assigned).toDateString()}
+                        </div>
                         <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
                                 type="submit">Update
                         </button>
@@ -281,12 +325,34 @@ class ResponsibilitiesList extends React.Component {
                     </div>
                 </form>
             </div>
+        // let relieved_date = false
+        const showAdd =() => {
+            // if(responsibilities.length>0){
+            //     console.log(responsibilities," sorted")
+            //     console.log(responsibilities[0].date_relieved)
+            //   return responsibilities[0].date_relieved
+            // }
 
+             responsibilities.map(responsibility => {
+                if (responsibility.school_upi === teacher.posting_history.current_school)
+                    if (responsibility.active) {
+                        console.log("cow")
+                        return false
+                    }
+                //
+                // }
+            })
+            console.log("goat")
+            return true
+        }
+        // console.log(relieved_date)
         return (
             <div>
-                {!this.props.deceased? this.school_upi ||this.role==='system'?<button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
-                    onClick={this.addResponsibility}>Add responsibility
-                    </button>:'':''}
+                {showAdd() ?
+                    !this.props.deceased ? this.school_upi || this.role === 'system' ?
+                        <button className="btn btn-sm btn-info" hidden={showResponsibilityForm}
+                                onClick={this.addResponsibility}>Add responsibility
+                        </button> : '' : '' : ''}
                 {showResponsibilityForm ? responsibilityForm : ''}
                 {showUpdateResponsibilityForm ? updateResponsibilityForm : ''}
                 {responsibilities.length > 0 ? <table className="table">
@@ -294,6 +360,7 @@ class ResponsibilitiesList extends React.Component {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Responsibility</th>
+                        <th scope="col">School</th>
                         <th scope="col">Date assigned</th>
                         <th scope="col">Date relieved</th>
                         <th scope="col">Actions</th>
@@ -301,9 +368,10 @@ class ResponsibilitiesList extends React.Component {
                     </thead>
                     <tbody>
                     {responsibilities.map((responsibility, i) => (
-                            <Responsibility responsibility={responsibility} count={count++} key={i} onEdit={this.onEdit} onRelieve={this.onRelieve} relieved={relieved}/>))}
+                        <Responsibility responsibility={responsibility} count={count++} key={i} onEdit={this.onEdit}
+                                        onRelieve={this.onRelieve} relieved={relieved}/>))}
                     </tbody>
-                </table> :<h6>No responsibilities found</h6>}
+                </table> : <h6>No responsibilities found</h6>}
             </div>
         )
     }
@@ -314,10 +382,11 @@ ResponsibilitiesList.propTypes = {
     clearResponsibilities: PropTypes.func.isRequired,
     getResponsibilities: PropTypes.func.isRequired,
     registerResponsibility: PropTypes.func.isRequired,
-    teacher_id: PropTypes.string.isRequired,
+    teacher: PropTypes.object.isRequired,
     removeResponsibility: PropTypes.func.isRequired,
     updateResponsibility: PropTypes.func.isRequired,
-    relieveResponsibility:PropTypes.func.isRequired,
+    getSchoolCategory: PropTypes.func.isRequired,
+    relieveResponsibility: PropTypes.func.isRequired,
     deceased: PropTypes.bool,
     retired: PropTypes.bool,
 }
@@ -332,5 +401,5 @@ export default connect(mapStateToProps, {
     clearResponsibilities,
     addResponsibility,
     getResponsibilities, registerResponsibility,
-    removeResponsibility, updateResponsibility,relieveResponsibility
+    removeResponsibility, updateResponsibility, relieveResponsibility, getSchoolCategory, updateResponsibilityOnList
 })(ResponsibilitiesList)

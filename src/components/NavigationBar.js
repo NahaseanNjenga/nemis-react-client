@@ -89,10 +89,10 @@ class NavigationBar extends React.Component {
                 </li>
             </ul>)
         return (
-            <div>
+                <div className="container nemis"><div className="row">
                 <nav className="navbar navbar-expand-lg navbar-info bg-info fixed-top">
 
-                    <Link to="/" className="h3">Nemis</Link>
+                    <Link to="/" className="h3 nemiss">Nemis</Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -100,7 +100,7 @@ class NavigationBar extends React.Component {
                     </button>
 
                     <div className="navbar-nav mr-auto">
-                        {user !=='system'? <Link to="/policies">Policy Documents</Link> : ''}
+                        {user !=='system'? <Link to="/policies" className="policy">Policy Documents</Link> : ''}
                     </div>
                     <div className="my-2 my-lg-0">
                         <div className=" mr-sm-2 my-2 my-sm-0">
@@ -112,7 +112,7 @@ class NavigationBar extends React.Component {
                     {/*<SchoolAdminLogin show={schoolAdminLoginModal} onClose={this.onCloseSchoolAdmin}/>*/}
 
                 </nav>
-            </div>
+                </div></div>
         )
     }
 }

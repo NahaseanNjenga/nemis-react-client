@@ -13,6 +13,7 @@ import DeceasedTeachersList from "./DeceasedTeachersList"
 import TeachersList from "./TeachersList"
 import TransferredTeachersList from "./TransferredTeachersList"
 
+
 class TeachersPage extends React.Component {
     constructor(props) {
         super(props)
@@ -21,6 +22,7 @@ class TeachersPage extends React.Component {
             role: '',
             teachers: [],
             showNewTeacherModal: false,
+
         }
         if (window.location.pathname === '/admin/teachers') {
             this.state.role = 'system'
@@ -31,13 +33,13 @@ class TeachersPage extends React.Component {
         this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
         this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
         this.onChange = this.onChange.bind(this)
-        this.setTeachers=this.setTeachers.bind(this)
+        this.setTeachers = this.setTeachers.bind(this)
 
         this.filter = this.filter.bind(this)
     }
 
     setTeachers(teachers) {
-this.setState({teachers})
+        this.setState({teachers})
     }
 
     onChange(e) {
@@ -45,7 +47,7 @@ this.setState({teachers})
         let arr_results = []
         this.props.clearTeachers()
         for (let i = 0; i < teachers.length; i++) {
-            let exp =  new RegExp(e.target.value, 'i')
+            let exp = new RegExp(e.target.value, 'i')
             if (String(teachers[i].tsc).match(exp)) {
                 arr_results.push(teachers[i])
                 this.props.addTeacher(teachers[i])
@@ -68,7 +70,7 @@ this.setState({teachers})
 
     filter(e) {
         e.preventDefault()
-        if(this.state.role!==e.target.name){
+        if (this.state.role !== e.target.name) {
             this.props.clearTeachers()
         }
         this.setState({life: e.target.name})
@@ -112,11 +114,14 @@ this.setState({teachers})
                            Filter
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                           {life!=='working'? <a className="dropdown-item" href="" onClick={this.filter} name="working">Active</a>:''}
-                            {role==='school'? <a className="dropdown-item" href="" onClick={this.filter}
-                               name="transferred">Transferred</a>:''}
-                            {life!=='retired'? <a className="dropdown-item" href="" onClick={this.filter} name="retired">Retired</a>:''}
-                            {life!=='deceased'?<a className="dropdown-item" href="" onClick={this.filter} name="deceased">Deceased</a>:''}
+                           {life !== 'working' ? <a className="dropdown-item" href="" onClick={this.filter}
+                                                    name="working">Active</a> : ''}
+                            {role === 'school' ? <a className="dropdown-item" href="" onClick={this.filter}
+                                                    name="transferred">Transferred</a> : ''}
+                            {life !== 'retired' ? <a className="dropdown-item" href="" onClick={this.filter}
+                                                     name="retired">Retired</a> : ''}
+                            {life !== 'deceased' ? <a className="dropdown-item" href="" onClick={this.filter}
+                                                      name="deceased">Deceased</a> : ''}
                         </div>
                     </span>
                             </div>
@@ -124,14 +129,17 @@ this.setState({teachers})
                         </div>
 
                         <br/>
-                        {life === 'working' ? <TeachersList setTeachers={this.setTeachers}/> : life === 'retired' ?
-                            <RetiredTeachersList setTeachers={this.setTeachers}/> : life === 'deceased' ?
-                                <DeceasedTeachersList setTeachers={this.setTeachers}/> : life === 'transferred' ? <TransferredTeachersList setTeachers={this.setTeachers}/> : ''}
+
+                            {life === 'working' ? <TeachersList setTeachers={this.setTeachers}/> : life === 'retired' ?
+                                <RetiredTeachersList setTeachers={this.setTeachers}/> : life === 'deceased' ?
+                                    <DeceasedTeachersList setTeachers={this.setTeachers}/> : life === 'transferred' ?
+                                        <TransferredTeachersList setTeachers={this.setTeachers}/> : ''}
 
 
-                <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
-                                addTeacher={this.props.addTeacher}/>
-                    </div></div>
+                        <NewTeacherForm show={showNewTeacherModal} onClose={this.onCloseNewTeacherModal}
+                                        addTeacher={this.props.addTeacher}/>
+                    </div>
+                </div>
             </div>)
     }
 
@@ -146,9 +154,10 @@ TeachersPage.propTypes = {
 
 }
 
-{/*// function mapStateToProps(state) {*/}
+{/*// function mapStateToProps(state) {*/
+}
 //     return {teachers: state.teacherReducers}
 // }
 
-export default connect(null, {clearTeachers,addTeacher})(TeachersPage)
+export default connect(null, {clearTeachers, addTeacher})(TeachersPage)
 

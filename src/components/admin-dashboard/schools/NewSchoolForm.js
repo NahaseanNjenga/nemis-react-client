@@ -52,6 +52,12 @@ class NewSchoolForm extends React.Component {
         if (validator.isEmpty(data.name)) {
             errors.name = 'This field is required'
         }
+        // if (data.name.length<3) {
+        //     errors.name = 'School name must be at least 3 characters long'
+        // }
+        // if(typeof data.name!=='number'){
+        //     errors.name = 'School name must be a string'
+        // }
         if (validator.isEmpty(data.category)) {
             errors.category= 'This field is required'
         }

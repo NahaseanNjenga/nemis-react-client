@@ -11,14 +11,15 @@ import NewTeacherForm from "./NewTeacherForm"
 import ViewTeacher from "./ViewTeacher"
 import jwt from 'jsonwebtoken'
 import SchoolAdminMenu from "../school-admin-dashboard/SchoolAdminMenu"
-
+import Loader from 'react-loader-spinner'
 class TeachersList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             showNewTeacherModal: false,
             role: '',
-            teachers: ''
+            teachers: '',
+            isLoading: true,
         }
         this.onShowNewTeacherModal = this.onShowNewTeacherModal.bind(this)
         this.onCloseNewTeacherModal = this.onCloseNewTeacherModal.bind(this)
@@ -49,7 +50,7 @@ class TeachersList extends React.Component {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
-                    this.setState({role: 'system', teachers: teachers.data})
+                    this.setState({role: 'system', teachers: teachers.data,isLoading:false})
                 } else {
                     //No schools message
                 }
@@ -66,7 +67,7 @@ class TeachersList extends React.Component {
                     teachers.data.map(teacher => {
                         this.props.addTeacher(teacher)
                     })
-                    this.setState({role: 'school', teachers: teachers.data})
+                    this.setState({role: 'school', teachers: teachers.data,isLoading:false})
                 } else {
                     //No schools message
                 }
@@ -97,8 +98,19 @@ class TeachersList extends React.Component {
 
     render() {
         const {teachers} = this.props
-        const {showNewTeacherModal, role} = this.state
+        const {showNewTeacherModal, isLoading} = this.state
         let count = 1
+        if(isLoading){
+            return (
+                <Loader
+                    type="Puff"
+                    color="#00BFFF"
+                    height="100"
+                    width="100"
+                    text-align="center"
+                />
+            )
+        }
         return (
           <div>
                 <h1>Active teachers</h1>
@@ -115,7 +127,7 @@ class TeachersList extends React.Component {
                     </thead>
                     <tbody>
                     {teachers.map((teacher, i) => {
-                        return <Teacher count={count++} teacher={teacher} key={i}/>
+                        return<Teacher count={count++} teacher={teacher} key={i}/>
                     })}
                     </tbody>
                 </table> : 'No teachers found'}

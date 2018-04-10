@@ -205,7 +205,7 @@ class HomePage extends React.Component {
                         {/*<div className="form-check">*/}
                         <div className="form-row align-items-center">
                             <div className=" col-md-4 my-1">
-                                <input className="form-check-input" type="radio" name="search" id="student"
+                                <input className="" type="radio" name="search" id="student"
                                        value="student" onChange={this.onChange}/>
                                 <label className="form-check-label" htmlFor="student">
                                     Students
@@ -218,7 +218,7 @@ class HomePage extends React.Component {
                                 </select>
                             </div>
                             <div className=" col-md-4 my-1">
-                                <input className="form-check-input" type="radio" name="search" id="teacher"
+                                <input className="" type="radio" name="search" id="teacher"
                                        value="teacher" onChange={this.onChange}/>
                                 <label className="form-check-label" htmlFor="teacher">
                                     Teachers
@@ -231,7 +231,7 @@ class HomePage extends React.Component {
                                 </select>
                             </div>
                             <div className=" col-md-4 my-1">
-                                <input className="form-check-input" type="radio" name="search" id="school"
+                                <input className="" type="radio" name="search" id="school"
                                        value="school" onChange={this.onChange}/>
                                 <label className="form-check-label" htmlFor="school">
                                     Schools

@@ -58,14 +58,17 @@ class NewStudentForm extends React.Component {
         if (validator.isEmpty(data.first_name)) {
             errors.first_name = 'This field is required'
         }
-        if (validator.isEmpty(data.last_name)) {
-            errors.last_name = 'This field is required'
+        if (data.first_name.length<3||data.first_name.length>15) {
+            errors.first_name = 'First name must be between 3 and 15 characters'
+        }
+        if (validator.isEmpty(data.surname)) {
+            errors.surname = 'This field is required'
+        }
+        if (data.surname.length<3||data.surname.length>15) {
+            errors.surname = 'Surname must be between 3 and 15 characters'
         }
         if (validator.isEmpty(data.gender)) {
             errors.gender = 'This field is required'
-        }
-        if (validator.isEmpty(data.dob)) {
-            errors.dob = 'This field is required'
         }
         if (validator.isEmpty(data.dob)) {
             errors.dob = 'This field is required'
@@ -157,6 +160,7 @@ class NewStudentForm extends React.Component {
                 <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
                 <div className="col-sm-9">
                     <select className="form-control form-control-sm" id="year" name="gender">
+                        <option >Select</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>

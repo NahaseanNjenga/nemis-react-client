@@ -100,7 +100,7 @@ class Gallery extends React.Component {
                     </div>
                     <div className="col-md-9">
                         <br/>
-                        <h1>Luku but you don't touch</h1>
+                        {/*<h1>Luku but you don't touch</h1>*/}
                         <form encType="multipart/form-data">
                             <div className="row">
                                 <div className="col-lg-6">

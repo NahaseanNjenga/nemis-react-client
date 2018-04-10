@@ -334,7 +334,7 @@ class ViewTeacher extends React.Component {
                         <div className="tab-pane fade" id="nav-responsibilities" role="tabpanel"
                              aria-labelledby="nav-responsibilities-tab">
 
-                            <ResponsibilitiesList teacher_id={teacher._id} deceased={this.props.deceased}
+                            <ResponsibilitiesList teacher={teacher} deceased={this.props.deceased}
                                                   retired={this.props.retired}/>
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel"

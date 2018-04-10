@@ -44,7 +44,6 @@ class StudentsList extends React.Component {
         if (window.location.pathname === '/admin/students') {
             this.props.getStudents().then(students => {
                 if (students) {
-
                     students.data.map(student => {
                         this.props.addStudent(student)
                     })

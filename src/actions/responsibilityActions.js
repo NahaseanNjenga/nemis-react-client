@@ -5,7 +5,7 @@ import {ADD_RESPONSIBILITY, CLEAR_RESPONSIBILITIES, REMOVE_RESPONSIBILITY, UPDAT
 
 export function registerResponsibility(responsibility) {
     return dispatch => {
-        return axios.post('/update_teacher_info/responsibilities/add', responsibility)
+        return axios.post('/teachers/responsibilities/add', responsibility)
     }
 }
 
@@ -27,7 +27,7 @@ export function clearResponsibilities() {
         payload:[]
     }
 }
-export function updateResponsibilityList(responsibility) {
+export function updateResponsibilityOnList(responsibility) {
     return {
         type: UPDATE_RESPONSIBILITY,
         payload:responsibility
