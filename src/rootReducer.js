@@ -1,16 +1,30 @@
 import {combineReducers} from 'redux'
-import loginReducers from './reducers/loginReducers'
+import systemAdminLoginReducers from './reducers/systemAdminLoginReducers'
 import schoolReducers from "./reducers/schoolReducers"
 import teacherReducers from "./reducers/teacherReducers"
 import studentReducers from "./reducers/studentReducers"
 import schoolAdminReducers from "./reducers/schoolAdminReducers"
+import schoolAdminLoginReducers from "./reducers/schoolAdminLoginReducers"
+import responsibilityReducers from "./reducers/responsibilityReducers"
+import schoolDetailsReducers from "./reducers/schoolDetailsReducers"
+import knecAdminLoginReducers from "./reducers/knecAdminLoginReducers"
+import certificateReducers from "./reducers/certificateReducers"
+import galleryReducers from "./reducers/galleryReducers"
+import policyReducers from "./reducers/policyReducers"
 
 
 export default combineReducers({
     // flashMessages,
-    loginReducers,
+    systemAdminLoginReducers,
+    schoolAdminLoginReducers,
     schoolReducers,
     teacherReducers,
     studentReducers,
+    responsibilityReducers,
     schoolAdminReducers,
+    schoolDetailsReducers,
+    knecAdminLoginReducers,
+    certificateReducers,
+    galleryReducers,
+    policyReducers
 })

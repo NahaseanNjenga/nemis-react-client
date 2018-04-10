@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import validator from 'validator'
-import {isEmpty} from 'lodash'
-import TextFieldGroup from './../../shared/TextFieldsGroup'
+import {isEmpty, isDate} from 'lodash'
+import TextFieldGroup from '../../shared/TextFieldsGroup'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {addStudent, registerStudent} from "../../actions/studentActions"
 import {connect} from 'react-redux'
 import {addFlashMessage} from "../../actions/flashMessages"
+import jwt from "jsonwebtoken"
+import {getSchoolCategory} from "../../actions/schoolActions"
 
 class NewStudentForm extends React.Component {
     constructor(props) {
@@ -18,6 +20,8 @@ class NewStudentForm extends React.Component {
             dob: '',
             school_upi: '',
             gender: '',
+            year: '',
+            category: '',
             errors: {},
             isLoading: false,
             invalid: false
@@ -54,8 +58,14 @@ class NewStudentForm extends React.Component {
         if (validator.isEmpty(data.first_name)) {
             errors.first_name = 'This field is required'
         }
-        if (validator.isEmpty(data.last_name)) {
-            errors.last_name = 'This field is required'
+        if (data.first_name.length<3||data.first_name.length>15) {
+            errors.first_name = 'First name must be between 3 and 15 characters'
+        }
+        if (validator.isEmpty(data.surname)) {
+            errors.surname = 'This field is required'
+        }
+        if (data.surname.length<3||data.surname.length>15) {
+            errors.surname = 'Surname must be between 3 and 15 characters'
         }
         if (validator.isEmpty(data.gender)) {
             errors.gender = 'This field is required'
@@ -63,7 +73,9 @@ class NewStudentForm extends React.Component {
         if (validator.isEmpty(data.dob)) {
             errors.dob = 'This field is required'
         }
-
+        if (Date.parse(data.dob) > Date.parse(new Date())) {
+            errors.dob = "Date of birth cannot be in future"
+        }
         return {
             errors,
             isValid: isEmpty(errors)
@@ -111,6 +123,21 @@ class NewStudentForm extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (window.location.pathname === '/school_admin/students') {
+            const token = jwt.decode(localStorage.schoolAdminJwtToken)
+            this.setState({school_upi: token.school_upi})
+            this.props.getSchoolCategory({upi: token.school_upi}).then(category => {
+                if (category) {
+                    this.setState({category: category.data.category})
+                    console.log(category.data.category)
+                }
+            })
+
+
+        }
+    }
+
     onChange(e) {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -118,13 +145,95 @@ class NewStudentForm extends React.Component {
     render() {
         const {show, onClose} = this.props
 
-        const {errors, isLoading, invalid, surname, first_name, last_name, dob, school_upi} = this.state
+        const {errors, isLoading, invalid, surname, first_name, last_name, dob, school_upi, category} = this.state
+        const ecde = <div className="form-group">
+            <label htmlFor="year">Year of study</label>
+            <select className="form-control form-control-sm" id="year" name="year"
+                    required="true" onChange={this.onChange}>
+                <option>Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+        const primary =
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option >Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+
+                    </select>
+                </div>
+            </div>
+
+        const secondary =
+
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+
+        const tertiary =
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label" htmlFor="year">Year of study</label>
+                <div className="col-sm-9">
+                    <select className="form-control form-control-sm" id="year" name="gender">
+                        <option>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+
+        const year_of_study = () => {
+            switch (category) {
+                case 'ECDE':
+                    return ecde
+                case 'primary':
+                    return primary
+                case 'secondary':
+                    return secondary
+                case 'tertiary':
+                    return tertiary
+                default :
+                    return ''
+            }
+        }
+
         if (show) {
             return (
                 <Modal isOpen={show} toggle={onClose} size="lg">
                     <ModalHeader toggle={onClose}>Register a new student</ModalHeader>
                     <ModalBody>
                         <form onSubmit={this.onSubmit}>
+                            {school_upi ? '' : <TextFieldGroup
+                                label="School UPI"
+                                type="text"
+                                name="school_upi"
+                                value={school_upi}
+                                onChange={this.onChange}
+                                error={errors.school_upi}
+                            />}
                             <TextFieldGroup
                                 label="Surname"
                                 type="text"
@@ -158,24 +267,18 @@ class NewStudentForm extends React.Component {
                                 error={errors.dob}
                             />
 
-                            <div className="form-group">
-                                <label htmlFor="gender">Gender</label>
-                                <select className="form-control form-control-sm" id="gender" name="gender"
-                                        required="true" onChange={this.onChange}>
-                                    <option>Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">female</option>
-                                </select>
+                            <div className="form-group row">
+                                <label className="col-sm-3 col-form-label" htmlFor="gender">Gender</label>
+                                <div className="col-sm-9">
+                                    <select className="form-control form-control-sm" id="gender" name="gender"
+                                            required="true" onChange={this.onChange}>
+                                        <option>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">female</option>
+                                    </select>
+                                </div>
                             </div>
-                            <TextFieldGroup
-                                label="School UPI"
-                                type="text"
-                                name="school_upi"
-                                value={school_upi}
-                                onChange={this.onChange}
-                                error={errors.school_upi}
-                            />
-
+                            {year_of_study()}
                             <div className="form-group">
                                 <button disabled={isLoading || invalid} className="btn btn-primary btn-sm"
                                         type="submit">Save
@@ -196,7 +299,7 @@ class NewStudentForm extends React.Component {
 
 
 NewStudentForm.propTypes = {
-    // userSignupRequest: PropTypes.func.isRequired,
+    getSchoolCategory: PropTypes.func.isRequired,
     addFlashMessage: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
@@ -209,5 +312,5 @@ NewStudentForm.contextTypes = {
 }
 
 
-export default connect(null, {addStudent, registerStudent, addFlashMessage})(NewStudentForm)
+export default connect(null, {addStudent, registerStudent, addFlashMessage, getSchoolCategory})(NewStudentForm)
 

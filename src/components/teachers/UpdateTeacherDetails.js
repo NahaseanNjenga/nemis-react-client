@@ -23,8 +23,6 @@ class UpdateTeacherDetails extends React.Component {
             nationalID : this.props.teacher.nationalID,
             // life : this.props.teacher.life,
             birthdate : this.props.teacher.birthdate,
-            email : this.props.teacher.contact.email,
-            phone1 : this.props.teacher.contact.phone1,
 
         }
         this.onSubmit = this.onSubmit.bind(this)
@@ -65,25 +63,26 @@ class UpdateTeacherDetails extends React.Component {
 
     validateInput(data) {
         let errors = {}
-        if (validator.isEmpty(data.tsc)) {
+        if (!data.tsc) {
             errors.tsc = 'This field is required'
         }
         if (validator.isEmpty(data.first_name)) {
             errors.first_name = 'This field is required'
         }
+        if (validator.isEmpty(data.surname)) {
+            errors.surname = 'This field is required'
+        }
 
         if (validator.isEmpty(data.gender)) {
             errors.gender = 'This field is required'
         }
-        if (validator.isEmpty(data.email)) {
-            errors.email = 'This field is required'
+        if (validator.isEmpty(data.birthdate)) {
+            errors.birthdate = 'This field is required'
         }
-        // if (validator.isEmpty(data.phone1)) {
-        //     errors.phone1 = 'This field is required'
-        // }
-        // if (validator.isEmpty(data.nationalID)) {
-        //     errors.nationalID = 'This field is required'
-        // }
+
+        if (!data.nationalID) {
+            errors.nationalID = 'This field is required'
+        }
 
         return {
             errors,
@@ -103,7 +102,7 @@ class UpdateTeacherDetails extends React.Component {
         const {show, onClose} = this.props
         const {errors, invalid, isLoading} = this.state
 
-        const {surname, first_name, last_name, tsc, gender, nationalID, birthdate,email, phone1} = this.state
+        const {surname, first_name, last_name, tsc, gender, nationalID, birthdate, }= this.state
         if (show) {
             return (<Modal isOpen={show} toggle={onClose} size="lg">
                     <ModalHeader toggle={onClose}>Update Teacher information</ModalHeader>
@@ -148,28 +147,10 @@ class UpdateTeacherDetails extends React.Component {
                             <TextFieldGroup
                                 label="Date of birth"
                                 type="date"
-                                name="dob"
-
+                                name="birthdate"
+                                value={birthdate}
                                 onChange={this.onChange}
-                                error={errors.dob}
-
-                            />
-                            <TextFieldGroup
-                                label="Email"
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={this.onChange}
-                                error={errors.email}
-
-                            />
-                            <TextFieldGroup
-                                label="Phone number"
-                                type="number"
-                                name="phone1"
-                                value={phone1}
-                                onChange={this.onChange}
-                                error={errors.phone1}
+                                error={errors.birthdate}
 
                             />
                             <TextFieldGroup
@@ -213,7 +194,6 @@ UpdateTeacherDetails.propTypes = {
     onClose: PropTypes.func.isRequired,
     updateTeacher: PropTypes.func.isRequired,
     updateTeacherList: PropTypes.func.isRequired,
-
 }
 
 

@@ -4,6 +4,8 @@ export default (state = [], action = {}) => {
     switch (action.type) {
         case ADD_SCHOOL:
             return [action.payload, ...state]
+        case CLEAR_SCHOOLS:
+            return []
         case UPDATE_SCHOOL:
             return state.map(school=>{
                 if(school._id===action.payload._id){

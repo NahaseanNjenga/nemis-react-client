@@ -1,0 +1,1 @@
+console.log(new Date('2000-6-6').getFullYear()-new Date('1992-3-3').getFullYear())

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ADD_SCHOOL_ADMIN, UPDATE_SCHOOL_ADMIN} from "./types"
+import {ADD_SCHOOL_ADMIN, CLEAR_SCHOOL_ADMINS, UPDATE_SCHOOL_ADMIN} from "./types"
 
 
 export function registerSchoolAdmin(schoolAdmin) {
@@ -20,6 +20,12 @@ export function addSchoolAdmin(schoolAdmin) {
         payload:schoolAdmin
     }
 }
+export function clearSchoolAdmins() {
+    return {
+        type:CLEAR_SCHOOL_ADMINS,
+        payload:{}
+    }
+}
 export function updateSchoolAdminList(schoolAdmin) {
     return {
         type: UPDATE_SCHOOL_ADMIN,
@@ -29,5 +35,10 @@ export function updateSchoolAdminList(schoolAdmin) {
 export function getSchoolAdmins() {
     return dispatch=>{
         return axios.get('/admin/school_admins')
+    }
+}
+export function isSchoolAdminExists(school_upi) {
+    return dispatch=>{
+        return axios.post('/school_admin/exists',{school_upi:school_upi})
     }
 }
