@@ -15,7 +15,7 @@ export default (state = [], action = {}) => {
             })
         case DELETE_POLICY:
             const index = findIndex(state, {_id: action.payload._id})
-            if (index => 0) {
+            if (index >= 0) {
                 return [...state.slice(0, index), ...state.slice(index + 1)]
             }
             return state
